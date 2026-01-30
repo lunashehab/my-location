@@ -4,7 +4,7 @@
     <title>Where Am I?</title>
 
     <!-- Tesla-style font -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -39,8 +39,10 @@
         h1 {
             font-size: 28px;
             margin-bottom: 20px;
-            font-weight: 300;
+            font-weight: 700;
             letter-spacing: 1px;
+            color: #ff2b2b;
+            text-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
         }
 
         #location {
@@ -62,6 +64,15 @@
             height: 200px;
             border-radius: 10px;
             margin-top: 20px;
+            display: none;
+        }
+
+        .map-title {
+            margin-top: 25px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ff2b2b;
+            text-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
             display: none;
         }
 
@@ -93,16 +104,19 @@
         .dedication {
             margin-top: 15px;
             font-size: 11px;
-            opacity: 0.4;
+            font-weight: 700;
+            opacity: 0.5;
             line-height: 1.4;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
     <div class="card">
-        <h1>Your Exact Location</h1>
+        <h1>YOUR EXACT LOCATION</h1>
         <p id="location">Requesting GPS location...</p>
 
+        <div class="map-title" id="mapTitle">THE MAP IS NOW HERE</div>
         <img id="map" />
 
         <button id="copyBtn" style="display:none;">Copy Location</button>
@@ -111,8 +125,8 @@
         <div class="brand">DON SYSTEMS</div>
 
         <div class="dedication">
-            If this website ever saved you, pray for my mom and dad<br>
-            ( IBRAHIM OKASHA 1949-2016 — Yousra Hawamdeh 1955-2013 )
+            IF THIS WEBSITE EVER SAVED YOU, PRAY FOR MY MOM AND DAD<br>
+            ( IBRAHIM OKASHA 1949-2016 — YOUSRA HAWAMDEH 1955-2013 )
         </div>
     </div>
 
@@ -140,6 +154,9 @@
                     const map = document.getElementById("map");
                     map.src = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=14&size=400x200&markers=${lat},${lon},lightblue`;
                     map.style.display = "block";
+
+                    // Show map title
+                    document.getElementById("mapTitle").style.display = "block";
 
                     // Show buttons
                     document.getElementById("copyBtn").style.display = "block";
