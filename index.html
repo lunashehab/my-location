@@ -6,6 +6,9 @@
     <!-- Tesla-style font -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
 
+    <!-- Leaflet CSS (interactive map) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
     <style>
         body {
             margin: 0;
@@ -61,7 +64,7 @@
 
         #map {
             width: 100%;
-            height: 200px;
+            height: 220px;
             border-radius: 10px;
             margin-top: 20px;
             display: none;
@@ -107,7 +110,7 @@
         <h1>YOUR EXACT LOCATION</h1>
         <p id="location">Requesting GPS location...</p>
 
-        <img id="map" />
+        <div id="map"></div>
 
         <button id="copyBtn" style="display:none;">Copy Location</button>
         <button id="shareBtn" style="display:none;">Share Location</button>
@@ -119,6 +122,9 @@
             ( IBRAHIM OKASHA 1949-2016 — YOUSRA HAWAMDEH 1955-2013 )
         </div>
     </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
         let finalLocation = "";
@@ -140,10 +146,18 @@
                     document.getElementById("location").innerText = finalLocation;
                     document.getElementById("location").style.animation = "none";
 
-                    // Static map using LocationIQ demo key
-                    const map = document.getElementById("map");
-                    map.src = `https://maps.locationiq.com/v3/staticmap?key=pk.eyJ1IjoiZnJlZW1hcHMiLCJhIjoiY2t2b2Z4dGZpMGJ6dDJvbzJ1bGd2cGZ4cSJ9&center=${lat},${lon}&zoom=14&size=400x200&markers=icon:large-red-cutout|${lat},${lon}`;
-                    map.style.display = "block";
+                    // Show map
+                    const mapDiv = document.getElementById("map");
+                    mapDiv.style.display = "block";
+
+                    const map = L.map('map').setView([lat, lon], 14);
+
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: ''
+                    }).addTo(map);
+
+                    L.marker([lat, lon]).addTo(map);
 
                     document.getElementById("copyBtn").style.display = "block";
                     document.getElementById("shareBtn").style.display = "block";
