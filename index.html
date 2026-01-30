@@ -139,14 +139,29 @@
             const lat = position.coords.latitude;
             const lon = position.coords.longitude;
 
-            fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`)
+            // Nominatim reverse geocoding
+            fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
                 .then(response => response.json())
                 .then(data => {
-                    finalLocation = `${data.city}, ${data.principalSubdivision} ${data.postcode}`;
+                    const address = data.address;
+
+                    const cityName =
+                        address.city ||
+                        address.town ||
+                        address.village ||
+                        address.hamlet ||
+                        address.county ||
+                        "Unknown Location";
+
+                    const stateName = address.state || "";
+                    const postcode = address.postcode || "";
+
+                    finalLocation = `${cityName}, ${stateName} ${postcode}`;
+
                     document.getElementById("location").innerText = finalLocation;
                     document.getElementById("location").style.animation = "none";
 
-                    // Show map
+                    // Show interactive map
                     const mapDiv = document.getElementById("map");
                     mapDiv.style.display = "block";
 
