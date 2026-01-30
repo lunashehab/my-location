@@ -333,4 +333,209 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-   
+    .metric-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .metric-sub {
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .right-footer {
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--text-soft);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <!-- LEFT: LOCATION -->
+    <main class="card">
+      <div class="card-inner">
+        <div class="badge">
+          <span class="badge-dot"></span>
+          LIVE LOCATION
+          <span style="font-size:10px; opacity:0.8;">PRIVATE TO YOUR DEVICE</span>
+        </div>
+
+        <h1>Tell<span>MyLocation</span>.com</h1>
+        <p class="subtitle">
+          Instantly see your live coordinates and share them in one tap. No login, no signup, just pure utility.
+        </p>
+
+        <div class="status-pill" id="status-pill">
+          <span class="status-dot"></span>
+          <span id="status-text">Finding your location…</span>
+        </div>
+
+        <div class="coords-grid">
+          <div class="coord-block">
+            <div class="coord-label">Latitude</div>
+            <div class="coord-value" id="lat-value">—</div>
+            <div class="coord-note" id="lat-note">Live GPS coordinates locked.</div>
+          </div>
+          <div class="coord-block">
+            <div class="coord-label">Longitude</div>
+            <div class="coord-value" id="lng-value">—</div>
+            <div class="coord-note" id="lng-note">Approx. ±— meters</div>
+          </div>
+        </div>
+
+        <div class="extra-info">
+          <div>City: <span id="city">—</span></div>
+          <div>State: <span id="state">—</span></div>
+          <div>ZIP Code: <span id="zip">—</span></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="share-btn">
+            <span class="btn-icon">↑</span>
+            Share My Location
+          </button>
+          <button class="btn btn-outline" id="refresh-btn">
+            <span class="btn-icon">⟳</span>
+            Refresh
+          </button>
+          <button class="btn btn-ghost" id="copy-btn">
+            <span class="btn-icon">⧉</span>
+            Copy Coordinates
+          </button>
+        </div>
+
+        <div id="map"></div>
+
+        <div class="hint">
+          Best on <span>mobile with GPS enabled</span>. Your location is processed in your browser only.
+        </div>
+
+        <div class="footer-links">
+          <a href="#">What Is My IP</a>
+          <a href="#">Speed Test</a>
+          <a href="#">Converter</a>
+          <a href="#">QR Generator</a>
+        </div>
+      </div>
+    </main>
+
+    <!-- RIGHT: CREATOR -->
+    <aside class="card">
+      <div class="card-inner">
+        <div class="badge">
+          CREATOR
+        </div>
+
+        <div class="right-title">
+          Built for <span>real people</span>, not algorithms.
+        </div>
+
+        <p class="right-text">
+          This tool is part of a growing network of simple, premium utilities designed to be fast, clean, and unforgettable.
+        </p>
+
+        <div class="metrics">
+          <div class="metric-card">
+            <div class="metric-label">Latency</div>
+            <div class="metric-value" id="latency">— ms</div>
+            <div class="metric-sub">From request to fix</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Accuracy</div>
+            <div class="metric-value" id="accuracy">— m</div>
+            <div class="metric-sub">Approximate radius</div>
+          </div>
+        </div>
+
+        <div class="btn-row" style="margin-top:18px;">
+          <!-- YOUTUBE BUTTON REMOVED -->
+          <button class="btn btn-ghost" onclick="window.open('https://www.buymeacoffee.com/YOURNAME','_blank')">
+            Buy Me a Coffee
+          </button>
+        </div>
+
+        <div class="right-footer">
+          <div class="pill">Built by Don • 2025</div>
+          <div>Clean. Fast. No nonsense.</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    const statusText = document.getElementById("status-text");
+    const latValue = document.getElementById("lat-value");
+    const lngValue = document.getElementById("lng-value");
+    const latNote = document.getElementById("lat-note");
+    const lngNote = document.getElementById("lng-note");
+    const latencyEl = document.getElementById("latency");
+    const accuracyEl = document.getElementById("accuracy");
+
+    const cityEl = document.getElementById("city");
+    const stateEl = document.getElementById("state");
+    const zipEl = document.getElementById("zip");
+
+    const shareBtn = document.getElementById("share-btn");
+    const copyBtn = document.getElementById("copy-btn");
+    const refreshBtn = document.getElementById("refresh-btn");
+
+    let map;
+    let marker;
+    let lastCoords = null;
+    let startTime = null;
+
+    function initMap(lat, lng) {
+      if (!map) {
+        map = L.map("map").setView([lat, lng], 15);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: "© OpenStreetMap"
+        }).addTo(map);
+
+        marker = L.marker([lat, lng]).addTo(map);
+      } else {
+        map.setView([lat, lng], 15);
+        marker.setLatLng([lat, lng]);
+      }
+    }
+
+    async function reverseGeocode(lat, lng) {
+      try {
+        const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`;
+        const res = await fetch(url, {
+          headers: {
+            "Accept-Language": "en"
+          }
+        });
+        const data = await res.json();
+        const address = data.address || {};
+
+        cityEl.textContent =
+          address.city || address.town || address.village || "—";
+        stateEl.textContent = address.state || "—";
+        zipEl.textContent = address.postcode || "—";
+      } catch (e) {
+        console.log("Reverse geocode error
