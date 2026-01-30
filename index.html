@@ -2,10 +2,49 @@
 <html>
 <head>
     <title>Where Am I?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0d0d0d;
+            color: #e6e6e6;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .card {
+            background: #111;
+            padding: 40px;
+            border-radius: 14px;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.08);
+            width: 90%;
+            max-width: 420px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        #location {
+            font-size: 22px;
+            margin-top: 10px;
+            color: #00d4ff;
+            text-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+        }
+    </style>
 </head>
 <body>
-    <h1>Your Exact Location</h1>
-    <p id="location">Requesting GPS location...</p>
+    <div class="card">
+        <h1>Your Exact Location</h1>
+        <p id="location">Requesting GPS location...</p>
+    </div>
 
     <script>
         if (navigator.geolocation) {
