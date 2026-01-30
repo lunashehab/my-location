@@ -836,38 +836,3 @@
   </script>
 </body>
 </html>
-let map;
-let marker;
-
-function initMap(lat, lng) {
-  if (!map) {
-    map = L.map('map').setView([lat, lng], 15);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap'
-    }).addTo(map);
-
-    marker = L.marker([lat, lng]).addTo(map);
-  } else {
-    map.setView([lat, lng], 15);
-    marker.setLatLng([lat, lng]);
-  }
-}
-
-async function reverseGeocode(lat, lng) {
-  try {
-    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`;
-    const res = await fetch(url);
-    const data = await res.json();
-
-    const address = data.address || {};
-
-    document.getElementById("city").textContent = address.city || address.town || address.village || "—";
-    document.getElementById("state").textContent = address.state || "—";
-    document.getElementById("zip").textContent = address.postcode || "—";
-
-  } catch (err) {
-    console.log("Reverse geocode error:", err);
-  }
-}
