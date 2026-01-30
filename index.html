@@ -67,15 +67,6 @@
             display: none;
         }
 
-        .map-title {
-            margin-top: 25px;
-            font-size: 20px;
-            font-weight: 700;
-            color: #ff2b2b;
-            text-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
-            display: none;
-        }
-
         button {
             margin-top: 15px;
             padding: 12px 20px;
@@ -116,7 +107,6 @@
         <h1>YOUR EXACT LOCATION</h1>
         <p id="location">Requesting GPS location...</p>
 
-        <div class="map-title" id="mapTitle">THE MAP IS NOW HERE</div>
         <img id="map" />
 
         <button id="copyBtn" style="display:none;">Copy Location</button>
@@ -154,9 +144,6 @@
                     const map = document.getElementById("map");
                     map.src = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=14&size=400x200&markers=${lat},${lon},lightblue`;
                     map.style.display = "block";
-
-                    // Show map title
-                    document.getElementById("mapTitle").style.display = "block";
 
                     // Show buttons
                     document.getElementById("copyBtn").style.display = "block";
