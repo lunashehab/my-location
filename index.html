@@ -89,6 +89,13 @@
             opacity: 0.5;
             letter-spacing: 2px;
         }
+
+        .dedication {
+            margin-top: 15px;
+            font-size: 11px;
+            opacity: 0.4;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -102,6 +109,11 @@
         <button id="shareBtn" style="display:none;">Share Location</button>
 
         <div class="brand">DON SYSTEMS</div>
+
+        <div class="dedication">
+            If this website ever saved you, pray for my mom and dad<br>
+            ( IBRAHIM OKASHA 1949-2016 — Yousra Hawamdeh 1955-2013 )
+        </div>
     </div>
 
     <script>
@@ -124,9 +136,9 @@
                     document.getElementById("location").innerText = finalLocation;
                     document.getElementById("location").style.animation = "none";
 
-                    // Show map
+                    // FREE OpenStreetMap static map
                     const map = document.getElementById("map");
-                    map.src = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=14&size=400x200&maptype=roadmap&markers=color:cyan%7C${lat},${lon}`;
+                    map.src = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=14&size=400x200&markers=${lat},${lon},lightblue`;
                     map.style.display = "block";
 
                     // Show buttons
