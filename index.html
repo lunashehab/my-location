@@ -140,12 +140,11 @@
                     document.getElementById("location").innerText = finalLocation;
                     document.getElementById("location").style.animation = "none";
 
-                    // FREE OpenStreetMap static map
+                    // Static map using LocationIQ demo key
                     const map = document.getElementById("map");
-                    map.src = `https://staticmap.openstreetmap.de/staticmap.php?center=${lat},${lon}&zoom=14&size=400x200&markers=${lat},${lon},lightblue`;
+                    map.src = `https://maps.locationiq.com/v3/staticmap?key=pk.eyJ1IjoiZnJlZW1hcHMiLCJhIjoiY2t2b2Z4dGZpMGJ6dDJvbzJ1bGd2cGZ4cSJ9&center=${lat},${lon}&zoom=14&size=400x200&markers=icon:large-red-cutout|${lat},${lon}`;
                     map.style.display = "block";
 
-                    // Show buttons
                     document.getElementById("copyBtn").style.display = "block";
                     document.getElementById("shareBtn").style.display = "block";
                 })
@@ -158,13 +157,11 @@
             document.getElementById("location").innerText = "Location permission denied.";
         }
 
-        // Copy button
         document.getElementById("copyBtn").onclick = () => {
             navigator.clipboard.writeText(finalLocation);
             alert("Location copied!");
         };
 
-        // Share button
         document.getElementById("shareBtn").onclick = () => {
             if (navigator.share) {
                 navigator.share({ text: finalLocation });
