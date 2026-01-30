@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Where Am I?</title>
+</head>
+<body>
+    <h1>Your Location Will Appear Here</h1>
+    <p id="location">Loading...</p>
+
+    <script>
+        fetch("https://ipapi.co/json/")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("location").innerText =
+                data.city + ", " + data.region + " " + data.postal;
+        })
+        .catch(() => {
+            document.getElementById("location").innerText = "Unable to get location.";
+        });
+    </script>
+</body>
+</html>
