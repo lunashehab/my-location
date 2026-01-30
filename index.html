@@ -2,27 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Tell My Location | Instant Location Finder</title>
+  <title>Tell MyLocation.com | Live GPS Finder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Instantly find and share your live location with one click. Simple, fast, and secure." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet for map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
     :root {
-      --bg-main: #02040a;
-      --bg-card: rgba(10, 14, 25, 0.92);
+      --bg: #02030a;
+      --card: #070814;
       --accent: #ff0044;
-      --accent-soft: rgba(255, 0, 68, 0.35);
-      --accent-2: #00e0ff;
-      --text-main: #f5f7ff;
-      --text-soft: #9aa0b8;
-      --border-subtle: rgba(255, 255, 255, 0.06);
-      --shadow-strong: 0 24px 80px rgba(0, 0, 0, 0.85);
-      --radius-xl: 26px;
-      --radius-pill: 999px;
-      --transition-fast: 0.18s ease-out;
+      --accent-soft: rgba(255, 0, 68, 0.25);
+      --text-main: #f7f7ff;
+      --text-soft: #9ca3b5;
+      --border: rgba(255, 255, 255, 0.08);
     }
 
     * {
@@ -32,72 +27,36 @@
     }
 
     body {
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #10172a 0, #02040a 45%, #000000 100%);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #02030a 45%, #000 100%);
       color: var(--text-main);
       min-height: 100vh;
+      padding: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
-      overflow-x: hidden;
-    }
-
-    .bg-orbit {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    .bg-orbit::before,
-    .bg-orbit::after {
-      content: "";
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.55;
-      mix-blend-mode: screen;
-    }
-
-    .bg-orbit::before {
-      width: 420px;
-      height: 420px;
-      background: radial-gradient(circle, rgba(255, 0, 68, 0.7), transparent 70%);
-      top: -120px;
-      right: -80px;
-    }
-
-    .bg-orbit::after {
-      width: 380px;
-      height: 380px;
-      background: radial-gradient(circle, rgba(0, 224, 255, 0.7), transparent 70%);
-      bottom: -140px;
-      left: -60px;
     }
 
     .shell {
       width: 100%;
-      max-width: 960px;
+      max-width: 1100px;
       display: grid;
       grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
-      gap: 28px;
-      align-items: stretch;
+      gap: 24px;
     }
 
-    @media (max-width: 840px) {
+    @media (max-width: 900px) {
       .shell {
         grid-template-columns: minmax(0, 1fr);
       }
     }
 
     .card {
-      background: linear-gradient(135deg, rgba(10, 14, 25, 0.96), rgba(5, 8, 18, 0.98));
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-strong);
-      padding: 26px 26px 22px;
+      background: var(--card);
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      padding: 20px 20px 18px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
       position: relative;
       overflow: hidden;
     }
@@ -106,7 +65,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), transparent 55%);
+      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), transparent 60%);
       opacity: 0.9;
       pointer-events: none;
     }
@@ -117,17 +76,17 @@
     }
 
     .badge {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 4px 12px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.06), rgba(10, 14, 25, 0.9));
-      color: var(--text-soft);
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.4);
     }
 
     .badge-dot {
@@ -138,35 +97,18 @@
       box-shadow: 0 0 12px rgba(255, 0, 68, 0.9);
     }
 
-    .badge-pill {
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: rgba(0, 224, 255, 0.12);
-      color: var(--accent-2);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-    }
-
-    .title {
-      margin-top: 18px;
-      font-size: clamp(28px, 4vw, 34px);
+    h1 {
+      margin-top: 16px;
+      font-size: 28px;
       font-weight: 600;
-      letter-spacing: 0.02em;
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
-    .title span.accent {
-      background: linear-gradient(120deg, #ff0044, #ff6b6b, #ff0044);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    h1 span {
+      color: var(--accent);
     }
 
     .subtitle {
-      margin-top: 10px;
+      margin-top: 8px;
       font-size: 14px;
       color: var(--text-soft);
       max-width: 420px;
@@ -174,41 +116,44 @@
     }
 
     .status-pill {
-      margin-top: 18px;
+      margin-top: 16px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 6px 12px;
-      border-radius: var(--radius-pill);
+      border-radius: 999px;
       background: rgba(0, 224, 255, 0.08);
-      border: 1px solid rgba(0, 224, 255, 0.35);
+      border: 1px solid rgba(0, 224, 255, 0.4);
       font-size: 11px;
-      color: var(--accent-2);
+      color: #7de9ff;
     }
 
     .status-dot {
       width: 8px;
       height: 8px;
       border-radius: 999px;
-      background: var(--accent-2);
+      background: #00e0ff;
       box-shadow: 0 0 12px rgba(0, 224, 255, 0.9);
     }
 
-    .coords-block {
-      margin-top: 22px;
-      padding: 16px 16px 14px;
-      border-radius: 18px;
-      background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), rgba(5, 8, 18, 0.96));
-      border: 1px solid rgba(255, 255, 255, 0.06);
+    .coords-grid {
+      margin-top: 18px;
       display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
     }
 
-    @media (max-width: 520px) {
-      .coords-block {
+    @media (max-width: 600px) {
+      .coords-grid {
         grid-template-columns: minmax(0, 1fr);
       }
+    }
+
+    .coord-block {
+      padding: 12px 12px 10px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .coord-label {
@@ -222,91 +167,74 @@
     .coord-value {
       font-size: 16px;
       font-weight: 500;
-      letter-spacing: 0.03em;
-      color: var(--text-main);
-      word-break: break-all;
     }
 
-    .coord-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 6px;
-      padding: 4px 9px;
-      border-radius: var(--radius-pill);
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+    .coord-note {
+      margin-top: 4px;
       font-size: 11px;
       color: var(--text-soft);
     }
 
-    .coord-chip-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--accent-soft);
+    .extra-info {
+      margin-top: 14px;
+      font-size: 14px;
+      line-height: 1.6;
     }
 
-    .actions-row {
-      margin-top: 22px;
+    .extra-info span {
+      color: #7de9ff;
+    }
+
+    .btn-row {
+      margin-top: 18px;
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
     }
 
     .btn {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px 18px;
-      border-radius: var(--radius-pill);
-      border: 1px solid transparent;
+      border: none;
+      border-radius: 999px;
+      padding: 9px 16px;
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
-      outline: none;
-      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), opacity var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.18s ease-out;
       white-space: nowrap;
     }
 
     .btn-primary {
       background: linear-gradient(135deg, #ff0044, #ff6b6b);
-      border-color: rgba(255, 0, 68, 0.7);
-      color: #ffffff;
-      box-shadow: 0 14px 40px rgba(255, 0, 68, 0.55);
+      color: #fff;
+      box-shadow: 0 12px 30px rgba(255, 0, 68, 0.6);
     }
 
     .btn-primary:hover {
       transform: translateY(-1px);
-      box-shadow: 0 18px 50px rgba(255, 0, 68, 0.7);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-      box-shadow: 0 10px 30px rgba(255, 0, 68, 0.6);
+      box-shadow: 0 16px 40px rgba(255, 0, 68, 0.75);
     }
 
     .btn-ghost {
-      background: rgba(255, 255, 255, 0.02);
-      border-color: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
 
     .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .btn-outline {
       background: transparent;
-      border-color: rgba(255, 255, 255, 0.16);
       color: var(--text-soft);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--text-main);
     }
 
@@ -314,249 +242,147 @@
       width: 16px;
       height: 16px;
       border-radius: 999px;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.4);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 11px;
     }
 
-    .hint-row {
+    .hint {
       margin-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
       font-size: 11px;
       color: var(--text-soft);
     }
 
-    .hint-pill {
-      padding: 4px 10px;
-      border-radius: var(--radius-pill);
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .hint-strong {
-      color: var(--accent-2);
-    }
-
-    .divider {
-      margin: 18px 0 14px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
-    }
-
-    .footer-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 11px;
-      color: var(--text-soft);
+    .hint span {
+      color: #7de9ff;
     }
 
     .footer-links {
+      margin-top: 16px;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+      font-size: 11px;
     }
 
-    .footer-link {
-      color: var(--text-soft);
+    .footer-links a {
       text-decoration: none;
-      padding: 3px 8px;
-      border-radius: var(--radius-pill);
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
-      font-size: 11px;
-    }
-
-    .footer-link:hover {
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text-main);
-      border-color: rgba(255, 255, 255, 0.16);
-    }
-
-    .side-card {
-      background: radial-gradient(circle at top, rgba(255, 0, 68, 0.12), rgba(5, 8, 18, 0.98));
-      border-radius: var(--radius-xl);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: var(--shadow-strong);
-      padding: 22px 22px 18px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .side-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at bottom right, rgba(0, 224, 255, 0.18), transparent 60%);
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .side-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    .side-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
       color: var(--text-soft);
-      margin-bottom: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.02);
+      transition: 0.18s ease-out;
     }
 
-    .side-title {
-      font-size: 18px;
+    .footer-links a:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+    }
+
+    #map {
+      width: 100%;
+      height: 260px;
+      border-radius: 16px;
+      margin-top: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 25px rgba(0, 224, 255, 0.25);
+    }
+
+    .location-details {
+      margin-top: 14px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .location-details div span {
+      color: #7de9ff;
+    }
+
+    /* Right card */
+    .right-title {
+      font-size: 20px;
       font-weight: 500;
-      margin-bottom: 10px;
+      margin-top: 10px;
     }
 
-    .side-title span {
+    .right-title span {
       color: var(--accent);
     }
 
-    .side-text {
-      font-size: 13px;
+    .right-text {
+      margin-top: 10px;
+      font-size: 14px;
       color: var(--text-soft);
       line-height: 1.6;
-      margin-bottom: 14px;
     }
 
-    .side-metrics {
+    .metrics {
+      margin-top: 18px;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
-      margin-bottom: 14px;
     }
 
-    .metric {
-      padding: 8px 9px;
+    .metric-card {
+      padding: 10px 10px 8px;
       border-radius: 14px;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .metric-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--text-soft);
-      margin-bottom: 3px;
-    }
-
-    .metric-value {
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .metric-sub {
-      font-size: 10px;
-      color: var(--text-soft);
-      margin-top: 2px;
-    }
-
-    .side-footer {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 11px;
-      color: var(--text-soft);
-    }
-
-    .pill-soft {
-      padding: 4px 10px;
-      border-radius: var(--radius-pill);
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .pill-soft span {
-      color: var(--accent-2);
-    }
-
-    .yt-icon {
-      width: 14px;
-      height: 14px;
-      border-radius: 4px;
-      background: #ffffff;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #ff0000;
+    .metric-label {
       font-size: 11px;
-      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-soft);
+      margin-bottom: 4px;
     }
 
-    .toast {
-      position: fixed;
-      bottom: 18px;
-      left: 50%;
-      transform: translateX(-50%) translateY(120%);
-      padding: 9px 14px;
-      border-radius: var(--radius-pill);
-      background: rgba(0, 0, 0, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--text-main);
+    .metric-value {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .metric-sub {
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .right-footer {
+      margin-top: 18px;
       font-size: 12px;
-      display: inline-flex;
-      align-items: center;
+      color: var(--text-soft);
+      display: flex;
+      flex-wrap: wrap;
       gap: 8px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.22s ease-out, transform 0.22s ease-out;
-      z-index: 50;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-      pointer-events: auto;
-    }
-
-    .toast-dot {
-      width: 8px;
-      height: 8px;
+    .pill {
+      padding: 4px 10px;
       border-radius: 999px;
-      background: var(--accent-2);
-      box-shadow: 0 0 10px rgba(0, 224, 255, 0.9);
-    }
-
-    .error-text {
-      margin-top: 10px;
-      font-size: 12px;
-      color: #ff6b6b;
-      min-height: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.5);
     }
   </style>
 </head>
 <body>
-  <div class="bg-orbit"></div>
-
   <div class="shell">
-    <!-- Main card -->
+    <!-- LEFT: LOCATION -->
     <main class="card">
       <div class="card-inner">
         <div class="badge">
           <span class="badge-dot"></span>
           LIVE LOCATION
-          <span class="badge-pill">Private to your device</span>
+          <span style="font-size:10px; opacity:0.8;">PRIVATE TO YOUR DEVICE</span>
         </div>
 
-        <h1 class="title">
-          Tell<span class="accent">MyLocation</span>.com
-        </h1>
-
+        <h1>Tell<span>MyLocation</span>.com</h1>
         <p class="subtitle">
           Instantly see your live coordinates and share them in one tap. No login, no signup, just pure utility.
         </p>
@@ -566,205 +392,197 @@
           <span id="status-text">Finding your location…</span>
         </div>
 
-        <section class="coords-block">
-          <div>
+        <div class="coords-grid">
+          <div class="coord-block">
             <div class="coord-label">Latitude</div>
             <div class="coord-value" id="lat-value">—</div>
-            <div class="coord-chip">
-              <span class="coord-chip-dot"></span>
-              <span id="lat-precision">Waiting for GPS lock…</span>
-            </div>
+            <div class="coord-note" id="lat-note">Live GPS coordinates locked.</div>
           </div>
-          <div>
+          <div class="coord-block">
             <div class="coord-label">Longitude</div>
             <div class="coord-value" id="lng-value">—</div>
-            <div class="coord-chip">
-              <span class="coord-chip-dot"></span>
-              <span id="lng-precision">High accuracy requested</span>
-            </div>
+            <div class="coord-note" id="lng-note">Approx. ±— meters</div>
           </div>
-        </section>
+        </div>
 
-        <div class="actions-row">
+        <div class="extra-info">
+          <div>City: <span id="city">—</span></div>
+          <div>State: <span id="state">—</span></div>
+          <div>ZIP Code: <span id="zip">—</span></div>
+        </div>
+
+        <div class="btn-row">
           <button class="btn btn-primary" id="share-btn">
             <span class="btn-icon">↑</span>
             Share My Location
           </button>
-
-          <button class="btn btn-ghost" id="copy-btn">
-            <span class="btn-icon">⧉</span>
-            Copy Coordinates
-          </button>
-
           <button class="btn btn-outline" id="refresh-btn">
             <span class="btn-icon">⟳</span>
             Refresh
           </button>
+          <button class="btn btn-ghost" id="copy-btn">
+            <span class="btn-icon">⧉</span>
+            Copy Coordinates
+          </button>
         </div>
 
-        <div class="hint-row">
-          <div class="hint-pill">
-            Best on <span class="hint-strong">mobile with GPS enabled</span>.
-          </div>
-          <div>
-            Your location is processed in your browser only.
-          </div>
+        <div id="map"></div>
+
+        <div class="hint">
+          Best on <span>mobile with GPS enabled</span>. Your location is processed in your browser only.
         </div>
 
-        <div class="error-text" id="error-text"></div>
-
-        <div class="divider"></div>
-
-        <footer class="footer-row">
-          <div>More tools by Don (coming soon):</div>
-          <div class="footer-links">
-            <a href="#" class="footer-link">What Is My IP</a>
-            <a href="#" class="footer-link">Speed Test</a>
-            <a href="#" class="footer-link">Converter</a>
-            <a href="#" class="footer-link">QR Generator</a>
-          </div>
-        </footer>
+        <div class="footer-links">
+          <a href="#">What Is My IP</a>
+          <a href="#">Speed Test</a>
+          <a href="#">Converter</a>
+          <a href="#">QR Generator</a>
+        </div>
       </div>
     </main>
 
-    <!-- Side card -->
-    <aside class="side-card">
-      <div class="side-inner">
-        <div class="side-label">Creator</div>
-        <div class="side-title">
+    <!-- RIGHT: CREATOR -->
+    <aside class="card">
+      <div class="card-inner">
+        <div class="badge">
+          CREATOR
+        </div>
+
+        <div class="right-title">
           Built for <span>real people</span>, not algorithms.
         </div>
-        <p class="side-text">
+
+        <p class="right-text">
           This tool is part of a growing network of simple, premium utilities designed to be fast, clean, and unforgettable.
         </p>
 
-        <div class="side-metrics">
-          <div class="metric">
+        <div class="metrics">
+          <div class="metric-card">
             <div class="metric-label">Latency</div>
-            <div class="metric-value" id="metric-latency">— ms</div>
+            <div class="metric-value" id="latency">— ms</div>
             <div class="metric-sub">From request to fix</div>
           </div>
-          <div class="metric">
+          <div class="metric-card">
             <div class="metric-label">Accuracy</div>
-            <div class="metric-value" id="metric-accuracy">— m</div>
+            <div class="metric-value" id="accuracy">— m</div>
             <div class="metric-sub">Approximate radius</div>
           </div>
         </div>
 
-        <div class="actions-row" style="margin-top: 6px;">
-          <button class="btn btn-primary" id="yt-btn">
-            <span class="yt-icon">▶</span>
+        <div class="btn-row" style="margin-top:18px;">
+          <button class="btn btn-primary" onclick="window.open('https://www.youtube.com/@YOURCHANNEL','_blank')">
             Subscribe on YouTube
           </button>
-          <button class="btn btn-ghost" id="coffee-btn">
-            ☕ Buy Me a Coffee
+          <button class="btn btn-ghost" onclick="window.open('https://www.buymeacoffee.com/YOURNAME','_blank')">
+            Buy Me a Coffee
           </button>
         </div>
 
-        <div class="side-footer" style="margin-top: 12px;">
-          <div class="pill-soft">
-            Built by Don • <span>2025</span>
-          </div>
+        <div class="right-footer">
+          <div class="pill">Built by Don • 2025</div>
           <div>Clean. Fast. No nonsense.</div>
         </div>
       </div>
     </aside>
   </div>
 
-  <!-- Toast -->
-  <div class="toast" id="toast">
-    <span class="toast-dot"></span>
-    <span id="toast-text">Copied to clipboard</span>
-  </div>
-
   <script>
     const statusText = document.getElementById("status-text");
     const latValue = document.getElementById("lat-value");
     const lngValue = document.getElementById("lng-value");
-    const latPrecision = document.getElementById("lat-precision");
-    const lngPrecision = document.getElementById("lng-precision");
-    const errorText = document.getElementById("error-text");
-    const metricLatency = document.getElementById("metric-latency");
-    const metricAccuracy = document.getElementById("metric-accuracy");
+    const latNote = document.getElementById("lat-note");
+    const lngNote = document.getElementById("lng-note");
+    const latencyEl = document.getElementById("latency");
+    const accuracyEl = document.getElementById("accuracy");
+
+    const cityEl = document.getElementById("city");
+    const stateEl = document.getElementById("state");
+    const zipEl = document.getElementById("zip");
 
     const shareBtn = document.getElementById("share-btn");
     const copyBtn = document.getElementById("copy-btn");
     const refreshBtn = document.getElementById("refresh-btn");
-    const ytBtn = document.getElementById("yt-btn");
-    const coffeeBtn = document.getElementById("coffee-btn");
 
-    const toast = document.getElementById("toast");
-    const toastText = document.getElementById("toast-text");
-
+    let map;
+    let marker;
     let lastCoords = null;
-    let lastAccuracy = null;
     let startTime = null;
 
-    function showToast(message) {
-      toastText.textContent = message;
-      toast.classList.add("show");
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 2200);
+    function initMap(lat, lng) {
+      if (!map) {
+        map = L.map("map").setView([lat, lng], 15);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: "© OpenStreetMap"
+        }).addTo(map);
+
+        marker = L.marker([lat, lng]).addTo(map);
+      } else {
+        map.setView([lat, lng], 15);
+        marker.setLatLng([lat, lng]);
+      }
+    }
+
+    async function reverseGeocode(lat, lng) {
+      try {
+        const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`;
+        const res = await fetch(url, {
+          headers: {
+            "Accept-Language": "en"
+          }
+        });
+        const data = await res.json();
+        const address = data.address || {};
+
+        cityEl.textContent =
+          address.city || address.town || address.village || "—";
+        stateEl.textContent = address.state || "—";
+        zipEl.textContent = address.postcode || "—";
+      } catch (e) {
+        console.log("Reverse geocode error:", e);
+      }
     }
 
     function formatNumber(num, decimals = 5) {
       return Number(num).toFixed(decimals);
     }
 
-    function requestLocation() {
-      errorText.textContent = "";
-      statusText.textContent = "Finding your location…";
-      latValue.textContent = "—";
-      lngValue.textContent = "—";
-      latPrecision.textContent = "Waiting for GPS lock…";
-      lngPrecision.textContent = "High accuracy requested";
-      metricLatency.textContent = "— ms";
-      metricAccuracy.textContent = "— m";
-
+    function getLocation() {
       if (!("geolocation" in navigator)) {
-        errorText.textContent = "Geolocation is not supported on this device.";
-        statusText.textContent = "Location unavailable";
+        statusText.textContent = "Geolocation not supported on this device.";
         return;
       }
 
+      statusText.textContent = "Finding your location…";
       startTime = performance.now();
 
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        (pos) => {
           const endTime = performance.now();
           const latency = Math.round(endTime - startTime);
 
-          const { latitude, longitude, accuracy } = position.coords;
+          const { latitude, longitude, accuracy } = pos.coords;
           lastCoords = { latitude, longitude };
-          lastAccuracy = accuracy;
 
           latValue.textContent = formatNumber(latitude, 5);
           lngValue.textContent = formatNumber(longitude, 5);
 
-          latPrecision.textContent = "Live GPS coordinates locked.";
-          lngPrecision.textContent = `Approx. ±${Math.round(accuracy)} meters`;
-          metricLatency.textContent = `${latency} ms`;
-          metricAccuracy.textContent = `${Math.round(accuracy)} m`;
+          latNote.textContent = "Live GPS coordinates locked.";
+          lngNote.textContent = `Approx. ±${Math.round(accuracy)} meters`;
+
+          latencyEl.textContent = `${latency} ms`;
+          accuracyEl.textContent = `${Math.round(accuracy)} m`;
 
           statusText.textContent = "Location found.";
+
+          initMap(latitude, longitude);
+          reverseGeocode(latitude, longitude);
         },
-        (error) => {
-          console.error(error);
-          switch (error.code) {
-            case error.PERMISSION_DENIED:
-              errorText.textContent = "Permission denied. Please allow location access in your browser settings.";
-              break;
-            case error.POSITION_UNAVAILABLE:
-              errorText.textContent = "Location information is unavailable. Try moving to an open area or enabling GPS.";
-              break;
-            case error.TIMEOUT:
-              errorText.textContent = "Request timed out. Please try again.";
-              break;
-            default:
-              errorText.textContent = "Unable to retrieve your location. Please try again.";
-          }
-          statusText.textContent = "Location unavailable";
+        (err) => {
+          console.log(err);
+          statusText.textContent = "Location unavailable.";
+          alert("Location error: " + err.message);
         },
         {
           enableHighAccuracy: true,
@@ -774,65 +592,55 @@
       );
     }
 
-    async function copyCoordinates() {
+    async function copyCoords() {
       if (!lastCoords) {
-        showToast("Location not ready yet");
+        alert("Location not ready yet.");
         return;
       }
       const text = `Latitude: ${formatNumber(lastCoords.latitude, 5)}, Longitude: ${formatNumber(lastCoords.longitude, 5)}`;
       try {
         await navigator.clipboard.writeText(text);
-        showToast("Coordinates copied");
-      } catch (err) {
-        console.error(err);
-        showToast("Unable to copy. Please copy manually.");
+        alert("Coordinates copied.");
+      } catch (e) {
+        alert("Unable to copy. Please copy manually.");
       }
     }
 
     async function shareLocation() {
       if (!lastCoords) {
-        showToast("Location not ready yet");
+        alert("Location not ready yet.");
         return;
       }
 
-      const shareText = `Here is my location:\nLatitude: ${formatNumber(lastCoords.latitude, 5)}\nLongitude: ${formatNumber(lastCoords.longitude, 5)}\nShared via TellMyLocation.com`;
+      const text = `My location:\nLatitude: ${formatNumber(lastCoords.latitude, 5)}\nLongitude: ${formatNumber(lastCoords.longitude, 5)}\nCity: ${cityEl.textContent}\nState: ${stateEl.textContent}\nZIP: ${zipEl.textContent}\nShared via TellMyLocation.com`;
 
       if (navigator.share) {
         try {
           await navigator.share({
             title: "My Location",
-            text: shareText
+            text
           });
-        } catch (err) {
-          if (err && err.name !== "AbortError") {
-            console.error(err);
-            showToast("Share failed. Try again.");
+        } catch (e) {
+          if (e && e.name !== "AbortError") {
+            alert("Share failed. Try again.");
           }
         }
       } else {
         try {
-          await navigator.clipboard.writeText(shareText);
-          showToast("Location copied. Paste it anywhere to share.");
-        } catch (err) {
-          console.error(err);
-          showToast("Unable to share. Copy manually.");
+          await navigator.clipboard.writeText(text);
+          alert("Location copied. Paste it anywhere to share.");
+        } catch (e) {
+          alert("Unable to share automatically. Copy manually.");
         }
       }
     }
 
     shareBtn.addEventListener("click", shareLocation);
-    copyBtn.addEventListener("click", copyCoordinates);
-    refreshBtn.addEventListener("click", requestLocation);
+    copyBtn.addEventListener("click", copyCoords);
+    refreshBtn.addEventListener("click", getLocation);
 
-    ytBtn.addEventListener("click", () => {
-      window.open("https://www.youtube.com/@YOURCHANNEL", "_blank");
-    });
-
-    coffeeBtn.addEventListener("click", () => {
-      window.open("https://www.buymeacoffee.com/YOURNAME", "_blank");
-    });
-
-    requestLocation();
+    // Initial load
+    getLocation();
   </script>
 </body>
 </html>
