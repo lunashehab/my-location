@@ -131,13 +131,6 @@ h1 span{color:var(--accent);}
     © 2026 TellMyLocation.com — All rights reserved.
   </div>
 </footer>
-
-<script>
-    <script>
-<script>
-</div>
-<script> 
-<script>
 <script>
 const statusText=document.getElementById("status-text");const latValue=document.getElementById("lat-value");const lngValue=document.getElementById("lng-value");const lngNote=document.getElementById("lng-note");const latencyEl=document.getElementById("latency");const accuracyEl=document.getElementById("accuracy");const cityEl=document.getElementById("city");const stateEl=document.getElementById("state");const zipEl=document.getElementById("zip");const streetEl=document.getElementById("street");const fullAddressEl=document.getElementById("full-address");const altitudeEl=document.getElementById("altitude");const localTimeEl=document.getElementById("local-time");const timeZoneEl=document.getElementById("time-zone");const tempValueEl=document.getElementById("temp-value");const tempSubEl=document.getElementById("temp-sub");const conditionValueEl=document.getElementById("condition-value");const conditionSubEl=document.getElementById("condition-sub");const windValueEl=document.getElementById("wind-value");const windSubEl=document.getElementById("wind-sub");const sunriseSunsetEl=document.getElementById("sunrise-sunset");const sunSubEl=document.getElementById("sun-sub");const nearbyListEl=document.getElementById("nearby-list");const ipValueEl=document.getElementById("ip-value");const ispValueEl=document.getElementById("isp-value");const ipCountryEl=document.getElementById("ip-country");const shareBtn=document.getElementById("share-btn");const copyBtn=document.getElementById("copy-btn");const refreshBtn=document.getElementById("refresh-btn");let map;let marker;let lastCoords=null;let startTime=null;
 function initMap(lat,lng){if(!map){map=L.map("map").setView([lat,lng],15);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);marker=L.marker([lat,lng]).addTo(map);}else{map.setView([lat,lng],15);marker.setLatLng([lat,lng]);}}
