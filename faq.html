@@ -1,115 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>FAQ | TellMyLocation.com</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-    body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        background: #0b0c10;
-        color: #f7f7ff;
-        padding: 40px;
-        line-height: 1.7;
-        max-width: 900px;
-        margin: auto;
-    }
-    h1, h2 {
-        color: #ff0044;
-    }
-    h1 {
-        font-size: 32px;
-        margin-bottom: 10px;
-    }
-    h2 {
-        margin-top: 30px;
-        font-size: 22px;
-    }
-    p {
-        margin-bottom: 14px;
-    }
-    a {
-        color: #ff0044;
-        text-decoration: none;
-    }
-    a:hover {
-        text-decoration: underline;
-    }
-    .btn {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 10px 18px;
-        background: #ff0044;
-        color: #fff;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-    }
-    .btn:hover {
-        background: #ff335f;
-    }
-    footer {
-        margin-top: 50px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255,255,255,0.1);
-        font-size: 13px;
-        color: #9ca3b5;
-        text-align: center;
-    }
-</style>
-</head>
+    <meta charset="UTF-8">
+    <title>Frequently Asked Questions | Tell My Location</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <meta name="description" content="Common questions about TellMyLocation. Learn about GPS accuracy, privacy, and how to find your coordinates.">
+    
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --accent: #38bdf8; /* Neon Blue */
+            --text-main: #f8fafc;
+            --text-soft: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #111827 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            padding: 20px;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 { color: var(--accent); margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        h3 { color: white; margin-top: 30px; font-size: 18px; }
+        p { color: var(--text-soft); margin-bottom: 15px; }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        footer { margin-top: 50px; border-top: 1px solid var(--border); padding-top: 20px; font-size: 12px; text-align: center; color: var(--text-soft); }
+    </style>
+</head>
 <body>
 
-<h1>Frequently Asked Questions</h1>
+<div class="container">
+    <a href="index.html" class="back-link">← Back to Map Tools</a>
+    
+    <h1>Frequently Asked Questions</h1>
 
-<p>This FAQ page answers the most common questions about TellMyLocation.com and how it works.</p>
+    <h3>1. Is TellMyLocation.com really free?</h3>
+    <p>Yes, completely. Our tool is 100% free to use for finding your GPS coordinates, current address, and local weather. We support the site via unobtrusive advertisements.</p>
 
-<h2>1. What does TellMyLocation.com do?</h2>
-<p>The site shows your real-time location, address, weather, altitude, IP address, and nearby places using trusted APIs. Everything loads instantly and works directly in your browser.</p>
+    <h3>2. Is my location data private?</h3>
+    <p><strong>Yes.</strong> Privacy is our #1 priority. Your location data is processed locally on your device (client-side). We do not store your history, and we do not track your movements. When you close the tab, the data is gone.</p>
 
-<h2>2. Do you store my location?</h2>
-<p>No. Your location is processed locally on your device and never stored, saved, or logged by us.</p>
+    <h3>3. How accurate is the GPS tool?</h3>
+    <p>The accuracy depends on your device hardware. On a smartphone with GPS enabled, accuracy is usually within <strong>5 to 10 meters</strong>. On a desktop computer relying on Wi-Fi triangulation, accuracy may be lower (approx. 50-100 meters).</p>
 
-<h2>3. Why do I need to allow location access?</h2>
-<p>Your browser requires permission before sharing your GPS coordinates. Without permission, we cannot show your exact location or nearby places.</p>
+    <h3>4. Does this work offline?</h3>
+    <p>You need an internet connection to load the map tiles and address data. However, if your device has a GPS chip, you may still be able to see your raw Latitude/Longitude coordinates even without an active internet connection.</p>
 
-<h2>4. What if I deny location access?</h2>
-<p>The site will still load, but features like your exact location, address, and nearby places will not work.</p>
+    <h3>5. Why is the address slightly different from where I am standing?</h3>
+    <p>We use OpenStreetMap data to convert coordinates into an address (Reverse Geocoding). Sometimes, the GPS point lands in the middle of a street or a large building, so the system estimates the nearest registered street number.</p>
 
-<h2>5. How accurate is the location?</h2>
-<p>Accuracy depends on your device, browser, and GPS signal. Phones are usually very accurate. Laptops may vary based on Wi-Fi positioning.</p>
+    <h3>6. Can I share my location in an emergency?</h3>
+    <p>Yes. Use the red <strong>"SOS Share"</strong> button on the homepage. It will generate a link that opens instantly in Google Maps, which you can send via SMS, WhatsApp, or Email.</p>
 
-<h2>6. What APIs or services do you use?</h2>
-<p>We use trusted providers including OpenStreetMap, Nominatim, Open‑Meteo, Open‑Elevation, Overpass API, ipapi.co, and Leaflet.js.</p>
-
-<h2>7. Do you track or sell my data?</h2>
-<p>No. We do not track, store, sell, or share any personal information. All data is processed in real time and disappears when you leave the site.</p>
-
-<h2>8. Why do you show my IP address?</h2>
-<p>Your IP address helps display your ISP and general network information. It is not stored or linked to any profile.</p>
-
-<h2>9. Why are some nearby places missing?</h2>
-<p>Nearby places come from OpenStreetMap. If a location is missing, it may not be listed in their database yet.</p>
-
-<h2>10. Does the site work worldwide?</h2>
-<p>Yes. The site works globally as long as your device supports location access and you have an internet connection.</p>
-
-<h2>11. Is TellMyLocation.com free?</h2>
-<p>Yes. The site is completely free to use. Optional ads or donations help support the project.</p>
-
-<h2>12. How can I contact support?</h2>
-<p>You can reach us anytime at:</p>
-<p>
-    <a href="mailto:support@tellmylocation.com">support@tellmylocation.com</a><br>
-    <a href="mailto:luna.shehab@gmail.com">luna.shehab@gmail.com</a>
-</p>
-
-<a class="btn" href="/">← Back to Home</a>
-
-<footer>
-    © 2026 TellMyLocation.com — All rights reserved.
-</footer>
+    <footer>
+        &copy; 2026 TellMyLocation.com
+    </footer>
+</div>
 
 </body>
 </html>
