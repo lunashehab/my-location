@@ -1,284 +1,510 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5129097020907805" crossorigin="anonymous"></script>
-
-    <meta charset="UTF-8" />
-    <title>Tell My Location | Instant GPS & SOS Tool</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="Find your exact GPS coordinates, address, and nearest emergency services instantly. Multi-language support. Free and private.">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5129097020907805"
+     crossorigin="anonymous"></script>
     
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f172a">
-
+    <meta charset="UTF-8" />
+    <title>Tell My Location | Global GPS Tool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="Instantly find your exact location. We do not save or share your data. A private, fast safety tool for emergencies.">
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Tell My Location",
+      "url": "https://tellmylocation.com",
+      "applicationCategory": "Utility"
+    }
+    </script>
 
     <style>
         :root {
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --accent: #10b981; /* Emerald */
-            --accent-hover: #059669;
-            --text-main: #f8fafc;
+            --card: rgba(13, 17, 23, 0.85);
+            --accent: #ff0055;
+            --neon-blue: #38bdf8;
+            --sos-red: #ef4444;
+            --text-main: #ffffff;
             --text-soft: #94a3b8;
             --border: rgba(255, 255, 255, 0.1);
-            --danger: #ef4444;
-            --warning: #f59e0b;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: var(--bg);
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #111827 100%);
+            background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
         }
 
-        .shell { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; }
+        .shell { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 16px; position: relative; }
 
-        /* --- HEADER & LANG --- */
-        header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 10px; padding: 0 5px;
+        /* --- LANGUAGE SELECTOR --- */
+        .lang-switch {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 10;
         }
-        .brand { font-size: 24px; font-weight: 800; letter-spacing: -1px; }
-        .brand span { color: var(--accent); }
         
-        select.lang-picker {
-            background: var(--surface); color: var(--text-soft); border: 1px solid var(--border);
-            padding: 5px 10px; border-radius: 8px; font-size: 14px; outline: none;
+        select#language {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid var(--border);
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            outline: none;
+        }
+        select#language option { background: #0f172a; color: white; }
+
+        /* RTL Adjustments for Arabic */
+        body.rtl { direction: rtl; }
+        body.rtl .lang-switch { right: auto; left: 0; }
+        body.rtl .copy-abs { right: auto; left: 12px; }
+        body.rtl #full-address { padding-right: 0; padding-left: 30px; }
+        body.rtl .data-item, body.rtl .nearby-item { text-align: right; }
+
+        /* --- BRANDING --- */
+        .brand { text-align: center; margin: 30px 0 15px; } 
+        .brand h1 { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 6px; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .brand h1 span { color: var(--accent); }
+        .tagline { color: var(--text-soft); font-size: 14px; font-weight: 400; }
+
+        /* --- UI CARDS --- */
+        .card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        /* --- MAP --- */
-        .map-container {
-            height: 250px; width: 100%; border-radius: 20px;
-            border: 2px solid var(--border); overflow: hidden; z-index: 1;
+        .address-box {
+            background: rgba(56, 189, 248, 0.05);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 18px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
         }
-        #map { height: 100%; width: 100%; }
+        .address-box h2 { font-size: 11px; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; font-weight: 700; }
+        #full-address { font-size: 16px; font-weight: 600; line-height: 1.5; color: #fff; padding-right: 30px; }
+        
+        .icon-btn {
+            background: none; border: none; cursor: pointer; color: var(--neon-blue);
+            padding: 5px; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
+        }
+        .icon-btn:hover { transform: scale(1.1); }
+        .copy-abs { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
 
-        /* --- DASHBOARD --- */
-        .dashboard {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-        }
-        .stat-box {
-            background: var(--surface); border: 1px solid var(--border);
-            padding: 15px; border-radius: 16px; display: flex; flex-direction: column; gap: 5px;
-        }
-        .stat-box.full { grid-column: span 2; }
-        .label { font-size: 11px; text-transform: uppercase; color: var(--text-soft); letter-spacing: 0.5px; }
-        .value { font-size: 15px; font-weight: 600; color: white; word-break: break-word; }
-        .highlight { color: var(--accent); font-family: monospace; font-size: 16px; }
+        #map { width: 100%; height: 320px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 20px; z-index: 1; }
 
-        /* --- BUTTONS --- */
+        .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .data-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 16px;
+            text-align: left;
+        }
+        .label { font-size: 10px; color: var(--text-soft); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .value { font-size: 16px; font-weight: 700; color: #fff; }
+        .sub-value { font-size: 11px; color: var(--neon-blue); margin-top: 4px; }
+
+        .nearby-header { font-size: 12px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 10px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+        .nearby-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        @media(max-width: 600px) { .nearby-list { grid-template-columns: 1fr; } }
+        
+        .nearby-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 12px;
+        }
+        .nearby-type { font-size: 9px; color: var(--accent); font-weight: 800; text-transform: uppercase; margin-bottom: 4px; }
+        .nearby-name { font-size: 13px; font-weight: 600; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .nearby-dist { font-size: 11px; color: var(--neon-blue); }
+
+        .btn-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 30px; }
+        .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
         .btn {
-            border: none; padding: 16px; border-radius: 16px; font-size: 16px; font-weight: 700;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: transform 0.2s; width: 100%;
+            border: none; border-radius: 14px; padding: 16px; font-weight: 700; 
+            cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: transform 0.1s;
         }
-        .btn:active { transform: scale(0.98); }
         
-        .btn-refresh { background: var(--accent); color: #022c22; box-shadow: 0 0 20px rgba(16, 185, 129, 0.3); }
-        .btn-sos { background: var(--danger); color: white; margin-top: 10px; box-shadow: 0 0 20px rgba(239, 68, 68, 0.3); }
-
-        /* --- NEARBY SERVICES --- */
-        .services-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .svc-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-soft);
-            padding: 15px 10px; border-radius: 12px; font-size: 12px; display: flex; flex-direction: column; 
-            align-items: center; gap: 8px; cursor: pointer; text-decoration: none;
+        .btn-sos { 
+            background: var(--sos-red); color: white; width: 100%; font-size: 16px;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+            animation: pulse 2s infinite;
         }
-        .svc-btn:hover { background: rgba(255,255,255,0.1); color: white; }
-        .svc-icon { font-size: 24px; }
-
-        /* --- FOOTER --- */
-        footer { margin-top: 30px; text-align: center; font-size: 12px; color: var(--text-soft); }
-        footer a { color: var(--text-soft); margin: 0 5px; text-decoration: none; }
-
-        /* --- COOKIE BANNER --- */
-        #cookie-banner {
-            display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: #1e293b; padding: 20px; border-radius: 16px; 
-            border: 1px solid rgba(255,255,255,0.1); 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
-            width: 90%; max-width: 400px; z-index: 1000; text-align: center;
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
+
+        .btn-primary { background: linear-gradient(135deg, #ff0055, #ff4d7d); color: white; }
+        .btn-ghost { background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border); }
+        .btn-coffee { background: #10b981; color: white; font-weight: 700; }
+        .btn:active { transform: scale(0.98); }
+        .icon { width: 18px; height: 18px; stroke-width: 2.5; }
+
+        .trust-badge { 
+            font-size: 12px; color: #94a3b8; text-align: center; margin-top: 25px; line-height: 1.6;
+            background: rgba(15, 23, 42, 0.5); padding: 15px; border-radius: 12px; border: 1px dashed var(--border);
+        }
+        
+        footer { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-soft); padding-bottom: 30px; border-top: 1px solid var(--border); width: 100%; padding-top: 20px;}
+        footer a { color: var(--text-soft); text-decoration: none; margin: 0 8px; transition: color 0.2s; }
+        footer a:hover { color: white; }
     </style>
 </head>
 <body>
 
 <div class="shell">
-    <header>
-        <div class="brand">TellMy<span>Location</span></div>
-        <select class="lang-picker" onchange="changeLang(this.value)">
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="ru">Русский</option>
-            <option value="ar">العربية</option>
+    <div class="lang-switch">
+        <select id="language" onchange="changeLanguage(this.value)">
+            <option value="en">🇺🇸 English</option>
+            <option value="es">🇪🇸 Español</option>
+            <option value="fr">🇫🇷 Français</option>
+            <option value="ru">🇷🇺 Русский</option>
+            <option value="ar">🇸🇦 العربية</option>
         </select>
+    </div>
+
+    <header class="brand">
+        <h1>TELLMY<span>LOCATION</span>.COM</h1>
+        <p class="tagline" data-i18n="tagline">The fastest "Where am I?" tool on the internet.</p>
     </header>
 
-    <div class="map-container">
+    <main class="card">
+        <div class="address-box">
+            <h2 data-i18n="address_title">Current Address</h2>
+            <div id="full-address">...</div>
+            <button class="icon-btn copy-abs" id="copy-addr" title="Copy Address">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+        </div>
+
         <div id="map"></div>
-    </div>
 
-    <div class="dashboard">
-        <div class="stat-box full">
-            <div class="label" id="lbl-addr">Address</div>
-            <div class="value" id="val-addr">Locating...</div>
+        <div class="data-grid">
+            <div class="data-item">
+                <div class="label" data-i18n="gps_label">GPS Coordinates</div>
+                <div class="value"><span id="lat-val">—</span>, <span id="lng-val">—</span></div>
+                <div class="sub-value" id="accuracy-val">...</div>
+            </div>
+            <div class="data-item">
+                <div class="label" data-i18n="weather_label">Weather</div>
+                <div class="value" id="temp-display">—</div>
+                <div class="sub-value" id="wind-display">Wind: —</div>
+            </div>
+            <div class="data-item">
+                <div class="label" data-i18n="ip_label">Network IP</div>
+                <div class="value" id="ip-val" style="font-size:14px">—</div>
+                <div class="sub-value" id="isp-val">ISP: —</div>
+            </div>
         </div>
-        <div class="stat-box">
-            <div class="label" id="lbl-lat">Latitude</div>
-            <div class="value highlight" id="val-lat">--</div>
+
+        <div class="nearby-header">
+            <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span data-i18n="nearby_label">Nearest Emergency Services</span>
         </div>
-        <div class="stat-box">
-            <div class="label" id="lbl-lon">Longitude</div>
-            <div class="value highlight" id="val-lon">--</div>
+        <div class="nearby-list" id="nearby-results">
+            <div class="nearby-item">...</div>
+            <div class="nearby-item">...</div>
+            <div class="nearby-item">...</div>
         </div>
-    </div>
 
-    <button class="btn btn-refresh" onclick="getLocation()">
-        <span id="btn-update">Update Location</span>
-    </button>
+        <div class="btn-stack">
+            <button class="btn btn-sos" id="sos-btn">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                <span data-i18n="btn_sos">ONE-TAP SOS SHARE</span>
+            </button>
+            <div class="btn-row">
+                <button class="btn btn-primary" id="refresh-btn">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    <span data-i18n="btn_refresh">Refresh</span>
+                </button>
+                <button class="btn btn-ghost" id="copy-coords-btn">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span data-i18n="btn_copy">Copy Lat/Long</span>
+                </button>
+            </div>
+            <button class="btn btn-coffee" onclick="window.open('https://buymeacoffee.com/donshehab')">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                <span data-i18n="btn_coffee">Buy Me a Coffee</span>
+            </button>
+        </div>
 
-    <div class="services-grid">
-        <a id="link-police" href="#" target="_blank" class="svc-btn">
-            <div class="svc-icon">👮</div>
-            <span id="lbl-police">Police</span>
-        </a>
-        <a id="link-hospital" href="#" target="_blank" class="svc-btn">
-            <div class="svc-icon">🏥</div>
-            <span id="lbl-hospital">Hospital</span>
-        </a>
-        <a id="link-gas" href="#" target="_blank" class="svc-btn">
-            <div class="svc-icon">⛽</div>
-            <span id="lbl-gas">Gas Station</span>
-        </a>
-    </div>
-
-    <button class="btn btn-sos" onclick="shareLocation()">
-        ⚠️ <span id="btn-sos">SHARE SOS LOCATION</span>
-    </button>
+        <p class="trust-badge">
+            <span data-i18n="trust_text">🔒 Privacy Guarantee: We do not save, need, or share your location. This website exists solely to help you or save you when needed. All data is processed securely on your device.</span>
+        </p>
+    </main>
 
     <footer>
-        <a href="privacy.html">Privacy</a> • <a href="terms.html">Terms</a> • <a href="contact.html">Contact</a>
-        <br><br>© 2026 TellMyLocation.com
+        <div style="margin-bottom: 12px;">
+            <a href="privacy.html" data-i18n="link_privacy">Privacy Policy</a> • <a href="#" data-i18n="link_terms">Terms of Use</a> • <a href="#" data-i18n="link_contact">Contact Us</a>
+        </div>
+        © 2026 TellMyLocation.com
     </footer>
 </div>
-
-<div id="cookie-banner">
-    <p id="cookie-text" style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">We use cookies to analyze traffic and show personalized ads.</p>
-    <button id="cookie-btn" onclick="acceptCookies()" style="background: var(--accent); border: none; color: #022c22; padding: 10px 30px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 14px;">I Accept</button>
-</div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
     // --- TRANSLATIONS ---
     const i18n = {
-        en: { addr: "Address", lat: "Latitude", lon: "Longitude", update: "Update Location", sos: "SHARE SOS LOCATION", police: "Police", hospital: "Hospital", gas: "Gas Station", cookie: "We use cookies to analyze traffic.", accept: "I Accept" },
-        es: { addr: "Dirección", lat: "Latitud", lon: "Longitud", update: "Actualizar Ubicación", sos: "COMPARTIR SOS", police: "Policía", hospital: "Hospital", gas: "Gasolinera", cookie: "Usamos cookies para analizar el tráfico.", accept: "Aceptar" },
-        fr: { addr: "Adresse", lat: "Latitude", lon: "Longitude", update: "Mettre à jour", sos: "PARTAGER SOS", police: "Police", hospital: "Hôpital", gas: "Station-service", cookie: "Nous utilisons des cookies.", accept: "Accepter" },
-        ru: { addr: "Адрес", lat: "Широта", lon: "Долгота", update: "Обновить", sos: "ОТПРАВИТЬ SOS", police: "Полиция", hospital: "Больница", gas: "Заправка", cookie: "Мы используем файлы cookie.", accept: "Принять" },
-        ar: { addr: "العنوان", lat: "خط العرض", lon: "خط الطول", update: "تحديث الموقع", sos: "إرسال نداء استغاثة", police: "شرطة", hospital: "مستشفى", gas: "محطة وقود", cookie: "نحن نستخدم ملفات تعريف الارتباط.", accept: "قبول" }
+        en: {
+            tagline: "The fastest 'Where am I?' tool on the internet.",
+            address_title: "Current Address",
+            gps_label: "GPS Coordinates",
+            weather_label: "Weather",
+            ip_label: "Network IP",
+            nearby_label: "Nearest Emergency Services",
+            btn_sos: "ONE-TAP SOS SHARE",
+            btn_refresh: "Refresh",
+            btn_copy: "Copy Lat/Long",
+            btn_coffee: "Buy Me a Coffee",
+            trust_text: "🔒 Privacy Guarantee: We do not save, need, or share your location. This website exists solely to help you or save you when needed. All data is processed securely on your device.",
+            link_privacy: "Privacy Policy", link_terms: "Terms of Use", link_contact: "Contact Us"
+        },
+        es: {
+            tagline: "La herramienta '¿Dónde estoy?' más rápida de internet.",
+            address_title: "Dirección Actual",
+            gps_label: "Coordenadas GPS",
+            weather_label: "Clima",
+            ip_label: "IP de Red",
+            nearby_label: "Servicios de Emergencia",
+            btn_sos: "SOS - COMPARTIR UBICACIÓN",
+            btn_refresh: "Actualizar",
+            btn_copy: "Copiar Lat/Long",
+            btn_coffee: "Invítame un Café",
+            trust_text: "🔒 Garantía de Privacidad: No guardamos, necesitamos ni compartimos tu ubicación. Este sitio existe solo para ayudarte o salvarte cuando sea necesario.",
+            link_privacy: "Privacidad", link_terms: "Términos", link_contact: "Contacto"
+        },
+        fr: {
+            tagline: "L'outil 'Où suis-je ?' le plus rapide d'internet.",
+            address_title: "Adresse Actuelle",
+            gps_label: "Coordonnées GPS",
+            weather_label: "Météo",
+            ip_label: "IP Réseau",
+            nearby_label: "Services d'Urgence Proches",
+            btn_sos: "SOS - PARTAGER MA POSITION",
+            btn_refresh: "Actualiser",
+            btn_copy: "Copier Lat/Long",
+            btn_coffee: "Offrez-moi un café",
+            trust_text: "🔒 Garantie de Confidentialité : Nous n'enregistrons ni ne partageons votre localisation. Ce site existe uniquement pour vous aider ou vous sauver en cas de besoin.",
+            link_privacy: "Confidentialité", link_terms: "Conditions", link_contact: "Contact"
+        },
+        ru: {
+            tagline: "Самый быстрый инструмент определения местоположения.",
+            address_title: "Текущий адрес",
+            gps_label: "Координаты GPS",
+            weather_label: "Погода",
+            ip_label: "IP-адрес сети",
+            nearby_label: "Ближайшие экстренные службы",
+            btn_sos: "SOS - ОТПРАВИТЬ ГЕОПОЗИЦИЮ",
+            btn_refresh: "Обновить",
+            btn_copy: "Копировать",
+            btn_coffee: "Купить мне кофе",
+            trust_text: "🔒 Гарантия конфиденциальности: Мы не сохраняем и не передаем ваше местоположение. Этот сайт создан только для того, чтобы помочь вам в экстренной ситуации.",
+            link_privacy: "Политика", link_terms: "Условия", link_contact: "Контакты"
+        },
+        ar: {
+            tagline: "أسرع أداة لمعرفة موقعك الحالي على الإنترنت.",
+            address_title: "العنوان الحالي",
+            gps_label: "إحداثيات GPS",
+            weather_label: "الطقس",
+            ip_label: "عنوان IP",
+            nearby_label: "أقرب خدمات الطوارئ",
+            btn_sos: "SOS - مشاركة الموقع للطوارئ",
+            btn_refresh: "تحديث البيانات",
+            btn_copy: "نسخ الإحداثيات",
+            btn_coffee: "دعم الموقع (قهوة)",
+            trust_text: "🔒 ضمان الخصوصية: نحن لا نحفظ موقعك أو نحتاج إليه أو نشاركه. هذا الموقع موجود فقط لمساعدتك أو إنقاذك عند الحاجة. تتم معالجة جميع البيانات بأمان على جهازك.",
+            link_privacy: "الخصوصية", link_terms: "الشروط", link_contact: "اتصل بنا"
+        }
     };
 
-    function changeLang(lang) {
-        const t = i18n[lang];
-        document.getElementById('lbl-addr').innerText = t.addr;
-        document.getElementById('lbl-lat').innerText = t.lat;
-        document.getElementById('lbl-lon').innerText = t.lon;
-        document.getElementById('btn-update').innerText = t.update;
-        document.getElementById('btn-sos').innerText = t.sos;
-        document.getElementById('lbl-police').innerText = t.police;
-        document.getElementById('lbl-hospital').innerText = t.hospital;
-        document.getElementById('lbl-gas').innerText = t.gas;
-        document.getElementById('cookie-text').innerText = t.cookie;
-        document.getElementById('cookie-btn').innerText = t.accept;
+    function changeLanguage(lang) {
+        // Save preference
+        localStorage.setItem('user_lang', lang);
         
-        // RTL Support for Arabic
-        document.body.style.direction = lang === 'ar' ? 'rtl' : 'ltr';
-    }
-
-    // --- COOKIE LOGIC ---
-    if (!localStorage.getItem('cookiesAccepted')) {
-        document.getElementById('cookie-banner').style.display = 'block';
-    }
-    function acceptCookies() {
-        localStorage.setItem('cookiesAccepted', 'true');
-        document.getElementById('cookie-banner').style.display = 'none';
-    }
-
-    // --- MAP & LOCATION ---
-    let map, marker;
-    let lat = 0, lon = 0;
-
-    function initMap() {
-        map = L.map('map').setView([0, 0], 2);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
-    }
-
-    function getLocation() {
-        document.getElementById('btn-update').innerText = "Locating...";
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition, showError, { enableHighAccuracy: true });
+        // Handle RTL
+        if (lang === 'ar') {
+            document.body.classList.add('rtl');
         } else {
-            alert("Geolocation not supported");
+            document.body.classList.remove('rtl');
         }
+
+        // Update Text
+        const texts = i18n[lang];
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (texts[key]) el.textContent = texts[key];
+        });
     }
 
-    function showPosition(pos) {
-        lat = pos.coords.latitude;
-        lon = pos.coords.longitude;
-        
-        // Update UI
-        document.getElementById('val-lat').innerText = lat.toFixed(6);
-        document.getElementById('val-lon').innerText = lon.toFixed(6);
-        document.getElementById('btn-update').innerText = i18n[document.querySelector('.lang-picker').value].update;
+    // Initialize Language on Load
+    const savedLang = localStorage.getItem('user_lang') || 'en';
+    document.getElementById('language').value = savedLang;
+    changeLanguage(savedLang);
 
-        // Update Map
-        if (marker) map.removeLayer(marker);
-        map.setView([lat, lon], 16);
-        marker = L.marker([lat, lon]).addTo(map).bindPopup("You are here").openPopup();
 
-        // Update Service Links (Dynamic Google Maps Links)
-        document.getElementById('link-police').href = `https://www.google.com/maps/search/police/@${lat},${lon},14z`;
-        document.getElementById('link-hospital').href = `https://www.google.com/maps/search/hospital/@${lat},${lon},14z`;
-        document.getElementById('link-gas').href = `https://www.google.com/maps/search/gas+station/@${lat},${lon},14z`;
+    // --- UI Elements ---
+    const els = {
+        lat: document.getElementById("lat-val"),
+        lng: document.getElementById("lng-val"),
+        addr: document.getElementById("full-address"),
+        acc: document.getElementById("accuracy-val"),
+        temp: document.getElementById("temp-display"),
+        wind: document.getElementById("wind-display"),
+        ip: document.getElementById("ip-val"),
+        isp: document.getElementById("isp-val"),
+        nearby: document.getElementById("nearby-results")
+    };
 
-        // Reverse Geocode (Address)
-        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('val-addr').innerText = data.display_name || "Address not found";
+    let map, marker, accuracyCircle, currentPos = null;
+
+    function getDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; 
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const km = R * c;
+        return { km: km.toFixed(2), mi: (km * 0.621371).toFixed(2) };
+    }
+
+    async function updateDashboard(lat, lng, acc) {
+        currentPos = { lat, lng };
+
+        // 1. Address
+        try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+            const data = await res.json();
+            els.addr.textContent = data.display_name || "Unknown Address";
+        } catch(e) { els.addr.textContent = "..."; }
+
+        // 2. Weather
+        try {
+            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,wind_speed_10m`);
+            const data = await res.json();
+            const c = Math.round(data.current.temperature_2m);
+            const f = Math.round((c * 9/5) + 32);
+            const kph = Math.round(data.current.wind_speed_10m);
+            const mph = Math.round(kph * 0.621371);
+            els.temp.textContent = `${f}°F / ${c}°C`;
+            els.wind.textContent = `${mph} mph / ${kph} km/h`;
+        } catch(e) { els.temp.textContent = "N/A"; }
+
+        // 3. Nearby Services
+        try {
+            const query = `[out:json][timeout:10];(node["amenity"~"police|hospital|fuel"](around:5000,${lat},${lng}););out body 10;`;
+            const res = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: query });
+            const data = await res.json();
+            
+            const types = { police: "Police", hospital: "Hospital", fuel: "Fuel" };
+            let best = { police: null, hospital: null, fuel: null };
+
+            data.elements.forEach(el => {
+                const t = el.tags.amenity;
+                const dist = getDistance(lat, lng, el.lat, el.lon);
+                if (!best[t] || parseFloat(dist.km) < parseFloat(best[t].dist.km)) {
+                    best[t] = { name: el.tags.name || "Local", dist };
+                }
             });
+
+            els.nearby.innerHTML = "";
+            Object.keys(best).forEach(k => {
+                const item = best[k];
+                const div = document.createElement("div");
+                div.className = "nearby-item";
+                div.innerHTML = item ? 
+                    `<div class="nearby-type">${types[k]}</div>
+                     <div class="nearby-name">${item.name}</div>
+                     <div class="nearby-dist">${item.dist.mi} mi / ${item.dist.km} km</div>` :
+                    `<div class="nearby-type">${types[k]}</div><div class="nearby-name" style="color:#555">None</div>`;
+                els.nearby.appendChild(div);
+            });
+        } catch(e) { console.log("Nearby Error"); }
     }
 
-    function showError() {
-        alert("Unable to retrieve location. Please allow GPS access.");
-        document.getElementById('btn-update').innerText = "Try Again";
+    function initGPS() {
+        if (!navigator.geolocation) { els.addr.textContent = "GPS not supported"; return; }
+
+        navigator.geolocation.getCurrentPosition(pos => {
+            const { latitude, longitude, accuracy } = pos.coords;
+            
+            els.lat.textContent = latitude.toFixed(5);
+            els.lng.textContent = longitude.toFixed(5);
+            els.acc.textContent = `±${Math.round(accuracy)}m`;
+
+            if (!map) {
+                map = L.map("map", { zoomControl: false }).setView([latitude, longitude], 15);
+                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(map);
+                marker = L.marker([latitude, longitude]).addTo(map);
+                accuracyCircle = L.circle([latitude, longitude], { radius: accuracy }).addTo(map);
+            } else {
+                map.setView([latitude, longitude], 15);
+                marker.setLatLng([latitude, longitude]);
+                accuracyCircle.setLatLng([latitude, longitude]);
+                accuracyCircle.setRadius(accuracy);
+            }
+
+            updateDashboard(latitude, longitude, accuracy);
+        }, 
+        (err) => { els.addr.textContent = "Please enable Location Services."; }, 
+        { enableHighAccuracy: true });
+
+        fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{
+            els.ip.textContent = d.ip;
+            els.isp.textContent = d.org;
+        });
     }
 
-    function shareLocation() {
-        if (lat === 0) { alert("Please click 'Update Location' first."); return; }
-        const text = `HELP! My location is: https://www.google.com/maps?q=${lat},${lon}`;
+    document.getElementById("refresh-btn").addEventListener("click", () => location.reload());
+    
+    document.getElementById("copy-coords-btn").addEventListener("click", () => {
+        navigator.clipboard.writeText(`${els.lat.textContent}, ${els.lng.textContent}`);
+        alert("Coordinates Copied!");
+    });
+
+    document.getElementById("copy-addr").addEventListener("click", () => {
+        navigator.clipboard.writeText(els.addr.textContent);
+        alert("Address Copied!");
+    });
+
+    document.getElementById("sos-btn").addEventListener("click", () => {
+        if (!currentPos) return alert("Waiting for GPS...");
+        const link = `https://www.google.com/maps?q=${currentPos.lat},${currentPos.lng}`;
+        const msg = `EMERGENCY SOS: My location is ${link}`;
+        
         if (navigator.share) {
-            navigator.share({ title: 'Emergency Location', text: text, url: `https://www.google.com/maps?q=${lat},${lon}` });
+            navigator.share({ title: 'SOS', text: msg, url: link });
         } else {
-            prompt("Copy this link:", text);
+            window.location.href = `sms:?body=${encodeURIComponent(msg)}`;
         }
-    }
+    });
 
-    initMap();
-    getLocation();
-
+    initGPS();
 </script>
+
 </body>
 </html>
