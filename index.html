@@ -427,13 +427,13 @@
                 <h3 style="color:white; font-size:14px; margin-bottom:10px;">🗺️ Location Preview</h3>
                 <div id="mini-map" style="height:150px; border-radius:12px; margin-bottom:10px; z-index:0;"></div>
                 <div style="display:flex; gap:10px;">
-                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.mapPreview && window.currentPos){ window.mapPreview.setView([window.currentPos.lat, window.currentPos.lng], 15); }">⬇ Recenter Map</button>
-                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.currentPos){ window.open('https://www.google.com/maps/search/?api=1&query='+window.currentPos.lat+','+window.currentPos.lng?q=' + window.currentPos.lat + ',' + window.currentPos.lng, '_blank'); }">Open Full Map</button>
+                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.mapPreview && window.lastLat){ window.mapPreview.setView([window.lastLat, window.lastLng], 15); }">⬇ Recenter Map</button>
+                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.lastLat){ window.open('https://www.google.com/maps?q=' + window.lastLat + ',' + window.lastLng, '_blank'); }">Open Full Map</button>
                 </div>
             </div>
             <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
                 <h3 style="color:var(--neon-blue); font-size:14px; margin-bottom:15px;">🌦️ Real-Time Weather</h3>
-                <div id="weather-loading" style="color:var(--text-soft); font-size:12px;">Loading weather data...</div>
+                <div id="weather-loading" style="color:var(--text-soft); font-size:12px;">Waiting for location...</div>
                 <div id="weather-content" style="display:none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                         <div>
@@ -1300,6 +1300,7 @@
 </script>
 
 <script>
+    // New Feature Module: Weather & Alerts
     (function() {
         // Init mini map var
         let miniMap = null;
@@ -1327,8 +1328,12 @@
                 
                 // Expose to window for buttons
                 window.mapPreview = miniMap;
+                window.lastLat = lat;
+                window.lastLng = lng;
             } else {
                 miniMap.setView([lat, lng], 13);
+                window.lastLat = lat;
+                window.lastLng = lng;
                 // In a real app we'd update the marker position too, but for a preview snippet, re-centering is key.
             }
         }
@@ -1395,11 +1400,17 @@
         }
 
         // Initialize listener
-        // We poll for window.currentPos because the main script sets it asynchronously.
+        // We poll for DOM changes because variable scope between script tags can be tricky with 'let'
         const checkLoc = setInterval(() => {
-            if(window.currentPos && window.currentPos.lat) {
-                initPreviewMap(window.currentPos.lat, window.currentPos.lng);
-                fetchExtendedWeather(window.currentPos.lat, window.currentPos.lng);
+            const latTxt = document.getElementById('lat-val').textContent;
+            const lngTxt = document.getElementById('lng-val').textContent;
+            
+            if(latTxt !== '—' && !isNaN(parseFloat(latTxt))) {
+                const lat = parseFloat(latTxt);
+                const lng = parseFloat(lngTxt);
+                
+                initPreviewMap(lat, lng);
+                fetchExtendedWeather(lat, lng);
                 clearInterval(checkLoc);
             }
         }, 1000);
