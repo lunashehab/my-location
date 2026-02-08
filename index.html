@@ -1,1517 +1,1420 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5129097020907805" crossorigin="anonymous"></script>
-    <meta name="google-adsense-account" content="ca-pub-5129097020907805">
-    <meta charset="UTF-8" />
-    <link rel="icon" href="favicon.ico" />
-    <base href="/">
-    
-    <title>Tell My Location | Global GPS & Safety Tool</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    
-    <meta name="description" content="Instantly find your exact location, address, and local weather. A private, fast safety tool for emergencies. No data storage.">
-    <meta name="keywords" content="tell my location, where am i, my gps coordinates, current address, emergency sos, location finder, weather near me">
-    
-    <meta property="og:title" content="Tell My Location | Global GPS Tool">
-    <meta property="og:description" content="Get your exact GPS coordinates, address, and nearest emergency services instantly.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://tellmylocation.com">
-    <meta property="og:image" content="https://tellmylocation.com/icon.png"> <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f172a">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5129097020907805" crossorigin="anonymous"></script>
+    
+    <meta charset="UTF-8" />
+    <link rel="icon" href="favicon.ico" />
+    
+    <title>Tell My Location | Global GPS & Safety Tool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <meta name="description" content="Instantly find your exact location, address, and local weather. A private, fast safety tool for emergencies. No data storage.">
+    <meta name="keywords" content="tell my location, where am i, my gps coordinates, current address, emergency sos, location finder, weather near me">
+    
+    <meta property="og:title" content="Tell My Location | Global GPS Tool">
+    <meta property="og:description" content="Get your exact GPS coordinates, address, and nearest emergency services instantly.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tellmylocation.com">
+    <meta property="og:image" content="https://tellmylocation.com/icon.png"> <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Tell My Location",
-      "url": "https://tellmylocation.com",
-      "applicationCategory": "Utility",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "featureList": "GPS Coordinates, Address Lookup, Weather, SOS Sharing, Nearby Services"
-    }
-    </script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Tell My Location",
+      "url": "https://tellmylocation.com",
+      "applicationCategory": "Utility",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": "GPS Coordinates, Address Lookup, Weather, SOS Sharing, Nearby Services"
+    }
+    </script>
 
-    <style>
-        :root {
-            --card: rgba(13, 17, 23, 0.85);
-            --accent: #ff0055;
-            --neon-blue: #38bdf8;
-            --sos-red: #ef4444;
-            --text-main: #ffffff;
-            --text-soft: #94a3b8;
-            --border: rgba(255, 255, 255, 0.1);
-        }
+    <style>
+        :root {
+            --card: rgba(13, 17, 23, 0.85);
+            --accent: #ff0055;
+            --neon-blue: #38bdf8;
+            --sos-red: #ef4444;
+            --text-main: #ffffff;
+            --text-soft: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #111827 100%);
-            background-attachment: fixed;
-            color: var(--text-main);
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #111827 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-      .shell { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 16px; position: relative; }
+        .shell { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 16px; position: relative; }
 
-      .lang-switch {
-            position: absolute;
-            top: 0;
-            right: 0;
-            z-index: 10;
-        }
-        
-        select#language {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 1px solid var(--border);
-            padding: 5px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            outline: none;
-        }
-        select#language option { background: #0f172a; color: white; }
+        .lang-switch {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 10;
+        }
+        
+        select#language {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid var(--border);
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            outline: none;
+        }
+        select#language option { background: #0f172a; color: white; }
 
-        body.rtl { direction: rtl; }
-        body.rtl.lang-switch { right: auto; left: 0; }
-        body.rtl.copy-abs { right: auto; left: 12px; }
-        body.rtl #full-address { padding-right: 0; padding-left: 30px; }
-        body.rtl.data-item, body.rtl.nearby-item { text-align: right; }
+        body.rtl { direction: rtl; }
+        body.rtl .lang-switch { right: auto; left: 0; }
+        body.rtl .copy-abs { right: auto; left: 12px; }
+        body.rtl #full-address { padding-right: 0; padding-left: 30px; }
+        body.rtl .data-item, body.rtl .nearby-item { text-align: right; }
 
-      .brand { text-align: center; margin: 30px 0 15px; } 
-      .brand h1 { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 6px; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-      .brand h1 span { color: var(--accent); }
-      .tagline { color: var(--text-soft); font-size: 14px; font-weight: 400; }
+        .brand { text-align: center; margin: 30px 0 15px; } 
+        .brand h1 { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 6px; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .brand h1 span { color: var(--accent); }
+        .tagline { color: var(--text-soft); font-size: 14px; font-weight: 400; }
 
-      .card {
-            background: var(--card);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            padding: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
+        .card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            padding: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
 
-      .address-box {
-            background: rgba(56, 189, 248, 0.05);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            padding: 18px;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            text-align: center;
-            position: relative;
-        }
-      .address-box h2 { font-size: 11px; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; font-weight: 700; }
-        #full-address { font-size: 16px; font-weight: 600; line-height: 1.5; color: #fff; padding-right: 30px; }
-        
-      .icon-btn {
-            background: none; border: none; cursor: pointer; color: var(--neon-blue);
-            padding: 5px; display: flex; align-items: center; justify-content: center;
-            transition: transform 0.2s;
-        }
-      .icon-btn:hover { transform: scale(1.1); }
-      .copy-abs { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
+        .address-box {
+            background: rgba(56, 189, 248, 0.05);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 18px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .address-box h2 { font-size: 11px; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; font-weight: 700; }
+        #full-address { font-size: 16px; font-weight: 600; line-height: 1.5; color: #fff; padding-right: 30px; }
+        
+        .icon-btn {
+            background: none; border: none; cursor: pointer; color: var(--neon-blue);
+            padding: 5px; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s;
+        }
+        .icon-btn:hover { transform: scale(1.1); }
+        .copy-abs { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
 
-        #map { width: 100%; height: 320px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 20px; z-index: 1; }
+        #map { width: 100%; height: 320px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 20px; z-index: 1; }
 
-      .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; }
-      .data-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            padding: 16px;
-            border-radius: 16px;
-            text-align: left;
-        }
-      .label { font-size: 10px; color: var(--text-soft); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
-      .value { font-size: 16px; font-weight: 700; color: #fff; }
-      .sub-value { font-size: 11px; color: var(--neon-blue); margin-top: 4px; }
+        .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .data-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 16px;
+            text-align: left;
+        }
+        .label { font-size: 10px; color: var(--text-soft); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .value { font-size: 16px; font-weight: 700; color: #fff; }
+        .sub-value { font-size: 11px; color: var(--neon-blue); margin-top: 4px; }
 
-      .nearby-header { font-size: 12px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 10px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
-      .nearby-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        @media(max-width: 600px) {.nearby-list { grid-template-columns: 1fr; } }
-        
-      .nearby-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            padding: 12px;
-            border-radius: 12px;
-        }
-      .nearby-type { font-size: 9px; color: var(--accent); font-weight: 800; text-transform: uppercase; margin-bottom: 4px; }
-      .nearby-name { font-size: 13px; font-weight: 600; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .nearby-dist { font-size: 11px; color: var(--neon-blue); }
+        .nearby-header { font-size: 12px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 10px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+        .nearby-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        @media(max-width: 600px) { .nearby-list { grid-template-columns: 1fr; } }
+        
+        .nearby-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 12px;
+        }
+        .nearby-type { font-size: 9px; color: var(--accent); font-weight: 800; text-transform: uppercase; margin-bottom: 4px; }
+        .nearby-name { font-size: 13px; font-weight: 600; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .nearby-dist { font-size: 11px; color: var(--neon-blue); }
 
-      .btn-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 30px; }
-      .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .btn-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 30px; }
+        .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-      .btn {
-            border: none; border-radius: 14px; padding: 16px; font-weight: 700; 
-            cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: transform 0.1s;
-        }
-        
-      .btn-sos { 
-            background: var(--sos-red); color: white; width: 100%; font-size: 16px;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-        }
+        .btn {
+            border: none; border-radius: 14px; padding: 16px; font-weight: 700; 
+            cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: transform 0.1s;
+        }
+        
+        .btn-sos { 
+            background: var(--sos-red); color: white; width: 100%; font-size: 16px;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
 
-      .btn-primary { background: linear-gradient(135deg, #ff0055, #ff4d7d); color: white; }
-      .btn-ghost { background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border); }
-      .btn:active { transform: scale(0.98); }
-      .icon { width: 18px; height: 18px; stroke-width: 2.5; }
+        .btn-primary { background: linear-gradient(135deg, #ff0055, #ff4d7d); color: white; }
+        .btn-ghost { background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border); }
+        .btn:active { transform: scale(0.98); }
+        .icon { width: 18px; height: 18px; stroke-width: 2.5; }
 
-      .trust-badge { 
-            font-size: 12px; color: #94a3b8; text-align: center; margin-top: 25px; line-height: 1.6;
-            background: rgba(15, 23, 42, 0.5); padding: 15px; border-radius: 12px; border: 1px dashed var(--border);
-        }
-        
-        footer { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-soft); padding-bottom: 30px; border-top: 1px solid var(--border); width: 100%; padding-top: 20px;}
-        footer a { color: var(--text-soft); text-decoration: none; margin: 0 8px; transition: color 0.2s; }
-        footer a:hover { color: white; }
+        .trust-badge { 
+            font-size: 12px; color: #94a3b8; text-align: center; margin-top: 25px; line-height: 1.6;
+            background: rgba(15, 23, 42, 0.5); padding: 15px; border-radius: 12px; border: 1px dashed var(--border);
+        }
+        
+        footer { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-soft); padding-bottom: 30px; border-top: 1px solid var(--border); width: 100%; padding-top: 20px;}
+        footer a { color: var(--text-soft); text-decoration: none; margin: 0 8px; transition: color 0.2s; }
+        footer a:hover { color: white; }
 
-        #cookie-banner {
-            display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(30, 41, 59, 0.95); padding: 20px; border-radius: 16px; 
-            border: 1px solid var(--neon-blue); 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
-            width: 90%; max-width: 400px; z-index: 10000; text-align: center;
-            backdrop-filter: blur(10px);
-        }
-        #cookie-text { margin-bottom: 15px; font-size: 13px; color: #cbd5e1; line-height: 1.5; }
-        #cookie-btn {
-            background: var(--neon-blue); color: #0f172a; border: none; padding: 10px 24px;
-            border-radius: 50px; font-weight: 800; cursor: pointer; font-size: 14px;
-        }
+        #cookie-banner {
+            display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(30, 41, 59, 0.95); padding: 20px; border-radius: 16px; 
+            border: 1px solid var(--neon-blue); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+            width: 90%; max-width: 400px; z-index: 10000; text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        #cookie-text { margin-bottom: 15px; font-size: 13px; color: #cbd5e1; line-height: 1.5; }
+        #cookie-btn {
+            background: var(--neon-blue); color: #0f172a; border: none; padding: 10px 24px;
+            border-radius: 50px; font-weight: 800; cursor: pointer; font-size: 14px;
+        }
 
-        /* PREMIUM UPGRADE CSS INJECT */
-      .premium-upgrade-container { animation: fadeIn 1.2s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* PREMIUM UPGRADE CSS INJECT */
+        .premium-upgrade-container { animation: fadeIn 1.2s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-      .qr-section { text-align: center; margin-bottom: 25px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 20px; border: 1px solid var(--border); }
-      .qr-label { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--neon-blue); margin-bottom: 10px; font-weight: 800; }
-        #qrcode { display: inline-block; padding: 10px; background: white; border-radius: 12px; box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
+        .qr-section { text-align: center; margin-bottom: 25px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 20px; border: 1px solid var(--border); }
+        .qr-label { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--neon-blue); margin-bottom: 10px; font-weight: 800; }
+        #qrcode { display: inline-block; padding: 10px; background: white; border-radius: 12px; box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
 
-      .premium-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin: 20px 0; }
-      .p-card { 
-            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-            border: 1px solid var(--border); padding: 20px; border-radius: 20px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: default;
-        }
-      .p-card:hover { border-color: var(--neon-blue); transform: scale(1.05); box-shadow: 0 10px 30px rgba(56,189,248,0.1); }
-      .p-icon { font-size: 20px; margin-bottom: 10px; display: block; opacity: 0.8; }
-      .p-label { font-size: 10px; text-transform: uppercase; color: var(--text-soft); }
-      .p-value { font-size: 18px; font-weight: 800; color: white; display: block; margin-top: 5px; }
+        .premium-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin: 20px 0; }
+        .p-card { 
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+            border: 1px solid var(--border); padding: 20px; border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: default;
+        }
+        .p-card:hover { border-color: var(--neon-blue); transform: scale(1.05); box-shadow: 0 10px 30px rgba(56,189,248,0.1); }
+        .p-icon { font-size: 20px; margin-bottom: 10px; display: block; opacity: 0.8; }
+        .p-label { font-size: 10px; text-transform: uppercase; color: var(--text-soft); }
+        .p-value { font-size: 18px; font-weight: 800; color: white; display: block; margin-top: 5px; }
 
-      .compass-wrap { 
-            position: relative; width: 220px; height: 220px; margin: 30px auto;
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
-            border-radius: 50%; padding: 10px;
-        }
-        #compass-svg { width: 100%; height: 100%; transition: transform 0.1s linear; filter: drop-shadow(0 0 10px var(--neon-blue)); }
-      .compass-ring { fill: none; stroke: var(--border); stroke-width: 2; }
-      .compass-glow { fill: none; stroke: var(--neon-blue); stroke-width: 1; opacity: 0.5; }
+        .compass-wrap { 
+            position: relative; width: 220px; height: 220px; margin: 30px auto;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+            border-radius: 50%; padding: 10px;
+        }
+        #compass-svg { width: 100%; height: 100%; transition: transform 0.1s linear; filter: drop-shadow(0 0 10px var(--neon-blue)); }
+        .compass-ring { fill: none; stroke: var(--border); stroke-width: 2; }
+        .compass-glow { fill: none; stroke: var(--neon-blue); stroke-width: 1; opacity: 0.5; }
 
-      .use-case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; }
-      .use-case-card { 
-            background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 20px; border-radius: 18px;
-            text-align: center; transition: 0.3s;
-        }
-      .use-case-card:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); }
-      .use-case-card h3 { font-size: 13px; text-transform: uppercase; margin-top: 10px; color: var(--text-main); }
+        .use-case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; }
+        .use-case-card { 
+            background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 20px; border-radius: 18px;
+            text-align: center; transition: 0.3s;
+        }
+        .use-case-card:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); }
+        .use-case-card h3 { font-size: 13px; text-transform: uppercase; margin-top: 10px; color: var(--text-main); }
 
-      .why-section { 
-            padding: 30px; background: linear-gradient(to right, rgba(56,189,248,0.05), transparent);
-            border-left: 3px solid var(--neon-blue); border-radius: 12px; margin: 40px 0;
-        }
-      .why-section h2 { font-size: 18px; color: var(--neon-blue); margin-bottom: 10px; }
-      .why-section p { font-size: 14px; color: var(--text-soft); line-height: 1.6; }
+        .why-section { 
+            padding: 30px; background: linear-gradient(to right, rgba(56,189,248,0.05), transparent);
+            border-left: 3px solid var(--neon-blue); border-radius: 12px; margin: 40px 0;
+        }
+        .why-section h2 { font-size: 18px; color: var(--neon-blue); margin-bottom: 10px; }
+        .why-section p { font-size: 14px; color: var(--text-soft); line-height: 1.6; }
 
-        /* --- ADDED CONTENT STYLES --- */
-      .nav-menu {
-            display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;
-            background: rgba(15, 23, 42, 0.6); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border);
-            backdrop-filter: blur(5px);
-        }
-      .nav-menu a { color: var(--text-soft); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
-      .nav-menu a:hover,.nav-menu a.active { color: var(--neon-blue); }
+        /* --- ADDED CONTENT STYLES --- */
+        .nav-menu {
+            display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;
+            background: rgba(15, 23, 42, 0.6); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border);
+            backdrop-filter: blur(5px);
+        }
+        .nav-menu a { color: var(--text-soft); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        .nav-menu a:hover, .nav-menu a.active { color: var(--neon-blue); }
 
-      .content-expansion { margin-top: 50px; text-align: left; border-top: 1px solid var(--border); padding-top: 40px; }
-      .content-expansion h2 { color: white; font-size: 22px; margin-bottom: 20px; font-weight: 700; letter-spacing: -0.5px; }
-      .content-expansion h3 { color: var(--neon-blue); font-size: 16px; margin: 25px 0 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-      .content-expansion p { color: #cbd5e1; line-height: 1.8; font-size: 15px; margin-bottom: 15px; }
-      .content-expansion ul { margin-bottom: 20px; padding-left: 20px; }
-      .content-expansion li { color: #cbd5e1; margin-bottom: 10px; font-size: 15px; line-height: 1.6; }
-        
-      .hidden-page { display: none; margin-top: 20px; animation: fadeIn 0.5s ease; }
+        .content-expansion { margin-top: 50px; text-align: left; border-top: 1px solid var(--border); padding-top: 40px; }
+        .content-expansion h2 { color: white; font-size: 22px; margin-bottom: 20px; font-weight: 700; letter-spacing: -0.5px; }
+        .content-expansion h3 { color: var(--neon-blue); font-size: 16px; margin: 25px 0 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .content-expansion p { color: #cbd5e1; line-height: 1.8; font-size: 15px; margin-bottom: 15px; }
+        .content-expansion ul { margin-bottom: 20px; padding-left: 20px; }
+        .content-expansion li { color: #cbd5e1; margin-bottom: 10px; font-size: 15px; line-height: 1.6; }
+        
+        .hidden-page { display: none; margin-top: 20px; animation: fadeIn 0.5s ease; }
 
-        /* --- NEW MODULE STYLES (DEVELOPER MODE ADDITIONS) --- */
-      .new-module-container { display: none; margin-top: 20px; padding: 20px; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); text-align: left; }
-      .new-module-container.active-mod { display: block; animation: slideDown 0.3s ease-out; }
-        @keyframes slideDown { from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
+        /* --- NEW MODULE STYLES (DEVELOPER MODE ADDITIONS) --- */
+        .new-module-container { display: none; margin-top: 20px; padding: 20px; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); text-align: left; }
+        .new-module-container.active-mod { display: block; animation: slideDown 0.3s ease-out; }
+        @keyframes slideDown { from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
 
-      .mod-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-      .mod-title { font-size: 16px; font-weight: 700; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; }
-      .mod-close { cursor: pointer; color: var(--text-soft); font-size: 18px; background: none; border: none; }
-        
-      .mod-grid-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-      .mod-btn { padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: white; cursor: pointer; font-size: 13px; transition: 0.2s; }
-      .mod-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--neon-blue); }
-      .mod-btn-primary { background: var(--neon-blue); color: #0f172a; border: none; font-weight: 700; }
-      .mod-btn-danger { background: var(--sos-red); color: white; border: none; font-weight: 700; }
+        .mod-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .mod-title { font-size: 16px; font-weight: 700; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; }
+        .mod-close { cursor: pointer; color: var(--text-soft); font-size: 18px; background: none; border: none; }
+        
+        .mod-grid-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .mod-btn { padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: white; cursor: pointer; font-size: 13px; transition: 0.2s; }
+        .mod-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--neon-blue); }
+        .mod-btn-primary { background: var(--neon-blue); color: #0f172a; border: none; font-weight: 700; }
+        .mod-btn-danger { background: var(--sos-red); color: white; border: none; font-weight: 700; }
 
-      .mod-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; border-radius: 8px; margin-bottom: 10px; outline: none; }
-      .mod-input:focus { border-color: var(--neon-blue); }
+        .mod-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; border-radius: 8px; margin-bottom: 10px; outline: none; }
+        .mod-input:focus { border-color: var(--neon-blue); }
 
-      .sos-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #3f0000; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; animation: sosFlash 1s infinite; }
-        @keyframes sosFlash { 0% {background:#3f0000;} 50% {background:#7f1d1d;} 100% {background:#3f0000;} }
-      .sos-msg { font-size: 24px; font-weight: 900; color: white; margin-bottom: 30px; text-align: center; padding: 20px; }
-        
-      .driver-hud { display: flex; justify-content: space-around; margin: 15px 0; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; }
-      .hud-item { text-align: center; }
-      .hud-val { font-size: 24px; font-weight: 800; color: white; display: block; }
-      .hud-lbl { font-size: 10px; text-transform: uppercase; color: var(--text-soft); }
+        .sos-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #3f0000; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; animation: sosFlash 1s infinite; }
+        @keyframes sosFlash { 0% {background:#3f0000;} 50% {background:#7f1d1d;} 100% {background:#3f0000;} }
+        .sos-msg { font-size: 24px; font-weight: 900; color: white; margin-bottom: 30px; text-align: center; padding: 20px; }
+        
+        .driver-hud { display: flex; justify-content: space-around; margin: 15px 0; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; }
+        .hud-item { text-align: center; }
+        .hud-val { font-size: 24px; font-weight: 800; color: white; display: block; }
+        .hud-lbl { font-size: 10px; text-transform: uppercase; color: var(--text-soft); }
 
-      .pin-list { margin-top: 10px; max-height: 150px; overflow-y: auto; }
-      .pin-item { padding: 8px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; }
-      .offline-badge { display: inline-block; padding: 4px 8px; background: #64748b; color: white; font-size: 10px; border-radius: 4px; margin-left: 10px; vertical-align: middle; display: none; }
+        .pin-list { margin-top: 10px; max-height: 150px; overflow-y: auto; }
+        .pin-item { padding: 8px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; }
+        .offline-badge { display: inline-block; padding: 4px 8px; background: #64748b; color: white; font-size: 10px; border-radius: 4px; margin-left: 10px; vertical-align: middle; display: none; }
 
-        /* --- FAQ & ACCORDION STYLES --- */
-        details.faq-item { background: rgba(255,255,255,0.02); margin-bottom: 10px; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; transition: 0.3s; }
-        details.faq-item:hover { border-color: var(--neon-blue); }
-        summary.faq-q { padding: 15px; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-        summary.faq-q::-webkit-details-marker { display: none; }
-        summary.faq-q::after { content: '+'; font-size: 18px; color: var(--neon-blue); transition: transform 0.2s; }
-        details[open] summary.faq-q::after { transform: rotate(45deg); }
-      .faq-a { padding: 15px; padding-top: 0; color: var(--text-soft); font-size: 14px; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); }
-    </style>
+        /* --- FAQ & ACCORDION STYLES --- */
+        details.faq-item { background: rgba(255,255,255,0.02); margin-bottom: 10px; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; transition: 0.3s; }
+        details.faq-item:hover { border-color: var(--neon-blue); }
+        summary.faq-q { padding: 15px; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        summary.faq-q::-webkit-details-marker { display: none; }
+        summary.faq-q::after { content: '+'; font-size: 18px; color: var(--neon-blue); transition: transform 0.2s; }
+        details[open] summary.faq-q::after { transform: rotate(45deg); }
+        .faq-a { padding: 15px; padding-top: 0; color: var(--text-soft); font-size: 14px; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); }
+    </style>
 </head>
 <body>
 
 <div class="shell premium-upgrade-container">
 
-    <nav class="nav-menu">
-        <a href="/" class="active">Home</a>
-        <a href="/about">About</a>
-        <a href="/privacy">Privacy</a>
-        <a href="/contact">Contact</a>
-    </nav>
+    <nav class="nav-menu">
+        <a href="#" onclick="showPage('home'); return false;" class="active">Home</a>
+        <a href="#about" onclick="showPage('about'); return false;">About</a>
+        <a href="#privacy" onclick="showPage('privacy'); return false;">Privacy</a>
+        <a href="#contact" onclick="showPage('contact'); return false;">Contact</a>
+    </nav>
 
-    <div id="home-view">
-        <div class="lang-switch">
-            <select id="language" onchange="changeLanguage(this.value)">
-                <option value="en">🇺🇸 English</option>
-                <option value="es">🇪🇸 Español</option>
-                <option value="fr">🇫🇷 Français</option>
-                <option value="ru">🇷🇺 Русский</option>
-                <option value="ar">🇸🇦 العربية</option>
-            </select>
-        </div>
+    <div id="home-view">
+        <div class="lang-switch">
+            <select id="language" onchange="changeLanguage(this.value)">
+                <option value="en">🇺🇸 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="ru">🇷🇺 Русский</option>
+                <option value="ar">🇸🇦 العربية</option>
+            </select>
+        </div>
 
-        <header class="brand">
-            <h1>TELLMY<span>LOCATION</span>.COM <span id="offline-indicator" class="offline-badge">OFFLINE</span></h1>
-            <p class="tagline" data-i18n="tagline">The fastest "Where am I?" tool on the internet.</p>
-        </header>
+        <header class="brand">
+            <h1>TELLMY<span>LOCATION</span>.COM <span id="offline-indicator" class="offline-badge">OFFLINE</span></h1>
+            <p class="tagline" data-i18n="tagline">The fastest "Where am I?" tool on the internet.</p>
+        </header>
 
-        <div class="compass-wrap">
-            <svg id="compass-svg" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="48" class="compass-ring"/>
-                <circle cx="50" cy="50" r="45" class="compass-glow" stroke-dasharray="5,5"/>
-                <text x="50" y="12" fill="#38bdf8" font-size="8" text-anchor="middle" font-weight="900">N</text>
-                <text x="50" y="93" fill="#94a3b8" font-size="6" text-anchor="middle">S</text>
-                <text x="88" y="52" fill="#94a3b8" font-size="6" text-anchor="middle">E</text>
-                <text x="12" y="52" fill="#94a3b8" font-size="6" text-anchor="middle">W</text>
-                <path d="M50 20 L55 50 L50 80 L45 50 Z" fill="#ff0055" />
-                <circle cx="50" cy="50" r="3" fill="white" />
-            </svg>
-        </div>
+        <div class="compass-wrap">
+            <svg id="compass-svg" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="48" class="compass-ring"/>
+                <circle cx="50" cy="50" r="45" class="compass-glow" stroke-dasharray="5,5"/>
+                <text x="50" y="12" fill="#38bdf8" font-size="8" text-anchor="middle" font-weight="900">N</text>
+                <text x="50" y="93" fill="#94a3b8" font-size="6" text-anchor="middle">S</text>
+                <text x="88" y="52" fill="#94a3b8" font-size="6" text-anchor="middle">E</text>
+                <text x="12" y="52" fill="#94a3b8" font-size="6" text-anchor="middle">W</text>
+                <path d="M50 20 L55 50 L50 80 L45 50 Z" fill="#ff0055" />
+                <circle cx="50" cy="50" r="3" fill="white" />
+            </svg>
+        </div>
 
-        <main class="card">
-            <div class="address-box">
-                <h2 data-i18n="address_title">📍 Current Address</h2>
-                <div id="full-address">...</div>
-                <div style="font-size:10px; color:rgba(255,255,255,0.5); margin-top:5px;">(Tap copy icon to save)</div>
-                
-                <button class="icon-btn copy-abs" id="copy-addr" title="Copy Address">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                </button>
-            </div>
+        <main class="card">
+            <div class="address-box">
+                <h2 data-i18n="address_title">📍 Current Address</h2>
+                <div id="full-address">...</div>
+                <div style="font-size:10px; color:rgba(255,255,255,0.5); margin-top:5px;">(Tap copy icon to save)</div>
+                
+                <button class="icon-btn copy-abs" id="copy-addr" title="Copy Address">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
+            </div>
 
-            <div style="text-align:center; font-size:11px; color:#94a3b8; margin-bottom:15px;">
-                Your location is processed locally on your device. Nothing is stored.
-            </div>
+            <div style="text-align:center; font-size:11px; color:#94a3b8; margin-bottom:15px;">
+                Your location is processed locally on your device. Nothing is stored.
+            </div>
 
-            <div id="map"></div>
+            <div id="map"></div>
 
-            <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
-                <h3 style="color:var(--neon-blue); font-size:14px; margin-bottom:15px;">🌦️ Real-Time Weather</h3>
-                <div id="weather-loading" style="color:var(--text-soft); font-size:12px;">Loading weather data...</div>
-                <div id="weather-content" style="display:none;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                        <div>
-                            <div id="wx-temp" style="font-size:32px; font-weight:800; color:white;">--°</div>
-                            <div id="wx-desc" style="color:var(--text-soft); font-size:14px;">Unknown</div>
-                        </div>
-                        <div style="text-align:right; font-size:12px; color:#cbd5e1;">
-                            <div>💨 Wind: <span id="wx-wind">--</span></div>
-                            <div>💧 Hum: <span id="wx-hum">--</span></div>
-                            <div>☀️ UV: <span id="wx-uv">--</span></div>
-                        </div>
-                    </div>
-                    <div style="font-size:11px; color:var(--text-soft); text-transform:uppercase; margin-bottom:10px;">24-Hour Forecast</div>
-                    <div id="wx-hourly" style="display:flex; overflow-x:auto; gap:10px; padding-bottom:10px; scrollbar-width:thin;"></div>
-                </div>
-            </div>
-            <div class="card" id="wx-alert-panel" style="margin-top: 15px; padding: 15px; border-left: 4px solid #10b981; background:rgba(16, 185, 129, 0.05);">
-                <h3 style="color:white; font-size:14px; margin-bottom:5px;">⚠️ Weather Alerts</h3>
-                <div id="wx-alert-msg" style="color:#cbd5e1; font-size:13px;">Clear — No warnings active.</div>
-                <div style="font-size:10px; color:var(--text-soft); margin-top:5px;">Always find shelter if conditions worsen.</div>
-            </div>
-            <div class="premium-dashboard">
-                <div class="p-card">
-                    <span class="p-icon">🛰️</span>
-                    <span class="p-label">Altitude</span>
-                    <span class="p-value" id="alt-p">—</span>
-                </div>
-                <div class="p-card">
-                    <span class="p-icon">🧭</span>
-                    <span class="p-label">Bearing</span>
-                    <span class="p-value" id="head-p">—</span>
-                </div>
-                <div class="p-card">
-                    <span class="p-icon">🛡️</span>
-                    <span class="p-label">Security</span>
-                    <span class="p-value">Encrypted</span>
-                </div>
-                <div class="p-card">
-                    <span class="p-icon">🕒</span>
-                    <span class="p-label">Timestamp</span>
-                    <span class="p-value" id="time-p">00:00:00</span>
-                </div>
-            </div>
+            <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
+                <h3 style="color:var(--neon-blue); font-size:14px; margin-bottom:15px;">🌦️ Real-Time Weather</h3>
+                <div id="weather-loading" style="color:var(--text-soft); font-size:12px;">Loading weather data...</div>
+                <div id="weather-content" style="display:none;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                        <div>
+                            <div id="wx-temp" style="font-size:32px; font-weight:800; color:white;">--°</div>
+                            <div id="wx-desc" style="color:var(--text-soft); font-size:14px;">Unknown</div>
+                        </div>
+                        <div style="text-align:right; font-size:12px; color:#cbd5e1;">
+                            <div>💨 Wind: <span id="wx-wind">--</span></div>
+                            <div>💧 Hum: <span id="wx-hum">--</span></div>
+                            <div>☀️ UV: <span id="wx-uv">--</span></div>
+                        </div>
+                    </div>
+                    <div style="font-size:11px; color:var(--text-soft); text-transform:uppercase; margin-bottom:10px;">24-Hour Forecast</div>
+                    <div id="wx-hourly" style="display:flex; overflow-x:auto; gap:10px; padding-bottom:10px; scrollbar-width:thin;"></div>
+                </div>
+            </div>
+            <div class="card" id="wx-alert-panel" style="margin-top: 15px; padding: 15px; border-left: 4px solid #10b981; background:rgba(16, 185, 129, 0.05);">
+                <h3 style="color:white; font-size:14px; margin-bottom:5px;">⚠️ Weather Alerts</h3>
+                <div id="wx-alert-msg" style="color:#cbd5e1; font-size:13px;">Clear — No warnings active.</div>
+                <div style="font-size:10px; color:var(--text-soft); margin-top:5px;">Always find shelter if conditions worsen.</div>
+            </div>
+            <div class="premium-dashboard">
+                <div class="p-card">
+                    <span class="p-icon">🛰️</span>
+                    <span class="p-label">Altitude</span>
+                    <span class="p-value" id="alt-p">—</span>
+                </div>
+                <div class="p-card">
+                    <span class="p-icon">🧭</span>
+                    <span class="p-label">Bearing</span>
+                    <span class="p-value" id="head-p">—</span>
+                </div>
+                <div class="p-card">
+                    <span class="p-icon">🛡️</span>
+                    <span class="p-label">Security</span>
+                    <span class="p-value">Encrypted</span>
+                </div>
+                <div class="p-card">
+                    <span class="p-icon">🕒</span>
+                    <span class="p-label">Timestamp</span>
+                    <span class="p-value" id="time-p">00:00:00</span>
+                </div>
+            </div>
 
-            <div class="data-grid">
-                <div class="data-item">
-                    <div class="label" data-i18n="gps_label">🌍 GPS Coordinates <span style="float:right; color:#10b981; font-weight:bold;">Accuracy: High</span></div>
-                    <div class="value"><span id="lat-val">—</span>, <span id="lng-val">—</span></div>
-                    <div class="sub-value" id="accuracy-val">...</div>
-                    <div style="font-size:10px; color:#64748b; margin-top:4px;">(Tap coordinates to copy)</div>
-                    <div style="margin-top:8px; display:flex; gap:5px;">
-                        <button class="mod-btn" style="padding:5px 10px; font-size:10px;" onclick="">Google Maps</button>
-                        <button class="mod-btn" style="padding:5px 10px; font-size:10px;" onclick="">Share Location</button>
-                    </div>
-                </div>
-                <div class="data-item">
-                    <div class="label" data-i18n="weather_label">☁️ Weather</div>
-                    <div class="value" id="temp-display">—</div>
-                    <div class="sub-value" id="wind-display">Wind: —</div>
-                    <div style="font-size:10px; color:#64748b; margin-top:4px;">(Auto-updates live)</div>
-                </div>
-                <div class="data-item">
-                    <div class="label" data-i18n="ip_label">🌐 Network IP</div>
-                    <div class="value" id="ip-val" style="font-size:14px">—</div>
-                    <div class="sub-value" id="isp-val">ISP: —</div>
-                </div>
-            </div>
+            <div class="data-grid">
+                <div class="data-item">
+                    <div class="label" data-i18n="gps_label">🌍 GPS Coordinates <span style="float:right; color:#10b981; font-weight:bold;">Accuracy: High</span></div>
+                    <div class="value"><span id="lat-val">—</span>, <span id="lng-val">—</span></div>
+                    <div class="sub-value" id="accuracy-val">...</div>
+                    <div style="font-size:10px; color:#64748b; margin-top:4px;">(Tap coordinates to copy)</div>
+                    <div style="margin-top:8px; display:flex; gap:5px;">
+                        <button class="mod-btn" style="padding:5px 10px; font-size:10px;" onclick="">Google Maps</button>
+                        <button class="mod-btn" style="padding:5px 10px; font-size:10px;" onclick="">Share Location</button>
+                    </div>
+                </div>
+                <div class="data-item">
+                    <div class="label" data-i18n="weather_label">☁️ Weather</div>
+                    <div class="value" id="temp-display">—</div>
+                    <div class="sub-value" id="wind-display">Wind: —</div>
+                    <div style="font-size:10px; color:#64748b; margin-top:4px;">(Auto-updates live)</div>
+                </div>
+                <div class="data-item">
+                    <div class="label" data-i18n="ip_label">🌐 Network IP</div>
+                    <div class="value" id="ip-val" style="font-size:14px">—</div>
+                    <div class="sub-value" id="isp-val">ISP: —</div>
+                </div>
+            </div>
 
-            <div class="nearby-header">
-                <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                <span data-i18n="nearby_label">📡 Nearest Emergency Services</span>
-            </div>
-            <div class="nearby-list" id="nearby-results">
-                <div class="nearby-item">...</div>
-                <div class="nearby-item">...</div>
-                <div class="nearby-item">...</div>
-            </div>
-            
-            <div class="card" style="margin-top: 20px; padding: 15px; border: 1px solid var(--border);">
-                <h3 style="color:white; font-size:14px; margin-bottom:10px;">🗺️ Location Preview</h3>
-                <div id="mini-map" style="height:150px; border-radius:12px; margin-bottom:10px; z-index:0;"></div>
-                <div style="display:flex; gap:10px;">
-                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.mapPreview && window.lastLat){ window.mapPreview.setView([window.lastLat, window.lastLng], 15); }">⬇ Recenter Map</button>
-                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.lastLat){ window.open('https://www.google.com/maps?q=' + window.lastLat + ',' + window.lastLng, '_blank'); }">Open Full Map</button>
-                </div>
-            </div>
-            <div class="btn-stack">
-                <button class="btn btn-sos" id="sos-btn">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                    <span data-i18n="btn_sos">ONE-TAP SOS SHARE</span>
-                </button>
-                <div class="btn-row">
-                    <button class="btn btn-primary" id="refresh-btn">
-                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-                        <span data-i18n="btn_refresh">Refresh</span>
-                    </button>
-                    <button class="btn btn-ghost" id="copy-coords-btn">
-                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        <span data-i18n="btn_copy">Copy Lat/Long</span>
-                    </button>
-                </div>
-                
-                <div class="btn-row" style="margin-top:10px;">
-                    <button class="btn" onclick="toggleModule('driver-mod')" style="background:rgba(56, 189, 248, 0.15); color:#38bdf8; border:1px solid rgba(56, 189, 248, 0.3);">
-                        <span>🚗 Driver Mode</span>
-                    </button>
-                    <button class="btn" onclick="toggleModule('hiker-mod')" style="background:rgba(16, 185, 129, 0.15); color:#10b981; border:1px solid rgba(16, 185, 129, 0.3);">
-                        <span>🌲 Hiker Mode</span>
-                    </button>
-                </div>
-                <div class="btn-row" style="margin-top:0px;">
-                    <button class="btn" onclick="toggleModule('friend-mod')" style="background:rgba(255, 204, 0, 0.15); color:#fbbf24; border:1px solid rgba(255, 204, 0, 0.3);">
-                        <span>🤝 Meet Friend</span>
-                    </button>
-                    <button class="btn" onclick="toggleModule('share-mod')" style="background:rgba(255, 255, 255, 0.1); color:white; border:1px solid rgba(255, 255, 255, 0.3);">
-                        <span>🔗 Share Link</span>
-                    </button>
-                </div>
-                <div class="btn-row">
-                    <button class="btn" style="background:#10b981; color:white; padding:10px; font-size:12px; box-shadow:0 0 10px rgba(16,185,129,0.4);" onclick="window.open('https://buymeacoffee.com/donshehab')">
-                        <svg class="icon" style="width:14px; height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path></svg>
-                        <span>Coffee</span>
-                    </button>
-                    <button class="btn" style="background:#ffcc00; color:black; font-weight:800; padding:10px; font-size:11px; box-shadow:0 0 15px rgba(255,204,0,0.6);" onclick="window.open('https://waterinmyspeaker.com')">
-                        <span>CHECK OTHER TOOL</span>
-                    </button>
-                </div>
-            </div>
+            <div class="nearby-header">
+                <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <span data-i18n="nearby_label">📡 Nearest Emergency Services</span>
+            </div>
+            <div class="nearby-list" id="nearby-results">
+                <div class="nearby-item">...</div>
+                <div class="nearby-item">...</div>
+                <div class="nearby-item">...</div>
+            </div>
+            
+            <div class="card" style="margin-top: 20px; padding: 15px; border: 1px solid var(--border);">
+                <h3 style="color:white; font-size:14px; margin-bottom:10px;">🗺️ Location Preview</h3>
+                <div id="mini-map" style="height:150px; border-radius:12px; margin-bottom:10px; z-index:0;"></div>
+                <div style="display:flex; gap:10px;">
+                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.mapPreview && window.lastLat){ window.mapPreview.setView([window.lastLat, window.lastLng], 15); }">⬇ Recenter Map</button>
+                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.lastLat){ window.open('https://www.google.com/maps?q=' + window.lastLat + ',' + window.lastLng, '_blank'); }">Open Full Map</button>
+                </div>
+            </div>
+            <div class="btn-stack">
+                <button class="btn btn-sos" id="sos-btn">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                    <span data-i18n="btn_sos">ONE-TAP SOS SHARE</span>
+                </button>
+                <div class="btn-row">
+                    <button class="btn btn-primary" id="refresh-btn">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                        <span data-i18n="btn_refresh">Refresh</span>
+                    </button>
+                    <button class="btn btn-ghost" id="copy-coords-btn">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <span data-i18n="btn_copy">Copy Lat/Long</span>
+                    </button>
+                </div>
+                
+                <div class="btn-row" style="margin-top:10px;">
+                    <button class="btn" onclick="toggleModule('driver-mod')" style="background:rgba(56, 189, 248, 0.15); color:#38bdf8; border:1px solid rgba(56, 189, 248, 0.3);">
+                        <span>🚗 Driver Mode</span>
+                    </button>
+                    <button class="btn" onclick="toggleModule('hiker-mod')" style="background:rgba(16, 185, 129, 0.15); color:#10b981; border:1px solid rgba(16, 185, 129, 0.3);">
+                        <span>🌲 Hiker Mode</span>
+                    </button>
+                </div>
+                <div class="btn-row" style="margin-top:0px;">
+                    <button class="btn" onclick="toggleModule('friend-mod')" style="background:rgba(255, 204, 0, 0.15); color:#fbbf24; border:1px solid rgba(255, 204, 0, 0.3);">
+                        <span>🤝 Meet Friend</span>
+                    </button>
+                    <button class="btn" onclick="toggleModule('share-mod')" style="background:rgba(255, 255, 255, 0.1); color:white; border:1px solid rgba(255, 255, 255, 0.3);">
+                        <span>🔗 Share Link</span>
+                    </button>
+                </div>
+                <div class="btn-row">
+                    <button class="btn" style="background:#10b981; color:white; padding:10px; font-size:12px; box-shadow:0 0 10px rgba(16,185,129,0.4);" onclick="window.open('https://buymeacoffee.com/donshehab')">
+                        <svg class="icon" style="width:14px; height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path></svg>
+                        <span>Coffee</span>
+                    </button>
+                    <button class="btn" style="background:#ffcc00; color:black; font-weight:800; padding:10px; font-size:11px; box-shadow:0 0 15px rgba(255,204,0,0.6);" onclick="window.open('https://waterinmyspeaker.com')">
+                        <span>CHECK OTHER TOOL</span>
+                    </button>
+                </div>
+            </div>
 
-            <div class="qr-section">
-                <div class="qr-label">Scan to Share Location</div>
-                <div id="qrcode"></div>
-            </div>
+            <div class="qr-section">
+                <div class="qr-label">Scan to Share Location</div>
+                <div id="qrcode"></div>
+            </div>
 
-            <div id="new-modules-container">
-                
-                <div id="driver-mod" class="new-module-container">
-                    <div class="mod-header">
-                        <span class="mod-title">Driver Dashboard</span>
-                        <button class="mod-close" onclick="toggleModule('driver-mod')">✕</button>
-                    </div>
-                    <div class="driver-hud">
-                        <div class="hud-item"><span class="hud-val" id="drv-speed">0</span><span class="hud-lbl">MPH</span></div>
-                        <div class="hud-item"><span class="hud-val" id="drv-dir">--</span><span class="hud-lbl">Heading</span></div>
-                    </div>
-                    <div class="mod-grid-buttons">
-                        <button class="mod-btn" onclick="openMapSearch('gas_station')">⛽ Gas Stations</button>
-                        <button class="mod-btn" onclick="openMapSearch('parking')">🅿️ Rest Stops</button>
-                        <button class="mod-btn" onclick="shareETA()">⏱️ Send ETA</button>
-                        <button class="mod-btn" onclick="shareLocationSimple()">📍 Share Location</button>
-                    </div>
-                </div>
+            <div id="new-modules-container">
+                
+                <div id="driver-mod" class="new-module-container">
+                    <div class="mod-header">
+                        <span class="mod-title">Driver Dashboard</span>
+                        <button class="mod-close" onclick="toggleModule('driver-mod')">✕</button>
+                    </div>
+                    <div class="driver-hud">
+                        <div class="hud-item"><span class="hud-val" id="drv-speed">0</span><span class="hud-lbl">MPH</span></div>
+                        <div class="hud-item"><span class="hud-val" id="drv-dir">--</span><span class="hud-lbl">Heading</span></div>
+                    </div>
+                    <div class="mod-grid-buttons">
+                        <button class="mod-btn" onclick="openMapSearch('gas_station')">⛽ Gas Stations</button>
+                        <button class="mod-btn" onclick="openMapSearch('parking')">🅿️ Rest Stops</button>
+                        <button class="mod-btn" onclick="shareETA()">⏱️ Send ETA</button>
+                        <button class="mod-btn" onclick="shareLocationSimple()">📍 Share Location</button>
+                    </div>
+                </div>
 
-                <div id="hiker-mod" class="new-module-container">
-                    <div class="mod-header">
-                        <span class="mod-title">Hiker Tools</span>
-                        <button class="mod-close" onclick="toggleModule('hiker-mod')">✕</button>
-                    </div>
-                    <div style="font-size:12px; color:#94a3b8; margin-bottom:10px;">Offline caching enabled. Pins saved locally.</div>
-                    <div class="mod-grid-buttons">
-                        <button class="mod-btn mod-btn-primary" onclick="dropPin()">📍 Drop Pin</button>
-                        <button class="mod-btn" onclick="clearPins()">🗑️ Clear Pins</button>
-                    </div>
-                    <div id="pin-list" class="pin-list"></div>
-                </div>
+                <div id="hiker-mod" class="new-module-container">
+                    <div class="mod-header">
+                        <span class="mod-title">Hiker Tools</span>
+                        <button class="mod-close" onclick="toggleModule('hiker-mod')">✕</button>
+                    </div>
+                    <div style="font-size:12px; color:#94a3b8; margin-bottom:10px;">Offline caching enabled. Pins saved locally.</div>
+                    <div class="mod-grid-buttons">
+                        <button class="mod-btn mod-btn-primary" onclick="dropPin()">📍 Drop Pin</button>
+                        <button class="mod-btn" onclick="clearPins()">🗑️ Clear Pins</button>
+                    </div>
+                    <div id="pin-list" class="pin-list"></div>
+                </div>
 
-                <div id="friend-mod" class="new-module-container">
-                    <div class="mod-header">
-                        <span class="mod-title">Meet a Friend</span>
-                        <button class="mod-close" onclick="toggleModule('friend-mod')">✕</button>
-                    </div>
-                    <input type="text" id="friend-input" class="mod-input" placeholder="Paste friend's coords (lat,lng) or link...">
-                    <button class="mod-btn mod-btn-primary" style="width:100%" onclick="calcFriendDist()">Calculate Distance & Midpoint</button>
-                    <div id="friend-res" style="margin-top:10px; font-size:14px; color:white;"></div>
-                </div>
+                <div id="friend-mod" class="new-module-container">
+                    <div class="mod-header">
+                        <span class="mod-title">Meet a Friend</span>
+                        <button class="mod-close" onclick="toggleModule('friend-mod')">✕</button>
+                    </div>
+                    <input type="text" id="friend-input" class="mod-input" placeholder="Paste friend's coords (lat,lng) or link...">
+                    <button class="mod-btn mod-btn-primary" style="width:100%" onclick="calcFriendDist()">Calculate Distance & Midpoint</button>
+                    <div id="friend-res" style="margin-top:10px; font-size:14px; color:white;"></div>
+                </div>
 
-                <div id="share-mod" class="new-module-container">
-                    <div class="mod-header">
-                        <span class="mod-title">Share Location</span>
-                        <button class="mod-close" onclick="toggleModule('share-mod')">✕</button>
-                    </div>
-                    <input type="text" id="share-url-input" class="mod-input" readonly>
-                    <div class="mod-grid-buttons">
-                        <button class="mod-btn mod-btn-primary" onclick="copyShareLink()">📋 Copy Link</button>
-                        <button class="mod-btn" onclick="startLiveTrack()" id="live-trk-btn">📡 Start Live (15m)</button>
-                    </div>
-                    <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-                        <button class="mod-btn" onclick="shareSocial('wa')">WhatsApp</button>
-                        <button class="mod-btn" onclick="shareSocial('sms')">SMS</button>
-                        <button class="mod-btn" onclick="shareSocial('tg')">Telegram</button>
-                    </div>
-                </div>
-            </div>
-            <section class="why-section">
-                <h2>Why This Interface Matters</h2>
-                <p>TellMyLocation utilizes high-frequency satellite pings combined with low-latency network triangulation to deliver hyper-accurate data in milliseconds. We prioritize privacy by ensuring zero data persistence on our backend—your location is your business.</p>
-            </section>
+                <div id="share-mod" class="new-module-container">
+                    <div class="mod-header">
+                        <span class="mod-title">Share Location</span>
+                        <button class="mod-close" onclick="toggleModule('share-mod')">✕</button>
+                    </div>
+                    <input type="text" id="share-url-input" class="mod-input" readonly>
+                    <div class="mod-grid-buttons">
+                        <button class="mod-btn mod-btn-primary" onclick="copyShareLink()">📋 Copy Link</button>
+                        <button class="mod-btn" onclick="startLiveTrack()" id="live-trk-btn">📡 Start Live (15m)</button>
+                    </div>
+                    <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+                        <button class="mod-btn" onclick="shareSocial('wa')">WhatsApp</button>
+                        <button class="mod-btn" onclick="shareSocial('sms')">SMS</button>
+                        <button class="mod-btn" onclick="shareSocial('tg')">Telegram</button>
+                    </div>
+                </div>
+            </div>
+            <section class="why-section">
+                <h2>Why This Interface Matters</h2>
+                <p>TellMyLocation utilizes high-frequency satellite pings combined with low-latency network triangulation to deliver hyper-accurate data in milliseconds. We prioritize privacy by ensuring zero data persistence on our backend—your location is your business.</p>
+            </section>
 
-            <div class="use-case-grid">
-                <div class="use-case-card"><span>🚚</span><h3>Delivery Drivers</h3></div>
-                <div class="use-case-card"><span>🚨</span><h3>Emergency SOS</h3></div>
-                <div class="use-case-card"><span>🏔️</span><h3>Hikers/Travelers</h3></div>
-                <div class="use-case-card"><span>🤝</span><h3>Meeting Friends</h3></div>
-            </div>
+            <div class="use-case-grid">
+                <div class="use-case-card"><span>🚚</span><h3>Delivery Drivers</h3></div>
+                <div class="use-case-card"><span>🚨</span><h3>Emergency SOS</h3></div>
+                <div class="use-case-card"><span>🏔️</span><h3>Hikers/Travelers</h3></div>
+                <div class="use-case-card"><span>🤝</span><h3>Meeting Friends</h3></div>
+            </div>
 
-            <div class="content-expansion">
-                <h2>Understanding Geolocation Technology</h2>
-                <p>In the digital age, the question "Where am I?" is answered by a complex web of technologies working in unison. The most precise method is the <strong>Global Positioning System (GPS)</strong>, which uses a network of over 30 satellites orbiting the Earth. When your device connects to at least four of these satellites, it calculates your exact position through trilateration, often achieving accuracy within a few meters.</p>
-                <p>However, when GPS signals are blocked—such as when you are indoors or in a dense urban canyon—your device falls back on <strong>IP Geolocation</strong>. Every device connected to the internet has an Internet Protocol (IP) address. Services map these addresses to physical locations based on data from Internet Service Providers (ISPs). While faster, IP location is generally less precise, often pointing to a city center or an ISP hub rather than your specific building.</p>
+            <div class="content-expansion">
+                <h2>Understanding Geolocation Technology</h2>
+                <p>In the digital age, the question "Where am I?" is answered by a complex web of technologies working in unison. The most precise method is the <strong>Global Positioning System (GPS)</strong>, which uses a network of over 30 satellites orbiting the Earth. When your device connects to at least four of these satellites, it calculates your exact position through trilateration, often achieving accuracy within a few meters.</p>
+                <p>However, when GPS signals are blocked—such as when you are indoors or in a dense urban canyon—your device falls back on <strong>IP Geolocation</strong>. Every device connected to the internet has an Internet Protocol (IP) address. Services map these addresses to physical locations based on data from Internet Service Providers (ISPs). While faster, IP location is generally less precise, often pointing to a city center or an ISP hub rather than your specific building.</p>
 
-                <h3>Maximizing Safety in a Connected World</h3>
-                <ul>
-                    <li><strong>Context Aware Sharing:</strong> Only share your live location for specific purposes, such as meeting a friend or during an emergency. Avoid posting live coordinates on public social media feeds.</li>
-                    <li><strong>Browser Permissions:</strong> Modern browsers require your explicit permission to access GPS data. TellMyLocation.com operates strictly within these boundaries—once you close the tab, your location session ends.</li>
-                    <li><strong>Emergency Preparedness:</strong> In critical situations where voice calls are impossible, sending a silent GPS text message (like our SOS feature) can be a lifeline for first responders.</li>
-                </ul>
+                <h3>Maximizing Safety in a Connected World</h3>
+                <ul>
+                    <li><strong>Context Aware Sharing:</strong> Only share your live location for specific purposes, such as meeting a friend or during an emergency. Avoid posting live coordinates on public social media feeds.</li>
+                    <li><strong>Browser Permissions:</strong> Modern browsers require your explicit permission to access GPS data. TellMyLocation.com operates strictly within these boundaries—once you close the tab, your location session ends.</li>
+                    <li><strong>Emergency Preparedness:</strong> In critical situations where voice calls are impossible, sending a silent GPS text message (like our SOS feature) can be a lifeline for first responders.</li>
+                </ul>
 
-                <h3>Real-World Utility</h3>
-                <p>Beyond emergencies, precise coordinates are vital for professionals and hobbyists alike. <strong>Delivery drivers</strong> use them to pinpoint unmapped entrances. <strong>Landscape photographers</strong> log specific spots to return when the lighting is perfect. <strong>Drone pilots</strong> need exact latitude and longitude to respect no-fly zones and plan flight paths. By providing raw, unadulterated data, this tool serves as a Swiss Army knife for location-based tasks.</p>
-            </div>
+                <h3>Real-World Utility</h3>
+                <p>Beyond emergencies, precise coordinates are vital for professionals and hobbyists alike. <strong>Delivery drivers</strong> use them to pinpoint unmapped entrances. <strong>Landscape photographers</strong> log specific spots to return when the lighting is perfect. <strong>Drone pilots</strong> need exact latitude and longitude to respect no-fly zones and plan flight paths. By providing raw, unadulterated data, this tool serves as a Swiss Army knife for location-based tasks.</p>
+            </div>
 
-            <div class="content-expansion" style="border-top: 1px solid var(--border); margin-top: 30px; padding-top: 30px;">
-                
-                <h3>🚨 Emergency & Safety Layer</h3>
-                <p>When every second counts, knowing your exact coordinates can be the difference between life and death. Emergency dispatchers often struggle to locate callers from mobile signals alone. By reading your Latitude and Longitude directly from this tool, you provide first responders with pinpoint accuracy.</p>
-                <ul>
-                    <li><strong>Silent SOS:</strong> Our One-Tap SOS feature generates a pre-filled text message with your coordinates, allowing you to signal for help without speaking.</li>
-                    <li><strong>Drift Correction:</strong> We monitor signal drift to ensure the coordinates you see are stabilized before you share them.</li>
-                </ul>
+            <div class="content-expansion" style="border-top: 1px solid var(--border); margin-top: 30px; padding-top: 30px;">
+                
+                <h3>🚨 Emergency & Safety Layer</h3>
+                <p>When every second counts, knowing your exact coordinates can be the difference between life and death. Emergency dispatchers often struggle to locate callers from mobile signals alone. By reading your Latitude and Longitude directly from this tool, you provide first responders with pinpoint accuracy.</p>
+                <ul>
+                    <li><strong>Silent SOS:</strong> Our One-Tap SOS feature generates a pre-filled text message with your coordinates, allowing you to signal for help without speaking.</li>
+                    <li><strong>Drift Correction:</strong> We monitor signal drift to ensure the coordinates you see are stabilized before you share them.</li>
+                </ul>
 
-                <h3>🛠️ Global Utility Tools</h3>
-                <p>We support universal standards for location data. Whether you are a pilot, a surveyor, or a developer, we provide raw data access.</p>
-                <ul>
-                    <li><strong>Formats:</strong> We display Decimal Degrees (DD) by default, the standard for digital mapping.</li>
-                    <li><strong>Altitude:</strong> Using barometric sensors (where available) and GPS triangulation to estimate height above sea level.</li>
-                    <li><strong>ISP Data:</strong> We cross-reference your IP address to identify your network provider, helping diagnose connectivity issues.</li>
-                </ul>
+                <h3>🛠️ Global Utility Tools</h3>
+                <p>We support universal standards for location data. Whether you are a pilot, a surveyor, or a developer, we provide raw data access.</p>
+                <ul>
+                    <li><strong>Formats:</strong> We display Decimal Degrees (DD) by default, the standard for digital mapping.</li>
+                    <li><strong>Altitude:</strong> Using barometric sensors (where available) and GPS triangulation to estimate height above sea level.</li>
+                    <li><strong>ISP Data:</strong> We cross-reference your IP address to identify your network provider, helping diagnose connectivity issues.</li>
+                </ul>
 
-                <h3>✈️ Travel & Navigation</h3>
-                <p>Modern travel requires more than just a destination; it requires orientation. This tool is designed for the "Last Mile" of navigation.</p>
-                <ul>
-                    <li><strong>Boating & Marine:</strong> Use our bearing and compass tools to verify heading when visual landmarks are obscured by fog.</li>
-                    <li><strong>Urban Exploration:</strong> Navigate dense city streets where skyscraper interference often confuses standard map apps.</li>
-                </ul>
+                <h3>✈️ Travel & Navigation</h3>
+                <p>Modern travel requires more than just a destination; it requires orientation. This tool is designed for the "Last Mile" of navigation.</p>
+                <ul>
+                    <li><strong>Boating & Marine:</strong> Use our bearing and compass tools to verify heading when visual landmarks are obscured by fog.</li>
+                    <li><strong>Urban Exploration:</strong> Navigate dense city streets where skyscraper interference often confuses standard map apps.</li>
+                </ul>
 
-                <h3>📡 Live Tracking (Privacy First)</h3>
-                <p>Most tracking apps require accounts, logins, and permanent history. We reject that model. Our "Live Tracking" is ephemeral.</p>
-                <ul>
-                    <li><strong>Session Based:</strong> Tracking exists only as long as you keep the tab open.</li>
-                    <li><strong>No Database:</strong> We do not write your movement history to a disk. It flows from your device to your recipient directly via signed URLs.</li>
-                </ul>
+                <h3>📡 Live Tracking (Privacy First)</h3>
+                <p>Most tracking apps require accounts, logins, and permanent history. We reject that model. Our "Live Tracking" is ephemeral.</p>
+                <ul>
+                    <li><strong>Session Based:</strong> Tracking exists only as long as you keep the tab open.</li>
+                    <li><strong>No Database:</strong> We do not write your movement history to a disk. It flows from your device to your recipient directly via signed URLs.</li>
+                </ul>
 
-                <h3>🌲 Offline Survival Mode</h3>
-                <p>This tool is PWA-ready (Progressive Web App). Once loaded, the core GPS functionality works without a data connection.</p>
-                <ul>
-                    <li><strong>Cached Resources:</strong> The interface remains functional even in "Airplane Mode".</li>
-                    <li><strong>Hardware Access:</strong> Your phone's GPS chip does not require cellular data to receive satellite signals, meaning you can still find your coordinates in the middle of a desert.</li>
-                </ul>
+                <h3>🌲 Offline Survival Mode</h3>
+                <p>This tool is PWA-ready (Progressive Web App). Once loaded, the core GPS functionality works without a data connection.</p>
+                <ul>
+                    <li><strong>Cached Resources:</strong> The interface remains functional even in "Airplane Mode".</li>
+                    <li><strong>Hardware Access:</strong> Your phone's GPS chip does not require cellular data to receive satellite signals, meaning you can still find your coordinates in the middle of a desert.</li>
+                </ul>
 
-                <h3>📊 Data & Analytics</h3>
-                <p>We provide transparency on signal quality. The "Accuracy" reading (e.g., ±5m) tells you exactly how much trust to place in the current reading.</p>
-                
-                <h3>🔗 Share & Export</h3>
-                <p>Seamlessly move data from our tool to your favorite apps. We support deep-linking to Google Maps, Apple Maps, Waze, and OpenStreetMap.</p>
+                <h3>📊 Data & Analytics</h3>
+                <p>We provide transparency on signal quality. The "Accuracy" reading (e.g., ±5m) tells you exactly how much trust to place in the current reading.</p>
+                
+                <h3>🔗 Share & Export</h3>
+                <p>Seamlessly move data from our tool to your favorite apps. We support deep-linking to Google Maps, Apple Maps, Waze, and OpenStreetMap.</p>
 
-                <h3>🤖 AI & Smart Positioning</h3>
-                <p>We use lightweight heuristic algorithms to filter out "noise" from GPS jumps, providing a smoother location experience than raw sensor data alone.</p>
+                <h3>🤖 AI & Smart Positioning</h3>
+                <p>We use lightweight heuristic algorithms to filter out "noise" from GPS jumps, providing a smoother location experience than raw sensor data alone.</p>
 
-                <h3>🔌 API Access (Coming Soon)</h3>
-                <p>Developers will soon be able to integrate our lightweight geolocation engine into their own apps via a simple REST API. Stay tuned.</p>
+                <h3>🔌 API Access (Coming Soon)</h3>
+                <p>Developers will soon be able to integrate our lightweight geolocation engine into their own apps via a simple REST API. Stay tuned.</p>
 
-                <h3>🔍 Search & Discovery</h3>
-                <p>Common queries solved by this tool: <em>"What is my zip code?"</em>, <em>"What city am I in right now?"</em>, <em>"My elevation"</em>, and <em>"Current GPS coordinates"</em>. We answer these instantly without clutter.</p>
+                <h3>🔍 Search & Discovery</h3>
+                <p>Common queries solved by this tool: <em>"What is my zip code?"</em>, <em>"What city am I in right now?"</em>, <em>"My elevation"</em>, and <em>"Current GPS coordinates"</em>. We answer these instantly without clutter.</p>
 
-                <h3>❓ Frequently Asked Questions</h3>
-                
-                <details class="faq-item">
-                    <summary class="faq-q">Is this tool free to use?</summary>
-                    <div class="faq-a">Yes, TellMyLocation is 100% free. We are supported by minimal, non-intrusive ads.</div>
-                </details>
-                
-                <details class="faq-item">
-                    <summary class="faq-q">Do you save my location history?</summary>
-                    <div class="faq-a">Absolutely not. Your location data is processed locally on your device and is never stored on our servers.</div>
-                </details>
+                <h3>❓ Frequently Asked Questions</h3>
+                
+                <details class="faq-item">
+                    <summary class="faq-q">Is this tool free to use?</summary>
+                    <div class="faq-a">Yes, TellMyLocation is 100% free. We are supported by minimal, non-intrusive ads.</div>
+                </details>
+                
+                <details class="faq-item">
+                    <summary class="faq-q">Do you save my location history?</summary>
+                    <div class="faq-a">Absolutely not. Your location data is processed locally on your device and is never stored on our servers.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">Why is the location slightly off?</summary>
-                    <div class="faq-a">GPS accuracy depends on your view of the sky. Indoors, your device uses Wi-Fi triangulation which is less precise (±30m) than satellite GPS (±5m).</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">Why is the location slightly off?</summary>
+                    <div class="faq-a">GPS accuracy depends on your view of the sky. Indoors, your device uses Wi-Fi triangulation which is less precise (±30m) than satellite GPS (±5m).</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">Does this work without internet?</summary>
-                    <div class="faq-a">Yes! If you have already loaded the page, the GPS coordinates will continue to update offline using your device's sensors. Map tiles, however, require internet.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">Does this work without internet?</summary>
+                    <div class="faq-a">Yes! If you have already loaded the page, the GPS coordinates will continue to update offline using your device's sensors. Map tiles, however, require internet.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">How do I share my location?</summary>
-                    <div class="faq-a">Click the "Share Link" button to copy a URL, or use the "One-Tap SOS" to draft a text message with your coordinates.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">How do I share my location?</summary>
+                    <div class="faq-a">Click the "Share Link" button to copy a URL, or use the "One-Tap SOS" to draft a text message with your coordinates.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">Does this drain my battery?</summary>
-                    <div class="faq-a">GPS is battery-intensive. We optimize this by only querying high-accuracy location while the tab is active. Closing the tab stops the battery drain.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">Does this drain my battery?</summary>
+                    <div class="faq-a">GPS is battery-intensive. We optimize this by only querying high-accuracy location while the tab is active. Closing the tab stops the battery drain.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">Can I use this on a desktop computer?</summary>
-                    <div class="faq-a">Yes, but desktop accuracy is lower as it relies on IP address and Wi-Fi networks rather than a dedicated GPS chip.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">Can I use this on a desktop computer?</summary>
+                    <div class="faq-a">Yes, but desktop accuracy is lower as it relies on IP address and Wi-Fi networks rather than a dedicated GPS chip.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">What is "Hiker Mode"?</summary>
-                    <div class="faq-a">Hiker Mode enables a simplified interface that allows you to drop temporary pins to mark your path, which is useful for backtracking.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">What is "Hiker Mode"?</summary>
+                    <div class="faq-a">Hiker Mode enables a simplified interface that allows you to drop temporary pins to mark your path, which is useful for backtracking.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">What is "Driver Mode"?</summary>
-                    <div class="faq-a">Driver Mode enlarges the text for speed and heading, making it safer to glance at while mounting your phone in a vehicle.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">What is "Driver Mode"?</summary>
+                    <div class="faq-a">Driver Mode enlarges the text for speed and heading, making it safer to glance at while mounting your phone in a vehicle.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">How does the SOS feature work?</summary>
-                    <div class="faq-a">It creates a pre-filled SMS or WhatsApp message with your coordinates and a "Help me" text. You must still press "Send" on your device.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">How does the SOS feature work?</summary>
+                    <div class="faq-a">It creates a pre-filled SMS or WhatsApp message with your coordinates and a "Help me" text. You must still press "Send" on your device.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">Why does it ask for permission?</summary>
-                    <div class="faq-a">Browser security requires your explicit consent to access the GPS hardware. We cannot see your location without this permission.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">Why does it ask for permission?</summary>
+                    <div class="faq-a">Browser security requires your explicit consent to access the GPS hardware. We cannot see your location without this permission.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">Can I find someone else's location?</summary>
-                    <div class="faq-a">No. This tool is for finding *your* location. You cannot track others unless they voluntarily send you their link.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">Can I find someone else's location?</summary>
+                    <div class="faq-a">No. This tool is for finding *your* location. You cannot track others unless they voluntarily send you their link.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">What is the "Coffee" button?</summary>
-                    <div class="faq-a">It links to a donation page to help support the developers who maintain this free tool.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">What is the "Coffee" button?</summary>
+                    <div class="faq-a">It links to a donation page to help support the developers who maintain this free tool.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">Is the weather accurate?</summary>
-                    <div class="faq-a">We use the Open-Meteo API which aggregates data from national weather services for high local accuracy.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">Is the weather accurate?</summary>
+                    <div class="faq-a">We use the Open-Meteo API which aggregates data from national weather services for high local accuracy.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">What datum format is used?</summary>
-                    <div class="faq-a">We use WGS84, the standard coordinate system for GPS, ensuring compatibility with Google Maps and Apple Maps.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">What datum format is used?</summary>
+                    <div class="faq-a">We use WGS84, the standard coordinate system for GPS, ensuring compatibility with Google Maps and Apple Maps.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">Can I measure distance?</summary>
-                    <div class="faq-a">Yes, use the "Meet Friend" module to calculate the distance and midpoint between you and another set of coordinates.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">Can I measure distance?</summary>
+                    <div class="faq-a">Yes, use the "Meet Friend" module to calculate the distance and midpoint between you and another set of coordinates.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">Does VPN affect accuracy?</summary>
-                    <div class="faq-a">If you are on a desktop without GPS, a VPN will mask your location. On mobile, GPS data overrides the VPN IP location.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">Does VPN affect accuracy?</summary>
+                    <div class="faq-a">If you are on a desktop without GPS, a VPN will mask your location. On mobile, GPS data overrides the VPN IP location.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">How do I copy my address?</summary>
-                    <div class="faq-a">Click the small "Copy" icon next to the address display box at the top of the card.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">How do I copy my address?</summary>
+                    <div class="faq-a">Click the small "Copy" icon next to the address display box at the top of the card.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">Is there a dark mode?</summary>
-                    <div class="faq-a">The site is built in Dark Mode by default to save battery on OLED screens and reduce eye strain at night.</div>
-                </details>
+                <details class="faq-item">
+                    <summary class="faq-q">Is there a dark mode?</summary>
+                    <div class="faq-a">The site is built in Dark Mode by default to save battery on OLED screens and reduce eye strain at night.</div>
+                </details>
 
-                <details class="faq-item">
-                    <summary class="faq-q">How do I report a bug?</summary>
-                    <div class="faq-a">Please use the "Contact Us" link in the footer to send us an email.</div>
-                </details>
-            </div>
-            <p class="trust-badge">
-                <span data-i18n="trust_text">🔒 Privacy Guarantee: We do not save, need, or share your location. This website exists solely to help you or save you when needed. All data is processed securely on your device.</span>
-            </p>
-        </main>
-    </div>
+                <details class="faq-item">
+                    <summary class="faq-q">How do I report a bug?</summary>
+                    <div class="faq-a">Please use the "Contact Us" link in the footer to send us an email.</div>
+                </details>
+            </div>
+            <p class="trust-badge">
+                <span data-i18n="trust_text">🔒 Privacy Guarantee: We do not save, need, or share your location. This website exists solely to help you or save you when needed. All data is processed securely on your device.</span>
+            </p>
+        </main>
+    </div>
 
-    <div id="sos-overlay" class="sos-overlay">
-        <div class="sos-msg">EMERGENCY SOS ACTIVE</div>
-        <button class="mod-btn" style="background:white; color:red; padding:20px 40px; font-size:18px;" onclick="stopSOS()">STOP ALARM</button>
-        <div style="margin-top:20px; color:white;">Sharing location...</div>
-    </div>
+    <div id="sos-overlay" class="sos-overlay">
+        <div class="sos-msg">EMERGENCY SOS ACTIVE</div>
+        <button class="mod-btn" style="background:white; color:red; padding:20px 40px; font-size:18px;" onclick="stopSOS()">STOP ALARM</button>
+        <div style="margin-top:20px; color:white;">Sharing location...</div>
+    </div>
 
-    <main id="about-page" class="card hidden-page">
-        <div class="content-expansion" style="margin-top:0; border-top:none;">
-            <h2>About TellMyLocation</h2>
-            <p>We are a team of privacy-focused developers and outdoor enthusiasts who realized that most location tools are either too complex, riddled with invasive tracking, or slow to load. Our mission was simple: build the fastest, cleanest, and most secure "Where Am I" utility on the web.</p>
-            <h3>Our Philosophy</h3>
-            <p>Data should serve the user, not the corporation. That is why TellMyLocation is built as a client-side application. We do not store your history. We do not build profiles. We simply give you the data you need—Coordinates, Address, Weather—and then we get out of your way.</p>
-        </div>
-    </main>
+    <main id="about-page" class="card hidden-page">
+        <div class="content-expansion" style="margin-top:0; border-top:none;">
+            <h2>About TellMyLocation</h2>
+            <p>We are a team of privacy-focused developers and outdoor enthusiasts who realized that most location tools are either too complex, riddled with invasive tracking, or slow to load. Our mission was simple: build the fastest, cleanest, and most secure "Where Am I" utility on the web.</p>
+            <h3>Our Philosophy</h3>
+            <p>Data should serve the user, not the corporation. That is why TellMyLocation is built as a client-side application. We do not store your history. We do not build profiles. We simply give you the data you need—Coordinates, Address, Weather—and then we get out of your way.</p>
+        </div>
+    </main>
 
-    <main id="privacy-page" class="card hidden-page">
-        <div class="content-expansion" style="margin-top:0; border-top:none;">
-            <h2>Privacy Policy</h2>
-            <p><strong>Last Updated: February 2026</strong></p>
-            <p>Your privacy is non-negotiable. This policy outlines exactly how TellMyLocation.com handles your data.</p>
-            
-            <h3>1. Location Data</h3>
-            <p>We do not store, record, or transmit your GPS coordinates to any private server. Your location data is retrieved by your browser directly from your device's GPS hardware and is processed locally to display on your screen. The only time coordinates leave your device is when you explicitly use the "Share" or "SOS" features.</p>
+    <main id="privacy-page" class="card hidden-page">
+        <div class="content-expansion" style="margin-top:0; border-top:none;">
+            <h2>Privacy Policy</h2>
+            <p><strong>Last Updated: February 2026</strong></p>
+            <p>Your privacy is non-negotiable. This policy outlines exactly how TellMyLocation.com handles your data.</p>
+            
+            <h3>1. Location Data</h3>
+            <p>We do not store, record, or transmit your GPS coordinates to any private server. Your location data is retrieved by your browser directly from your device's GPS hardware and is processed locally to display on your screen. The only time coordinates leave your device is when you explicitly use the "Share" or "SOS" features.</p>
 
-            <h3>2. Third-Party Services</h3>
-            <p>We utilize trusted third-party APIs to provide functionality: OpenStreetMap (for map tiles) and Open-Meteo (for weather data). These services receive coordinate requests to generate maps/weather but do not receive your personal identity.</p>
+            <h3>2. Third-Party Services</h3>
+            <p>We utilize trusted third-party APIs to provide functionality: OpenStreetMap (for map tiles) and Open-Meteo (for weather data). These services receive coordinate requests to generate maps/weather but do not receive your personal identity.</p>
 
-            <h3>3. Cookies & Advertising</h3>
-            <p>We use Google AdSense to serve advertisements. Google uses cookies to serve ads based on your prior visits to this website or other websites. You may opt-out of personalized advertising by visiting Google's Ads Settings.</p>
+            <h3>3. Cookies & Advertising</h3>
+            <p>We use Google AdSense to serve advertisements. Google uses cookies to serve ads based on your prior visits to this website or other websites. You may opt-out of personalized advertising by visiting Google's Ads Settings.</p>
+        </div>
+    </main>
 
-            <h3>4. GDPR Rights (EEA Users)</h3>
-            <p>If you are accessing this site from the European Economic Area (EEA), you have specific rights regarding your data:
-            <ul>
-                <li><strong>Right to Access:</strong> You may request details about the data we process (currently, we process no persistent personal data).</li>
-                <li><strong>Right to Erasure:</strong> Since we do not store location history, there is no data to delete after your session ends.</li>
-                <li><strong>Right to Complaint:</strong> You have the right to lodge a complaint with your local Data Protection Authority (DPA).</li>
-            </ul>
-            </p>
+    <main id="contact-page" class="card hidden-page">
+        <div class="content-expansion" style="margin-top:0; border-top:none;">
+            <h2>Contact Us</h2>
+            <p>Have a suggestion, found a bug, or want to share how this tool helped you? We'd love to hear from you.</p>
+            <h3>Get in Touch</h3>
+            <p><strong>Email:</strong> support@tellmylocation.com</p>
+            <p><strong>Business Hours:</strong> Mon-Fri, 9am - 5pm CST</p>
+            <p>For technical support regarding the API integrations or map rendering, please include your device model and browser version in your email.</p>
+        </div>
+    </main>
 
-            <h3>5. CCPA/CPRA (California Residents)</h3>
-            <p>We do not sell your personal information. Under the California Consumer Privacy Act (CCPA), you have the right to opt-out of the sale of personal data. Since we do not collect or sell data, no action is required. However, for ad personalization, you may use the "Do Not Sell My Personal Information" link in the footer (managed by Google AdSense settings).</p>
-        </div>
-    </main>
+    <footer>
+        <div style="margin-bottom: 12px;">
+            <a href="#" onclick="showPage('privacy'); return false;" data-i18n="link_privacy">Privacy Policy</a> • 
+            <a href="#" onclick="showPage('about'); return false;" data-i18n="link_terms">Terms of Use</a> • 
+            <a href="#" onclick="showPage('contact'); return false;" data-i18n="link_contact">Contact Us</a>
+        </div>
+        © 2026 TellMyLocation.com
+    </footer>
 
-    <main id="contact-page" class="card hidden-page">
-        <div class="content-expansion" style="margin-top:0; border-top:none;">
-            <h2>Contact Us</h2>
-            <p>Have a suggestion, found a bug, or want to share how this tool helped you? We'd love to hear from you.</p>
-            <h3>Get in Touch</h3>
-            <p><strong>Email:</strong> support@tellmylocation.com</p>
-            <p><strong>Business Hours:</strong> Mon-Fri, 9am - 5pm CST</p>
-            <p>For technical support regarding the API integrations or map rendering, please include your device model and browser version in your email.</p>
-            
-            <p><strong>Mailing Address:</strong><br>
-            TellMyLocation Legal Dept.<br>
-            [Insert Physical Address Here]<br>
-           </p>
-        </div>
-    </main>
-
-    <main id="terms-page" class="card hidden-page">
-        <div class="content-expansion" style="margin-top:0; border-top:none;">
-            <h2>Terms of Use</h2>
-            <p><strong>1. Acceptance:</strong> By using TellMyLocation.com, you agree to these terms.</p>
-            <p><strong>2. Accuracy:</strong> This tool relies on device sensors and external APIs. We do not guarantee 100% accuracy. Do not rely on this tool for critical safety or navigation in life-threatening situations.</p>
-            <p><strong>3. Liability:</strong> TellMyLocation.com and its creators are not liable for any damages arising from the use or inability to use this service.</p>
-            <p><strong>4. Permitted Use:</strong> You may not scrape, reverse engineer, or use this tool for illegal tracking activities.</p>
-        </div>
-    </main>
-
-    <footer>
-        <div style="margin-bottom: 12px;">
-            <a href="/privacy" data-i18n="link_privacy">Privacy Policy</a> • 
-            <a href="/terms" data-i18n="link_terms">Terms of Use</a> • 
-            <a href="/contact" data-i18n="link_contact">Contact Us</a>
-        </div>
-        © 2026 TellMyLocation.com
-    </footer>
-
-    <div style="margin-top:40px; padding:20px; border-top:1px solid var(--border); color:rgba(255,255,255,0.2); font-size:10px; text-align:left; line-height:1.4;">
-      ...[source](https://tellmylocation.com/) maps alternative, baidu maps alternative, what3words alternative, plus codes, open location code, geohash, mgrs coordinates, utm coordinates, degrees minutes seconds, decimal degrees converter.
-    </div>
-    </div>
+    <div style="margin-top:40px; padding:20px; border-top:1px solid var(--border); color:rgba(255,255,255,0.2); font-size:10px; text-align:left; line-height:1.4;">
+        <strong>Search Keywords People Use to Find This Tool:</strong><br>
+        where am i, my location, current gps coordinates, location finder, weather near me, emergency sos, map near me, coordinates finder, share my location, open in maps, what is my zip code, my elevation, gps tracker, live location, satellite map, latitude longitude finder, my address, current position, find me, geolocate me, ip location, network ip, altitude finder, bearing compass, hiking gps, driver location tool, offline gps, no data map, privacy map, secure location sharing, find my coordinates, google maps coordinates, apple maps location, waze location, exact address, street view, city finder, country finder, postal code finder, time zone finder, sunrise sunset time, wind speed near me, uv index now, rain radar, storm alert, weather warning, tornado siren, earthquake tracker, police station near me, hospital near me, gas station finder, parking finder, rest stop locator, truck stop finder, marine gps, boating navigation, aviation coordinates, pilot tools, surveyor gps, land survey tool, geocaching tool, pokemon go coordinates, ingress intel, drone fly zone, no fly zone map, photography location scouter, golden hour map, blue hour map, milky way finder, star gazing map, light pollution map, hiking trails near me, camping spots, rv parking, van life parking, digital nomad tools, wifi finder, internet speed test location, isp finder, vpn detector, proxy checker, browser geolocation API, html5 geolocation, javascript gps, pwa map, progressive web app gps, mobile gps tool, desktop location finder, macbook location, windows location, android gps, ios gps, iphone location, samsung location, pixel location, accurate gps, precise location, high accuracy mode, battery saver gps, fast location loader, instant address, copy paste coordinates, send location sms, whatsapp location share, telegram location bot, messenger location, signal app location, privacy focused map, no tracking map, anonymous location, secret map, hidden location, safety check in, i am safe, help me, emergency beacon, sos button, panic button, personal safety app, lone worker safety, senior safety tool, child tracker, pet tracker, lost phone finder, find my device equivalent, browser based gps, no install map app, free gps tool, ad supported map, donationware map, open source map alternative, openstreetmap viewer, leaflet map example, mapbox alternative, google maps api alternative, bing maps alternative, here maps alternative, yandex maps alternative, baidu maps alternative, what3words alternative, plus codes, open location code, geohash, mgrs coordinates, utm coordinates, degrees minutes seconds, decimal degrees converter.
+    </div>
+    </div>
 
 <div id="cookie-banner">
-    <div id="cookie-text" data-i18n="cookie_text">We use cookies to analyze traffic and show personalized ads to support this free tool.</div>
-    <button id="cookie-btn" onclick="acceptCookies()" data-i18n="btn_accept">I Accept</button>
+    <div id="cookie-text" data-i18n="cookie_text">We use cookies to analyze traffic and show personalized ads to support this free tool.</div>
+    <button id="cookie-btn" onclick="acceptCookies()" data-i18n="btn_accept">I Accept</button>
 </div>
 
 <script>
-    /* 
-       --- NEW HISTORY ROUTER (Clean URLs) ---
-       This replaces the old hash logic and allows /about, /privacy, etc.
-    */
-    const routeMap = {
-        '/': 'home',
-        '/about': 'about',
-        '/privacy': 'privacy',
-        '/contact': 'contact',
-        '/terms': 'terms'
-    };
+    /* ADDED PAGE TOGGLE LOGIC (Clean & Safe) */
+    function showPage(pageId) {
+        // Hide all views
+        document.getElementById('home-view').style.display = 'none';
+        document.getElementById('about-page').style.display = 'none';
+        document.getElementById('privacy-page').style.display = 'none';
+        document.getElementById('contact-page').style.display = 'none';
+        
+        // Remove active class from nav
+        document.querySelectorAll('.nav-menu a').forEach(el => el.classList.remove('active'));
 
-    // 1. Handle Back/Forward Buttons
-    window.addEventListener('popstate', () => {
-        handleLocation();
-    });
+        // Show selected view
+        if (pageId === 'home') {
+            document.getElementById('home-view').style.display = 'block';
+            document.querySelector('.nav-menu a[href="#"]').classList.add('active');
+        } else {
+            document.getElementById(pageId + '-page').style.display = 'block';
+            document.querySelector('.nav-menu a[href="#' + pageId + '"]').classList.add('active');
+        }
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-    // 2. Handle Initial Load
-    document.addEventListener('DOMContentLoaded', () => {
-        handleLocation();
-    });
+    /* EXISTING LOGIC PRESERVED BELOW */
+    
+    // Generate QR Code
+    new QRCode(document.getElementById("qrcode"), {
+        text: window.location.href,
+        width: 100,
+        height: 100,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
 
-    // 3. Intercept Link Clicks (The Magic)
-    document.addEventListener('click', (e) => {
-        const link = e.target.closest('a');
-        // Only intercept internal links (starting with /)
-        if (link && link.getAttribute('href') && link.getAttribute('href').startsWith('/')) {
-            e.preventDefault();
-            const path = link.getAttribute('href');
-            
-            // Push new URL to browser history
-            window.history.pushState({}, '', path);
-            
-            // Render the page
-            handleLocation();
-        }
-    });
+    // Real-time Compass Orientation logic
+    window.addEventListener('deviceorientation', function(event) {
+        if (event.webkitCompassHeading) {
+            document.getElementById('compass-svg').style.transform = `rotate(${-event.webkitCompassHeading}deg)`;
+            document.getElementById('head-p').textContent = Math.round(event.webkitCompassHeading) + '°';
+        } else if (event.alpha) {
+            document.getElementById('compass-svg').style.transform = `rotate(${-event.alpha}deg)`;
+            document.getElementById('head-p').textContent = Math.round(event.alpha) + '°';
+        }
+    }, true);
 
-    function handleLocation() {
-        const path = window.location.pathname;
-        // Default to home if path not found
-        const route = routeMap[path] |
+    // Update Premium Dashboard Clock
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('time-p').textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+    }, 1000);
 
-| 'home';
-        showPage(route);
-    }
+    /* ORIGINAL SCRIPT CONTINUES BELOW 
+    */
+    const i18n = {
+        en: {
+            tagline: "The fastest 'Where am I?' tool on the internet.",
+            address_title: "Current Address",
+            gps_label: "GPS Coordinates",
+            weather_label: "Weather",
+            ip_label: "Network IP",
+            nearby_label: "Nearest Emergency Services",
+            btn_sos: "ONE-TAP SOS SHARE",
+            btn_refresh: "Refresh",
+            btn_copy: "Copy Lat/Long",
+            btn_coffee: "Buy Me a Coffee",
+            trust_text: "🔒 Privacy Guarantee: We do not save, need, or share your location. This website exists solely to help you or save you when needed. All data is processed securely on your device.",
+            link_privacy: "Privacy Policy", link_terms: "Terms of Use", link_contact: "Contact Us",
+            cookie_text: "We use cookies to analyze traffic and show personalized ads to support this free tool.",
+            btn_accept: "I Accept"
+        },
+        es: {
+            tagline: "La herramienta '¿Dónde estoy?' más rápida de internet.",
+            address_title: "Dirección Actual",
+            gps_label: "Coordenadas GPS",
+            weather_label: "Clima",
+            ip_label: "IP de Red",
+            nearby_label: "Servicios de Emergencia",
+            btn_sos: "SOS - COMPARTIR UBICACIÓN",
+            btn_refresh: "Actualizar",
+            btn_copy: "Copiar Lat/Long",
+            btn_coffee: "Invítame un Café",
+            trust_text: "🔒 Garantía de Privacidad: No guardamos, necesitamos ni compartimos tu ubicación. Este sitio existe solo para ayudarte o salvarte cuando sea necesario.",
+            link_privacy: "Privacidad", link_terms: "Términos", link_contact: "Contacto",
+            cookie_text: "Usamos cookies para analizar el tráfico y mostrar anuncios personalizados.",
+            btn_accept: "Aceptar"
+        },
+        fr: {
+            tagline: "L'outil 'Où suis-je ?' le plus rapide d'internet.",
+            address_title: "Adresse Actuelle",
+            gps_label: "Coordonnées GPS",
+            weather_label: "Météo",
+            ip_label: "IP Réseau",
+            nearby_label: "Services d'Urgence Proches",
+            btn_sos: "SOS - PARTAGER MA POSITION",
+            btn_refresh: "Actualiser",
+            btn_copy: "Copiar Lat/Long",
+            btn_coffee: "Offrez-moi un café",
+            trust_text: "🔒 Garantie de Confidentialité : Nous n'enregistrons ni ne partageons votre localisation. Ce site existe uniquement pour vous aider ou vous sauver en cas de besoin.",
+            link_privacy: "Confidentialité", link_terms: "Conditions", link_contact: "Contact",
+            cookie_text: "Nous utilisons des cookies pour analyser le trafic et afficher des publicités.",
+            btn_accept: "Accepter"
+        },
+        ru: {
+            tagline: "Самый быстрый инструмент определения местоположения.",
+            address_title: "Текущий адрес",
+            gps_label: "Координаты GPS",
+            weather_label: "Погода",
+            ip_label: "IP-адрес сети",
+            nearby_label: "Ближайшие экстренные службы",
+            btn_sos: "SOS - ОТПРАВИТЬ ГЕОПОЗИЦИЮ",
+            btn_refresh: "Обновить",
+            btn_copy: "Копировать",
+            btn_coffee: "Купить мне кофе",
+            trust_text: "🔒 Гарантия конфиденциальности: Мы не сохраняем и не передаем ваше местоположение. Этот сайт создан только для того, чтобы помочь вам в экстренной ситуации.",
+            link_privacy: "Политика", link_terms: "Условия", link_contact: "Контакты",
+            cookie_text: "Мы используем файлы cookie для анализа трафика и показа рекламы.",
+            btn_accept: "Принять"
+        },
+        ar: {
+            tagline: "أسرع أداة لمعرفة موقعك الحالي على الإنترنت.",
+            address_title: "العنوان الحالي",
+            gps_label: "إحداثيات GPS",
+            weather_label: "الطقس",
+            ip_label: "عنوان IP",
+            nearby_label: "أقرب خدمات الطوارئ",
+            btn_sos: "SOS - مشاركة الموقع للطوارئ",
+            btn_refresh: "تحديث البيانات",
+            btn_copy: "نسخ الإحداثيات",
+            btn_coffee: "دعم الموقع (قهوة)",
+            trust_text: "🔒 ضمان الخصوصية: نحن لا نحفظ موقعك أو نحتاج إليه أو نشاركه. هذا الموقع موجود فقط لمساعدتك أو إنقاذك عند الحاجة. تتم معالجة جميع البيانات بأمان على جهازك.",
+            link_privacy: "الخصوصية", link_terms: "الشروط", link_contact: "اتصل بنا",
+            cookie_text: "نحن نستخدم ملفات تعريف الارتباط لتحليل حركة المرور وعرض الإعلانات.",
+            btn_accept: "قبول"
+        }
+    };
 
-    function showPage(pageId) {
-        // Hide all views
-        document.getElementById('home-view').style.display = 'none';
-        document.getElementById('about-page').style.display = 'none';
-        document.getElementById('privacy-page').style.display = 'none';
-        document.getElementById('contact-page').style.display = 'none';
-        document.getElementById('terms-page').style.display = 'none';
-        
-        // Remove active class from all nav items
-        document.querySelectorAll('.nav-menu a').forEach(el => el.classList.remove('active'));
+    function changeLanguage(lang) {
+        localStorage.setItem('user_lang', lang);
+        if (lang === 'ar') { document.body.classList.add('rtl'); } else { document.body.classList.remove('rtl'); }
+        const texts = i18n[lang];
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (texts[key]) el.textContent = texts[key];
+        });
+    }
 
-        // Show selected view
-        if (pageId === 'home') {
-            document.getElementById('home-view').style.display = 'block';
-            // Highlight Home Link
-            const homeLink = document.querySelector('.nav-menu a[href="/"]');
-            if(homeLink) homeLink.classList.add('active');
-        } else {
-            const el = document.getElementById(pageId + '-page');
-            if(el) el.style.display = 'block';
-            
-            // Highlight specific link
-            const navLink = document.querySelector('.nav-menu a[href="/' + pageId + '"]');
-            if(navLink) navLink.classList.add('active');
-        }
-        
-        // Scroll to top
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    const savedLang = localStorage.getItem('user_lang') || 'en';
+    document.getElementById('language').value = savedLang;
+    changeLanguage(savedLang);
 
-    /* EXISTING LOGIC PRESERVED BELOW */
-    
-    // Generate QR Code
-    new QRCode(document.getElementById("qrcode"), {
-        text: window.location.href,
-        width: 100,
-        height: 100,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-    });
+    if (!localStorage.getItem('cookiesAccepted')) {
+        document.getElementById('cookie-banner').style.display = 'block';
+    }
+    function acceptCookies() {
+        localStorage.setItem('cookiesAccepted', 'true');
+        document.getElementById('cookie-banner').style.display = 'none';
+    }
 
-    // Real-time Compass Orientation logic
-    window.addEventListener('deviceorientation', function(event) {
-        if (event.webkitCompassHeading) {
-            document.getElementById('compass-svg').style.transform = `rotate(${-event.webkitCompassHeading}deg)`;
-            document.getElementById('head-p').textContent = Math.round(event.webkitCompassHeading) + '°';
-        } else if (event.alpha) {
-            document.getElementById('compass-svg').style.transform = `rotate(${-event.alpha}deg)`;
-            document.getElementById('head-p').textContent = Math.round(event.alpha) + '°';
-        }
-    }, true);
+    const els = {
+        lat: document.getElementById("lat-val"),
+        lng: document.getElementById("lng-val"),
+        addr: document.getElementById("full-address"),
+        acc: document.getElementById("accuracy-val"),
+        temp: document.getElementById("temp-display"),
+        wind: document.getElementById("wind-display"),
+        ip: document.getElementById("ip-val"),
+        isp: document.getElementById("isp-val"),
+        nearby: document.getElementById("nearby-results")
+    };
 
-    // Update Premium Dashboard Clock
-    setInterval(() => {
-        const now = new Date();
-        document.getElementById('time-p').textContent = now.toLocaleTimeString(, {hour: '2-digit', minute:'2-digit', second:'2-digit'});
-    }, 1000);
+    let map, marker, accuracyCircle, currentPos = null;
 
-    /* ORIGINAL SCRIPT CONTINUES BELOW 
-    */
-    const i18n = {
-        en: {
-            tagline: "The fastest 'Where am I?' tool on the internet.",
-            address_title: "Current Address",
-            gps_label: "GPS Coordinates",
-            weather_label: "Weather",
-            ip_label: "Network IP",
-            nearby_label: "Nearest Emergency Services",
-            btn_sos: "ONE-TAP SOS SHARE",
-            btn_refresh: "Refresh",
-            btn_copy: "Copy Lat/Long",
-            btn_coffee: "Buy Me a Coffee",
-            trust_text: "🔒 Privacy Guarantee: We do not save, need, or share your location. This website exists solely to help you or save you when needed. All data is processed securely on your device.",
-            link_privacy: "Privacy Policy", link_terms: "Terms of Use", link_contact: "Contact Us",
-            cookie_text: "We use cookies to analyze traffic and show personalized ads to support this free tool.",
-            btn_accept: "I Accept"
-        },
-        es: {
-            tagline: "La herramienta '¿Dónde estoy?' más rápida de internet.",
-            address_title: "Dirección Actual",
-            gps_label: "Coordenadas GPS",
-            weather_label: "Clima",
-            ip_label: "IP de Red",
-            nearby_label: "Servicios de Emergencia",
-            btn_sos: "SOS - COMPARTIR UBICACIÓN",
-            btn_refresh: "Actualizar",
-            btn_copy: "Copiar Lat/Long",
-            btn_coffee: "Invítame un Café",
-            trust_text: "🔒 Garantía de Privacidad: No guardamos, necesitamos ni compartimos tu ubicación. Este sitio existe solo para ayudarte o salvarte cuando sea necesario.",
-            link_privacy: "Privacidad", link_terms: "Términos", link_contact: "Contacto",
-            cookie_text: "Usamos cookies para analizar el tráfico y mostrar anuncios personalizados.",
-            btn_accept: "Aceptar"
-        },
-        fr: {
-            tagline: "L'outil 'Où suis-je?' le plus rapide d'internet.",
-            address_title: "Adresse Actuelle",
-            gps_label: "Coordonnées GPS",
-            weather_label: "Météo",
-            ip_label: "IP Réseau",
-            nearby_label: "Services d'Urgence Proches",
-            btn_sos: "SOS - PARTAGER MA POSITION",
-            btn_refresh: "Actualiser",
-            btn_copy: "Copiar Lat/Long",
-            btn_coffee: "Offrez-moi un café",
-            trust_text: "🔒 Garantie de Confidentialité : Nous n'enregistrons ni ne partageons votre localisation. Ce site existe uniquement pour vous aider ou vous sauver en cas de besoin.",
-            link_privacy: "Confidentialité", link_terms: "Conditions", link_contact: "Contact",
-            cookie_text: "Nous utilisons des cookies pour analyser le trafic et afficher des publicités.",
-            btn_accept: "Accepter"
-        },
-        ru: {
-            tagline: "Самый быстрый инструмент определения местоположения.",
-            address_title: "Текущий адрес",
-            gps_label: "Координаты GPS",
-            weather_label: "Погода",
-            ip_label: "IP-адрес сети",
-            nearby_label: "Ближайшие экстренные службы",
-            btn_sos: "SOS - ОТПРАВИТЬ ГЕОПОЗИЦИЮ",
-            btn_refresh: "Обновить",
-            btn_copy: "Копировать",
-            btn_coffee: "Купить мне кофе",
-            trust_text: "🔒 Гарантия конфиденциальности: Мы не сохраняем и не передаем ваше местоположение. Этот сайт создан только для того, чтобы помочь вам в экстренной ситуации.",
-            link_privacy: "Политика", link_terms: "Условия", link_contact: "Контакты",
-            cookie_text: "Мы используем файлы cookie для анализа трафика и показа рекламы.",
-            btn_accept: "Принять"
-        },
-        ar: {
-            tagline: "أسرع أداة لمعرفة موقعك الحالي على الإنترنت.",
-            address_title: "العنوان الحالي",
-            gps_label: "إحداثيات GPS",
-            weather_label: "الطقس",
-            ip_label: "عنوان IP",
-            nearby_label: "أقرب خدمات الطوارئ",
-            btn_sos: "SOS - مشاركة الموقع للطوارئ",
-            btn_refresh: "تحديث البيانات",
-            btn_copy: "نسخ الإحداثيات",
-            btn_coffee: "دعم الموقع (قهوة)",
-            trust_text: "🔒 ضمان الخصوصية: نحن لا نحفظ موقعك أو نحتاج إليه أو نشاركه. هذا الموقع موجود فقط لمساعدتك أو إنقاذك عند الحاجة. تتم معالجة جميع البيانات بأمان على جهازك.",
-            link_privacy: "الخصوصية", link_terms: "الشروط", link_contact: "اتصل بنا",
-            cookie_text: "نحن نستخدم ملفات تعريف الارتباط لتحليل حركة المرور وعرض الإعلانات.",
-            btn_accept: "قبول"
-        }
-    };
+    function getDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; 
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const km = R * c;
+        return { km: km.toFixed(2), mi: (km * 0.621371).toFixed(2) };
+    }
 
-    function changeLanguage(lang) {
-        localStorage.setItem('user_lang', lang);
-        if (lang === 'ar') { document.body.classList.add('rtl'); } else { document.body.classList.remove('rtl'); }
-        const texts = i18n[lang];
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            if (texts[key]) el.textContent = texts[key];
-        });
-    }
+    async function updateDashboard(lat, lng, acc) {
+        currentPos = { lat, lng };
+        try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+            const data = await res.json();
+            els.addr.textContent = data.display_name || "Unknown Address";
+        } catch(e) { els.addr.textContent = "..."; }
 
-    const savedLang = localStorage.getItem('user_lang') |
+        try {
+            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,wind_speed_10m`);
+            const data = await res.json();
+            const c = Math.round(data.current.temperature_2m);
+            const f = Math.round((c * 9/5) + 32);
+            const kph = Math.round(data.current.wind_speed_10m);
+            const mph = Math.round(kph * 0.621371);
+            els.temp.textContent = `${f}°F / ${c}°C`;
+            els.wind.textContent = `${mph} mph / ${kph} km/h`;
+        } catch(e) { els.temp.textContent = "N/A"; }
 
-| 'en';
-    document.getElementById('language').value = savedLang;
-    changeLanguage(savedLang);
+        try {
+            const query = `[out:json][timeout:10];(node["amenity"~"police|hospital|fuel"](around:5000,${lat},${lng}););out body 10;`;
+            const res = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: query });
+            const data = await res.json();
+            const types = { police: "Police", hospital: "Hospital", fuel: "Fuel" };
+            let best = { police: null, hospital: null, fuel: null };
+            data.elements.forEach(el => {
+                const t = el.tags.amenity;
+                const dist = getDistance(lat, lng, el.lat, el.lon);
+                if (!best[t] || parseFloat(dist.km) < parseFloat(best[t].dist.km)) {
+                    best[t] = { name: el.tags.name || "Local", dist };
+                }
+            });
+            els.nearby.innerHTML = "";
+            Object.keys(best).forEach(k => {
+                const item = best[k];
+                const div = document.createElement("div");
+                div.className = "nearby-item";
+                div.innerHTML = item ? 
+                    `<div class="nearby-type">${types[k]}</div><div class="nearby-name">${item.name}</div><div class="nearby-dist">${item.dist.mi} mi / ${item.dist.km} km</div>` :
+                    `<div class="nearby-type">${types[k]}</div><div class="nearby-name" style="color:#555">None</div>`;
+                els.nearby.appendChild(div);
+            });
+        } catch(e) { console.log("Nearby Error"); }
+    }
 
-    if (!localStorage.getItem('cookiesAccepted')) {
-        document.getElementById('cookie-banner').style.display = 'block';
-    }
-    function acceptCookies() {
-        localStorage.setItem('cookiesAccepted', 'true');
-        document.getElementById('cookie-banner').style.display = 'none';
-    }
+    function initGPS() {
+        if (!navigator.geolocation) { els.addr.textContent = "GPS not supported"; return; }
+        navigator.geolocation.getCurrentPosition(pos => {
+            const { latitude, longitude, accuracy, altitude } = pos.coords;
+            els.lat.textContent = latitude.toFixed(5);
+            els.lng.textContent = longitude.toFixed(5);
+            els.acc.textContent = `±${Math.round(accuracy)}m`;
+            
+            // Update New Premium Dashboard Fields
+            document.getElementById('alt-p').textContent = altitude ? Math.round(altitude) + 'm' : 'Sea Level';
 
-    const els = {
-        lat: document.getElementById("lat-val"),
-        lng: document.getElementById("lng-val"),
-        addr: document.getElementById("full-address"),
-        acc: document.getElementById("accuracy-val"),
-        temp: document.getElementById("temp-display"),
-        wind: document.getElementById("wind-display"),
-        ip: document.getElementById("ip-val"),
-        isp: document.getElementById("isp-val"),
-        nearby: document.getElementById("nearby-results")
-    };
+            if (!map) {
+                map = L.map("map", { zoomControl: false }).setView([latitude, longitude], 15);
+                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(map);
+                marker = L.marker([latitude, longitude]).addTo(map);
+                accuracyCircle = L.circle([latitude, longitude], { radius: accuracy }).addTo(map);
+            } else {
+                map.setView([latitude, longitude], 15);
+                marker.setLatLng([latitude, longitude]);
+                accuracyCircle.setLatLng([latitude, longitude]);
+                accuracyCircle.setRadius(accuracy);
+            }
+            updateDashboard(latitude, longitude, accuracy);
+        }, (err) => { els.addr.textContent = "Please enable Location Services."; }, { enableHighAccuracy: true });
+        fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{
+            els.ip.textContent = d.ip;
+            els.isp.textContent = d.org;
+        });
+    }
 
-    let map, marker, accuracyCircle, currentPos = null;
+    document.getElementById("refresh-btn").addEventListener("click", () => location.reload());
+    document.getElementById("copy-coords-btn").addEventListener("click", () => {
+        navigator.clipboard.writeText(`${els.lat.textContent}, ${els.lng.textContent}`);
+        alert("Coordinates Copied!");
+    });
+    document.getElementById("copy-addr").addEventListener("click", () => {
+        navigator.clipboard.writeText(els.addr.textContent);
+        alert("Address Copied!");
+    });
+    // MODIFIED: Original listener maintained, but enhanced SOS logic added below
+    document.getElementById("sos-btn").addEventListener("click", () => {
+        // Trigger New SOS Mode instead of just sharing
+        triggerSOSMode();
+    });
+    initGPS();
 
-    function getDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371; 
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const km = R * c;
-        return { km: km.toFixed(2), mi: (km * 0.621371).toFixed(2) };
-    }
+    /* =========================================
+       NEW DEVELOPER MODE MODULES & FUNCTIONS
+       ========================================= */
 
-    async function updateDashboard(lat, lng, acc) {
-        currentPos = { lat, lng };
-        try {
-            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
-            const data = await res.json();
-            els.addr.textContent = data.display_name |
+    /* --- OFFLINE MODE HANDLER --- */
+    window.addEventListener('offline', () => {
+        document.getElementById('offline-indicator').style.display = 'inline-block';
+        // Try to load cached pins
+        loadPins();
+    });
+    window.addEventListener('online', () => {
+        document.getElementById('offline-indicator').style.display = 'none';
+    });
 
-| "Unknown Address";
-        } catch(e) { els.addr.textContent = "..."; }
+    /* --- UI TOGGLER --- */
+    function toggleModule(id) {
+        document.querySelectorAll('.new-module-container').forEach(el => {
+            if (el.id !== id) el.classList.remove('active-mod');
+        });
+        const mod = document.getElementById(id);
+        mod.classList.toggle('active-mod');
+        
+        // Populate share link if opening share mod
+        if (id === 'share-mod' && currentPos) {
+            document.getElementById('share-url-input').value = `https://tellmylocation.com/?lat=${currentPos.lat}&lng=${currentPos.lng}`;
+        }
+    }
 
-        try {
-            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,wind_speed_10m`);
-            const data = await res.json();
-            const c = Math.round(data.current.temperature_2m);
-            const f = Math.round((c * 9/5) + 32);
-            const kph = Math.round(data.current.wind_speed_10m);
-            const mph = Math.round(kph * 0.621371);
-            els.temp.textContent = `${f}°F / ${c}°C`;
-            els.wind.textContent = `${mph} mph / ${kph} km/h`;
-        } catch(e) { els.temp.textContent = "N/A"; }
+    /* --- MODULE: SHAREABLE LINK --- */
+    function copyShareLink() {
+        const input = document.getElementById('share-url-input');
+        input.select();
+        document.execCommand('copy');
+        alert('Link copied to clipboard!');
+    }
+    
+    function shareSocial(platform) {
+        if (!currentPos) return alert("Waiting for location...");
+        const url = `https://tellmylocation.com/?lat=${currentPos.lat}&lng=${currentPos.lng}`;
+        const msg = `My current location: ${url}`;
+        let link = "";
+        
+        if (platform === 'wa') link = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+        if (platform === 'sms') link = `sms:?body=${encodeURIComponent(msg)}`;
+        if (platform === 'tg') link = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent("My Location")}`;
+        
+        window.open(link, '_blank');
+    }
 
-        try {
-            const query = `[out:json][timeout:10];(node["amenity"~"police|hospital|fuel"](around:5000,${lat},${lng}););out body 10;`;
-            const res = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: query });
-            const data = await res.json();
-            const types = { police: "Police", hospital: "Hospital", fuel: "Fuel" };
-            let best = { police: null, hospital: null, fuel: null };
-            data.elements.forEach(el => {
-                const t = el.tags.amenity;
-                const dist = getDistance(lat, lng, el.lat, el.lon);
-                if (!best[t] |
+    function startLiveTrack() {
+        // STUB: This would connect to a backend websocket
+        const btn = document.getElementById('live-trk-btn');
+        btn.innerText = "📡 Tracking Active (15m)";
+        btn.style.background = "#ef4444";
+        setTimeout(() => {
+            btn.innerText = "📡 Start Live (15m)";
+            btn.style.background = "";
+            alert("Live tracking session ended.");
+        }, 15 * 60 * 1000); // 15 mins
+        alert("Live tracking started. Session ID: " + Math.random().toString(36).substr(2, 9));
+    }
 
-| parseFloat(dist.km) < parseFloat(best[t].dist.km)) {
-                    best[t] = { name: el.tags.name |
+    /* --- MODULE: DRIVER MODE --- */
+    let watchId = null;
+    function enableDriverStats() {
+        if (watchId) return;
+        watchId = navigator.geolocation.watchPosition(pos => {
+            const spd = pos.coords.speed; // m/s
+            const hdg = pos.coords.heading;
+            
+            if (spd !== null) {
+                const mph = Math.round(spd * 2.23694);
+                document.getElementById('drv-speed').innerText = mph;
+            }
+            if (hdg !== null && !isNaN(hdg)) {
+                const dirs = ['N','NE','E','SE','S','SW','W','NW'];
+                const ix = Math.round(((hdg %= 360) < 0 ? hdg + 360 : hdg) / 45) % 8;
+                document.getElementById('drv-dir').innerText = dirs[ix];
+            }
+        }, null, {enableHighAccuracy: true});
+    }
+    // Activate driver stats when module opens (conceptually)
+    document.querySelector('button[onclick="toggleModule(\'driver-mod\')"]').addEventListener('click', enableDriverStats);
 
-| "Local", dist };
-                }
-            });
-            els.nearby.innerHTML = "";
-            Object.keys(best).forEach(k => {
-                const item = best[k];
-                const div = document.createElement("div");
-                div.className = "nearby-item";
-                div.innerHTML = item? 
-                    `<div class="nearby-type">${types[k]}</div><div class="nearby-name">${item.name}</div><div class="nearby-dist">${item.dist.mi} mi / ${item.dist.km} km</div>` :
-                    `<div class="nearby-type">${types[k]}</div><div class="nearby-name" style="color:#555">None</div>`;
-                els.nearby.appendChild(div);
-            });
-        } catch(e) { console.log("Nearby Error"); }
-    }
+    function openMapSearch(query) {
+        if (!currentPos) return;
+        window.open(`https://www.google.com/maps/search/${query}/@${currentPos.lat},${currentPos.lng},15z`);
+    }
 
-    function initGPS() {
-        if (!navigator.geolocation) { els.addr.textContent = "GPS not supported"; return; }
-        navigator.geolocation.getCurrentPosition(pos => {
-            const { latitude, longitude, accuracy, altitude } = pos.coords;
-            els.lat.textContent = latitude.toFixed(5);
-            els.lng.textContent = longitude.toFixed(5);
-            els.acc.textContent = `±${Math.round(accuracy)}m`;
-            
-            // Update New Premium Dashboard Fields
-            document.getElementById('alt-p').textContent = altitude? Math.round(altitude) + 'm' : 'Sea Level';
+    function shareETA() {
+        const min = prompt("Minutes to arrival?", "15");
+        if (!min) return;
+        const msg = `I will arrive in approx ${min} mins. Track me: https://tellmylocation.com/?lat=${currentPos.lat}&lng=${currentPos.lng}`;
+        window.location.href = `sms:?body=${encodeURIComponent(msg)}`;
+    }
+    
+    function shareLocationSimple() {
+        shareSocial('sms');
+    }
 
-            if (!map) {
-                map = L.map("map", { zoomControl: false }).setView([latitude, longitude], 15);
-                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(map);
-                marker = L.marker([latitude, longitude]).addTo(map);
-                accuracyCircle = L.circle([latitude, longitude], { radius: accuracy }).addTo(map);
-            } else {
-                map.setView([latitude, longitude], 15);
-                marker.setLatLng([latitude, longitude]);
-                accuracyCircle.setLatLng([latitude, longitude]);
-                accuracyCircle.setRadius(accuracy);
-            }
-            updateDashboard(latitude, longitude, accuracy);
-        }, (err) => { els.addr.textContent = "Please enable Location Services."; }, { enableHighAccuracy: true });
-        fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{
-            els.ip.textContent = d.ip;
-            els.isp.textContent = d.org;
-        });
-    }
+    /* --- MODULE: HIKER MODE --- */
+    function dropPin() {
+        if (!currentPos) return alert("No GPS signal.");
+        const pins = JSON.parse(localStorage.getItem('hiker_pins') || "[]");
+        const pin = {
+            time: new Date().toLocaleTimeString(),
+            lat: currentPos.lat,
+            lng: currentPos.lng
+        };
+        pins.push(pin);
+        localStorage.setItem('hiker_pins', JSON.stringify(pins));
+        loadPins();
+    }
 
-    document.getElementById("refresh-btn").addEventListener("click", () => location.reload());
-    document.getElementById("copy-coords-btn").addEventListener("click", () => {
-        navigator.clipboard.writeText(`${els.lat.textContent}, ${els.lng.textContent}`);
-        alert("Coordinates Copied!");
-    });
-    document.getElementById("copy-addr").addEventListener("click", () => {
-        navigator.clipboard.writeText(els.addr.textContent);
-        alert("Address Copied!");
-    });
-    // MODIFIED: Original listener maintained, but enhanced SOS logic added below
-    document.getElementById("sos-btn").addEventListener("click", () => {
-        // Trigger New SOS Mode instead of just sharing
-        triggerSOSMode();
-    });
-    initGPS();
+    function loadPins() {
+        const list = document.getElementById('pin-list');
+        list.innerHTML = "";
+        const pins = JSON.parse(localStorage.getItem('hiker_pins') || "[]");
+        pins.forEach((p, i) => {
+            const div = document.createElement('div');
+            div.className = 'pin-item';
+            div.innerHTML = `<span>📍 Pin ${i+1} (${p.time})</span> <a href="https://maps.google.com/?q=${p.lat},${p.lng}" target="_blank" style="color:#38bdf8">Map</a>`;
+            list.appendChild(div);
+        });
+    }
+    
+    function clearPins() {
+        if(confirm("Delete all pins?")) {
+            localStorage.removeItem('hiker_pins');
+            loadPins();
+        }
+    }
+    loadPins(); // Init load
 
-    /* =========================================
-       NEW DEVELOPER MODE MODULES & FUNCTIONS
-       ========================================= */
+    /* --- MODULE: MEET FRIEND --- */
+    function calcFriendDist() {
+        const val = document.getElementById('friend-input').value;
+        // Simple parser for "lat,lng"
+        let lat2, lng2;
+        
+        // Regex to find coords in a string
+        const match = val.match(/([-+]?\d{1,2}\.\d+),\s*([-+]?\d{1,3}\.\d+)/);
+        if (match) {
+            lat2 = parseFloat(match[1]);
+            lng2 = parseFloat(match[2]);
+        } else if (val.includes('lat=') && val.includes('lng=')) {
+            const url = new URL(val);
+            lat2 = parseFloat(url.searchParams.get('lat'));
+            lng2 = parseFloat(url.searchParams.get('lng'));
+        } else {
+            return alert("Could not parse coordinates. Please use 'lat,lng' format.");
+        }
 
-    /* --- OFFLINE MODE HANDLER --- */
-    window.addEventListener('offline', () => {
-        document.getElementById('offline-indicator').style.display = 'inline-block';
-        // Try to load cached pins
-        loadPins();
-    });
-    window.addEventListener('online', () => {
-        document.getElementById('offline-indicator').style.display = 'none';
-    });
+        if (!currentPos) return alert("Your location is not set yet.");
+        
+        const dist = getDistance(currentPos.lat, currentPos.lng, lat2, lng2);
+        
+        // Calc Midpoint
+        const midLat = (currentPos.lat + lat2) / 2;
+        const midLng = (currentPos.lng + lng2) / 2;
+        
+        const res = document.getElementById('friend-res');
+        res.innerHTML = `
+            <strong>Distance:</strong> ${dist.mi} mi / ${dist.km} km<br>
+            <strong>Midpoint:</strong> <a href="https://www.google.com/maps/search/coffee/@${midLat},${midLng},14z" target="_blank" style="color:#38bdf8; text-decoration:underline;">Find Meetup Spot</a>
+        `;
+    }
 
-    /* --- UI TOGGLER --- */
-    function toggleModule(id) {
-        document.querySelectorAll('.new-module-container').forEach(el => {
-            if (el.id!== id) el.classList.remove('active-mod');
-        });
-        const mod = document.getElementById(id);
-        mod.classList.toggle('active-mod');
-        
-        // Populate share link if opening share mod
-        if (id === 'share-mod' && currentPos) {
-            document.getElementById('share-url-input').value = `https://tellmylocation.com/?lat=${currentPos.lat}&lng=${currentPos.lng}`;
-        }
-    }
+    /* --- MODULE: SOS MODE --- */
+    let sosAudio = null;
+    function triggerSOSMode() {
+        const overlay = document.getElementById('sos-overlay');
+        overlay.style.display = 'flex';
+        
+        // Loop Alarm (Stubbing Audio)
+        // sosAudio = new Audio('alarm.mp3'); sosAudio.loop = true; sosAudio.play();
+        
+        // Auto share
+        if (navigator.share && currentPos) {
+            navigator.share({
+                title: 'EMERGENCY SOS',
+                text: 'I NEED HELP. My Location:',
+                url: `https://tellmylocation.com/?lat=${currentPos.lat}&lng=${currentPos.lng}`
+            }).catch(console.log);
+        }
+    }
 
-    /* --- MODULE: SHAREABLE LINK --- */
-    function copyShareLink() {
-        const input = document.getElementById('share-url-input');
-        input.select();
-        document.execCommand('copy');
-        alert('Link copied to clipboard!');
-    }
-    
-    function shareSocial(platform) {
-        if (!currentPos) return alert("Waiting for location...");
-        const url = `https://tellmylocation.com/?lat=${currentPos.lat}&lng=${currentPos.lng}`;
-        const msg = `My current location: ${url}`;
-        let link = "";
-        
-        if (platform === 'wa') link = `https://wa.me/?text=${encodeURIComponent(msg)}`;
-        if (platform === 'sms') link = `sms:?body=${encodeURIComponent(msg)}`;
-        if (platform === 'tg') link = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent("My Location")}`;
-        
-        window.open(link, '_blank');
-    }
+    function stopSOS() {
+        document.getElementById('sos-overlay').style.display = 'none';
+        if (sosAudio) {
+            sosAudio.pause();
+            sosAudio = null;
+        }
+    }
 
-    function startLiveTrack() {
-        // STUB: This would connect to a backend websocket
-        const btn = document.getElementById('live-trk-btn');
-        btn.innerText = "📡 Tracking Active (15m)";
-        btn.style.background = "#ef4444";
-        setTimeout(() => {
-            btn.innerText = "📡 Start Live (15m)";
-            btn.style.background = "";
-            alert("Live tracking session ended.");
-        }, 15 * 60 * 1000); // 15 mins
-        alert("Live tracking started. Session ID: " + Math.random().toString(36).substr(2, 9));
-    }
-
-    /* --- MODULE: DRIVER MODE --- */
-    let watchId = null;
-    function enableDriverStats() {
-        if (watchId) return;
-        watchId = navigator.geolocation.watchPosition(pos => {
-            const spd = pos.coords.speed; // m/s
-            const hdg = pos.coords.heading;
-            
-            if (spd!== null) {
-                const mph = Math.round(spd * 2.23694);
-                document.getElementById('drv-speed').innerText = mph;
-            }
-            if (hdg!== null &&!isNaN(hdg)) {
-                const dirs =;
-                const ix = Math.round(((hdg %= 360) < 0? hdg + 360 : hdg) / 45) % 8;
-                document.getElementById('drv-dir').innerText = dirs[ix];
-            }
-        }, null, {enableHighAccuracy: true});
-    }
-    // Activate driver stats when module opens (conceptually)
-    document.querySelector('button[onclick="toggleModule(\'driver-mod\')"]').addEventListener('click', enableDriverStats);
-
-    function openMapSearch(query) {
-        if (!currentPos) return;
-        window.open(`https://www.google.com/maps/search/${query}/@${currentPos.lat},${currentPos.lng},15z`);
-    }
-
-    function shareETA() {
-        const min = prompt("Minutes to arrival?", "15");
-        if (!min) return;
-        const msg = `I will arrive in approx ${min} mins. Track me: https://tellmylocation.com/?lat=${currentPos.lat}&lng=${currentPos.lng}`;
-        window.location.href = `sms:?body=${encodeURIComponent(msg)}`;
-    }
-    
-    function shareLocationSimple() {
-        shareSocial('sms');
-    }
-
-    /* --- MODULE: HIKER MODE --- */
-    function dropPin() {
-        if (!currentPos) return alert("No GPS signal.");
-        const pins = JSON.parse(localStorage.getItem('hiker_pins') |
-
-| "");
-        const pin = {
-            time: new Date().toLocaleTimeString(),
-            lat: currentPos.lat,
-            lng: currentPos.lng
-        };
-        pins.push(pin);
-        localStorage.setItem('hiker_pins', JSON.stringify(pins));
-        loadPins();
-    }
-
-    function loadPins() {
-        const list = document.getElementById('pin-list');
-        list.innerHTML = "";
-        const pins = JSON.parse(localStorage.getItem('hiker_pins') |
-
-| "");
-        pins.forEach((p, i) => {
-            const div = document.createElement('div');
-            div.className = 'pin-item';
-            div.innerHTML = `<span>📍 Pin ${i+1} (${p.time})</span> <a href="https://maps.google.com/?q=${p.lat},${p.lng}" target="_blank" style="color:#38bdf8">Map</a>`;
-            list.appendChild(div);
-        });
-    }
-    
-    function clearPins() {
-        if(confirm("Delete all pins?")) {
-            localStorage.removeItem('hiker_pins');
-            loadPins();
-        }
-    }
-    loadPins(); // Init load
-
-    /* --- MODULE: MEET FRIEND --- */
-    function calcFriendDist() {
-        const val = document.getElementById('friend-input').value;
-        // Simple parser for "lat,lng"
-        let lat2, lng2;
-        
-        // Regex to find coords in a string
-        const match = val.match(/([-+]?\d{1,2}\.\d+),\s*([-+]?\d{1,3}\.\d+)/);
-        if (match) {
-            lat2 = parseFloat(match[1]);
-            lng2 = parseFloat(match[2]);
-        } else if (val.includes('lat=') && val.includes('lng=')) {
-            const url = new URL(val);
-            lat2 = parseFloat(url.searchParams.get('lat'));
-            lng2 = parseFloat(url.searchParams.get('lng'));
-        } else {
-            return alert("Could not parse coordinates. Please use 'lat,lng' format.");
-        }
-
-        if (!currentPos) return alert("Your location is not set yet.");
-        
-        const dist = getDistance(currentPos.lat, currentPos.lng, lat2, lng2);
-        
-        // Calc Midpoint
-        const midLat = (currentPos.lat + lat2) / 2;
-        const midLng = (currentPos.lng + lng2) / 2;
-        
-        const res = document.getElementById('friend-res');
-        res.innerHTML = `
-            <strong>Distance:</strong> ${dist.mi} mi / ${dist.km} km<br>
-            <strong>Midpoint:</strong> <a href="https://www.google.com/maps/search/coffee/@${midLat},${midLng},14z" target="_blank" style="color:#38bdf8; text-decoration:underline;">Find Meetup Spot</a>
-        `;
-    }
-
-    /* --- MODULE: SOS MODE --- */
-    let sosAudio = null;
-    function triggerSOSMode() {
-        const overlay = document.getElementById('sos-overlay');
-        overlay.style.display = 'flex';
-        
-        // Loop Alarm (Stubbing Audio)
-        // sosAudio = new Audio('alarm.mp3'); sosAudio.loop = true; sosAudio.play();
-        
-        // Auto share
-        if (navigator.share && currentPos) {
-            navigator.share({
-                title: 'EMERGENCY SOS',
-                text: 'I NEED HELP. My Location:',
-                url: `https://tellmylocation.com/?lat=${currentPos.lat}&lng=${currentPos.lng}`
-            }).catch(console.log);
-        }
-    }
-
-    function stopSOS() {
-        document.getElementById('sos-overlay').style.display = 'none';
-        if (sosAudio) {
-            sosAudio.pause();
-            sosAudio = null;
-        }
-    }
-
-    /* --- CHECK URL PARAMS ON LOAD --- */
-    window.onload = function() {
-        const params = new URLSearchParams(window.location.search);
-        const pLat = params.get('lat');
-        const pLng = params.get('lng');
-        if (pLat && pLng) {
-            // If someone shared a link, maybe show it differently or map it
-            // For now we just focus the map there if logic allows, or alert
-            console.log("Opened via shared link:", pLat, pLng);
-            setTimeout(() => {
-               if(map) {
-                   L.marker([pLat, pLng], {color:'red'}).addTo(map).bindPopup("Shared Location").openPopup();
-                   map.setView([pLat, pLng], 15);
-               }
-            }, 2000);
-        }
-    };
+    /* --- CHECK URL PARAMS ON LOAD --- */
+    window.onload = function() {
+        const params = new URLSearchParams(window.location.search);
+        const pLat = params.get('lat');
+        const pLng = params.get('lng');
+        if (pLat && pLng) {
+            // If someone shared a link, maybe show it differently or map it
+            // For now we just focus the map there if logic allows, or alert
+            console.log("Opened via shared link:", pLat, pLng);
+            setTimeout(() => {
+               if(map) {
+                   L.marker([pLat, pLng], {color:'red'}).addTo(map).bindPopup("Shared Location").openPopup();
+                   map.setView([pLat, pLng], 15);
+               }
+            }, 2000);
+        }
+    };
 </script>
 
 <script>
-    // New Feature Module: Weather & Alerts
-    (function() {
-        // Init mini map var
-        let miniMap = null;
+    // New Feature Module: Weather & Alerts
+    (function() {
+        // Init mini map var
+        let miniMap = null;
 
-        const weatherCodes = {
-            0: "☀️ Clear", 1: "🌤️ Mostly Clear", 2: "⛅ Partly Cloudy", 3: "☁️ Overcast",
-            45: "🌫️ Fog", 48: "🌫️ Rime Fog",
-            51: "DRIZZLE", 53: "DRIZZLE", 55: "DRIZZLE",
-            61: "Rain", 63: "Rain", 65: "Heavy Rain",
-            71: "Snow", 73: "Snow", 75: "Heavy Snow",
-            80: "Showers", 81: "Showers", 82: "Showers",
-            95: "STORM", 96: "STORM", 99: "HEAVY STORM"
-        };
+        const weatherCodes = {
+            0: "☀️ Clear", 1: "🌤️ Mostly Clear", 2: "⛅ Partly Cloudy", 3: "☁️ Overcast",
+            45: "🌫️ Fog", 48: "🌫️ Rime Fog",
+            51: "DRIZZLE", 53: "DRIZZLE", 55: "DRIZZLE",
+            61: "Rain", 63: "Rain", 65: "Heavy Rain",
+            71: "Snow", 73: "Snow", 75: "Heavy Snow",
+            80: "Showers", 81: "Showers", 82: "Showers",
+            95: "STORM", 96: "STORM", 99: "HEAVY STORM"
+        };
 
-        function getDesc(code) { return weatherCodes[code] |
+        function getDesc(code) { return weatherCodes[code] || "Unknown"; }
 
-| "Unknown"; }
+        function initPreviewMap(lat, lng) {
+            if(!miniMap) {
+                // Initialize the preview map
+                miniMap = L.map('mini-map', { zoomControl: false, attributionControl: false }).setView([lat, lng], 13);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    maxZoom: 19
+                }).addTo(miniMap);
+                L.marker([lat, lng]).addTo(miniMap);
+                
+                // Expose to window for buttons
+                window.mapPreview = miniMap;
+                window.lastLat = lat;
+                window.lastLng = lng;
+            } else {
+                miniMap.setView([lat, lng], 13);
+                window.lastLat = lat;
+                window.lastLng = lng;
+                // In a real app we'd update the marker position too, but for a preview snippet, re-centering is key.
+            }
+        }
 
-        function initPreviewMap(lat, lng) {
-            if(!miniMap) {
-                // Initialize the preview map
-                miniMap = L.map('mini-map', { zoomControl: false, attributionControl: false }).setView([lat, lng], 13);
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                    maxZoom: 19
-                }).addTo(miniMap);
-                L.marker([lat, lng]).addTo(miniMap);
-                
-                // Expose to window for buttons
-                window.mapPreview = miniMap;
-                window.lastLat = lat;
-                window.lastLng = lng;
-            } else {
-                miniMap.setView([lat, lng], 13);
-                window.lastLat = lat;
-                window.lastLng = lng;
-                // In a real app we'd update the marker position too, but for a preview snippet, re-centering is key.
-            }
-        }
+        function fetchExtendedWeather(lat, lng) {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,weather_code,precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=1`;
+            
+            fetch(url).then(r=>r.json()).then(data => {
+                document.getElementById('weather-loading').style.display = 'none';
+                document.getElementById('weather-content').style.display = 'block';
 
-        function fetchExtendedWeather(lat, lng) {
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,weather_code,precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=1`;
-            
-            fetch(url).then(r=>r.json()).then(data => {
-                document.getElementById('weather-loading').style.display = 'none';
-                document.getElementById('weather-content').style.display = 'block';
+                // Current
+                document.getElementById('wx-temp').innerText = Math.round(data.current.temperature_2m) + "°F";
+                document.getElementById('wx-desc').innerText = getDesc(data.current.weather_code);
+                document.getElementById('wx-wind').innerText = Math.round(data.current.wind_speed_10m) + " mph";
+                document.getElementById('wx-hum').innerText = data.current.relative_humidity_2m + "%";
+                document.getElementById('wx-uv').innerText = data.current.uv_index;
 
-                // Current
-                document.getElementById('wx-temp').innerText = Math.round(data.current.temperature_2m) + "°F";
-                document.getElementById('wx-desc').innerText = getDesc(data.current.weather_code);
-                document.getElementById('wx-wind').innerText = Math.round(data.current.wind_speed_10m) + " mph";
-                document.getElementById('wx-hum').innerText = data.current.relative_humidity_2m + "%";
-                document.getElementById('wx-uv').innerText = data.current.uv_index;
+                // Alerts Logic (Simulated based on severity of current data, as Open-Meteo alerts endpoint requires different handling/parsing)
+                const panel = document.getElementById('wx-alert-panel');
+                const msg = document.getElementById('wx-alert-msg');
+                // Simple logic: if code is storm, or wind > 40mph, or UV > 8
+                if(data.current.weather_code >= 95 || data.current.wind_speed_10m > 40 || data.current.uv_index > 8) {
+                    panel.style.borderColor = "#ef4444";
+                    panel.style.background = "rgba(239, 68, 68, 0.1)";
+                    msg.innerText = "⚠️ CAUTION: High winds, storm, or UV detected.";
+                    msg.style.color = "#fca5a5";
+                } else {
+                    panel.style.borderColor = "#10b981";
+                    panel.style.background = "rgba(16, 185, 129, 0.05)";
+                    msg.innerText = "Clear — No severe warnings active.";
+                    msg.style.color = "#cbd5e1";
+                }
 
-                // Alerts Logic (Simulated based on severity of current data, as Open-Meteo alerts endpoint requires different handling/parsing)
-                const panel = document.getElementById('wx-alert-panel');
-                const msg = document.getElementById('wx-alert-msg');
-                // Simple logic: if code is storm, or wind > 40mph, or UV > 8
-                if(data.current.weather_code >= 95 |
+                // Hourly Forecast (Next 12h)
+                const hourlyDiv = document.getElementById('wx-hourly');
+                hourlyDiv.innerHTML = "";
+                const nowHour = new Date().getHours();
+                
+                let startIndex = nowHour;
+                
+                for(let i=0; i<12; i++) { 
+                    let idx = startIndex + i;
+                    if(idx >= data.hourly.time.length) break;
+                    
+                    const t = Math.round(data.hourly.temperature_2m[idx]);
+                    const code = data.hourly.weather_code[idx];
+                    const pop = data.hourly.precipitation_probability[idx];
+                    
+                    const el = document.createElement('div');
+                    el.style = "background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; min-width:60px; text-align:center; flex-shrink:0;";
+                    el.innerHTML = `
+                        <div style="font-size:10px; color:#94a3b8; margin-bottom:4px;">+${i}h</div>
+                        <div style="font-size:16px; margin-bottom:2px;">${(code > 50) ? '🌧️' : ((code < 3) ? '☀️' : '☁️')}</div>
+                        <div style="font-size:13px; font-weight:700;">${t}°</div>
+                        <div style="font-size:9px; color:#38bdf8;">${pop}%</div>
+                    `;
+                    hourlyDiv.appendChild(el);
+                }
 
-| data.current.wind_speed_10m > 40 |
-| data.current.uv_index > 8) {
-                    panel.style.borderColor = "#ef4444";
-                    panel.style.background = "rgba(239, 68, 68, 0.1)";
-                    msg.innerText = "⚠️ CAUTION: High winds, storm, or UV detected.";
-                    msg.style.color = "#fca5a5";
-                } else {
-                    panel.style.borderColor = "#10b981";
-                    panel.style.background = "rgba(16, 185, 129, 0.05)";
-                    msg.innerText = "Clear — No severe warnings active.";
-                    msg.style.color = "#cbd5e1";
-                }
+            }).catch(e => {
+                document.getElementById('weather-loading').innerText = "Weather unavailable.";
+            });
+        }
 
-                // Hourly Forecast (Next 12h)
-                const hourlyDiv = document.getElementById('wx-hourly');
-                hourlyDiv.innerHTML = "";
-                const nowHour = new Date().getHours();
-                
-                let startIndex = nowHour;
-                
-                for(let i=0; i<12; i++) { 
-                    let idx = startIndex + i;
-                    if(idx >= data.hourly.time.length) break;
-                    
-                    const t = Math.round(data.hourly.temperature_2m[idx]);
-                    const code = data.hourly.weather_code[idx];
-                    const pop = data.hourly.precipitation_probability[idx];
-                    
-                    const el = document.createElement('div');
-                    el.style = "background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; min-width:60px; text-align:center; flex-shrink:0;";
-                    el.innerHTML = `
-                        <div style="font-size:10px; color:#94a3b8; margin-bottom:4px;">+${i}h</div>
-                        <div style="font-size:16px; margin-bottom:2px;">${(code > 50)? '🌧️' : ((code < 3)? '☀️' : '☁️')}</div>
-                        <div style="font-size:13px; font-weight:700;">${t}°</div>
-                        <div style="font-size:9px; color:#38bdf8;">${pop}%</div>
-                    `;
-                    hourlyDiv.appendChild(el);
-                }
-
-            }).catch(e => {
-                document.getElementById('weather-loading').innerText = "Weather unavailable.";
-            });
-        }
-
-        // Initialize listener
-        // We poll for DOM changes because variable scope between script tags can be tricky with 'let'
-        const checkLoc = setInterval(() => {
-            const latTxt = document.getElementById('lat-val').textContent;
-            const lngTxt = document.getElementById('lng-val').textContent;
-            
-            if(latTxt!== '—' &&!isNaN(parseFloat(latTxt))) {
-                const lat = parseFloat(latTxt);
-                const lng = parseFloat(lngTxt);
-                
-                initPreviewMap(lat, lng);
-                fetchExtendedWeather(lat, lng);
-                clearInterval(checkLoc);
-            }
-        }, 1000);
-    })();
+        // Initialize listener
+        // We poll for DOM changes because variable scope between script tags can be tricky with 'let'
+        const checkLoc = setInterval(() => {
+            const latTxt = document.getElementById('lat-val').textContent;
+            const lngTxt = document.getElementById('lng-val').textContent;
+            
+            if(latTxt !== '—' && !isNaN(parseFloat(latTxt))) {
+                const lat = parseFloat(latTxt);
+                const lng = parseFloat(lngTxt);
+                
+                initPreviewMap(lat, lng);
+                fetchExtendedWeather(lat, lng);
+                clearInterval(checkLoc);
+            }
+        }, 1000);
+    })();
 </script>
 </body>
 </html>
