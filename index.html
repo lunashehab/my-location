@@ -397,6 +397,30 @@
                 <h3 style="color:#f59e0b; font-size:14px; margin-bottom:10px;">🌍 Day & Night Cycle</h3>
                 <div id="earth-content" style="font-size:13px; color:#cbd5e1;">Loading Solar Data...</div>
             </div>
+            <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
+                <h3 style="color:#ffffff; font-size:14px; margin-bottom:10px;">⭐ Polaris (North Star)</h3>
+                <div id="polaris-content" style="font-size:13px; color:#cbd5e1;">Loading Star Position...</div>
+            </div>
+            <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
+                <h3 style="color:#ffffff; font-size:14px; margin-bottom:10px; display:flex; justify-content:space-between;">
+                    ✨ Star Map
+                    <span style="font-size:10px; color:#94a3b8; cursor:pointer;" onclick="document.getElementById('star-canvas').classList.toggle('hidden-map')">Toggle</span>
+                </h3>
+                <canvas id="star-canvas" width="300" height="200" style="width:100%; height:200px; background:#000; border-radius:12px; transition: opacity 0.5s ease;"></canvas>
+            </div>
+            <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
+                <h3 style="color:#38bdf8; font-size:14px; margin-bottom:10px;">🔭 Star Position Mode</h3>
+                <div id="sidereal-content" style="font-size:13px; color:#cbd5e1; display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
+                        <div style="font-size:10px; color:#94a3b8;">LST (Sidereal)</div>
+                        <div id="lst-val" style="font-weight:700; color:white;">--:--</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
+                         <div style="font-size:10px; color:#94a3b8;">Zenith (Dec)</div>
+                         <div id="zenith-val" style="font-weight:700; color:white;">--°</div>
+                    </div>
+                </div>
+            </div>
             <div class="premium-dashboard">
                 <div class="p-card">
                     <span class="p-icon">🛰️</span>
@@ -1326,10 +1350,6 @@
             95: "STORM", 96: "STORM", 99: "HEAVY STORM"
         };
 
-        const moonPhases = {
-            0: "🌑 New Moon", 0.25: "🌓 First Quarter", 0.5: "🌕 Full Moon", 0.75: "🌗 Last Quarter"
-        };
-        // Helper to approximate moon phase name from 0-1 float
         function getMoonPhaseName(p) {
             if(p < 0.05 || p > 0.95) return "🌑 New Moon";
             if(p < 0.20) return "🌒 Waxing Crescent";
@@ -1360,17 +1380,100 @@
             }
         }
 
-        function fetchAllData(lat, lng) {
-            // 1. Weather & Hourly
-            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,weather_code,precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=1`;
+        // --- NEW: Polaris Calculation ---
+        function updatePolarisPanel(lat) {
+            // Polaris altitude is approximately equal to the observer's latitude in the Northern Hemisphere.
+            // If in Southern Hemisphere, Polaris is not visible (below horizon).
+            const isNorth = lat > 0;
+            const alt = isNorth ? lat.toFixed(1) + "°" : "Below Horizon";
+            const vis = isNorth ? "Visible (Look North)" : "Not Visible";
             
-            // 2. Astronomy (Moon & Sun)
-            const astroUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=sunrise,sunset,daylight_duration,moonrise,moonset,moon_phase,moon_illumination&timezone=auto&forecast_days=1`;
+            document.getElementById('polaris-content').innerHTML = `
+                <div style="display:flex; align-items:center; justify-content:space-between;">
+                    <div>
+                        <div style="font-size:18px; color:white; font-weight:700;">${alt}</div>
+                        <div style="font-size:11px; color:#94a3b8;">Altitude Angle</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:12px; color:var(--neon-blue); font-weight:600;">${vis}</div>
+                        <div style="font-size:24px; margin-top:5px;">${isNorth ? '⬆️ N' : '🚫'}</div>
+                    </div>
+                </div>
+            `;
+        }
 
-            // 3. Marine (Tides) - might return error if inland
+        // --- NEW: Simple Star Map (Canvas) ---
+        function drawStarMap(lat, lng) {
+            const canvas = document.getElementById('star-canvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            
+            // Clear
+            ctx.fillStyle = "#0f172a";
+            ctx.fillRect(0, 0, w, h);
+            
+            // Simple pseudo-random star field seeded by lat/lng roughly
+            // This is a simulation, not a precise chart, as per instructions "simple approximation is fine"
+            const seed = Math.abs(lat + lng); 
+            const starCount = 50;
+            
+            ctx.fillStyle = "#ffffff";
+            
+            for(let i=0; i<starCount; i++) {
+                // Pseudo-random based on index + seed
+                const x = ((Math.sin(i * seed) + 1) / 2) * w;
+                const y = ((Math.cos(i * seed * 0.5) + 1) / 2) * h;
+                const size = Math.random() * 1.5;
+                const opacity = Math.random();
+                
+                ctx.globalAlpha = opacity;
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            // Draw "Zenith" crosshair
+            ctx.globalAlpha = 0.3;
+            ctx.strokeStyle = "#38bdf8";
+            ctx.beginPath();
+            ctx.moveTo(w/2 - 10, h/2); ctx.lineTo(w/2 + 10, h/2);
+            ctx.moveTo(w/2, h/2 - 10); ctx.lineTo(w/2, h/2 + 10);
+            ctx.stroke();
+        }
+
+        // --- NEW: Local Sidereal Time Calculation ---
+        function updateSiderealTime(lng) {
+            const now = new Date();
+            // Approximate LST calculation
+            // Greenwhich Sidereal Time (GST)
+            // JD = days since J2000.0
+            const jd = (now.getTime() / 1000 / 86400) + 2440587.5;
+            const d = jd - 2451545.0;
+            const gst = (280.46061837 + 360.98564736629 * d) % 360;
+            // Local Sidereal Time = GST + Longitude
+            let lst = (gst + lng) % 360;
+            if(lst < 0) lst += 360;
+            
+            // Convert degrees to Hours:Minutes
+            const lstHours = Math.floor(lst / 15);
+            const lstMinutes = Math.floor((lst % 15) * 4);
+            const timeStr = `${String(lstHours).padStart(2,'0')}:${String(lstMinutes).padStart(2,'0')}`;
+            
+            document.getElementById('lst-val').textContent = timeStr;
+            // Zenith declination is equal to Latitude
+            const latTxt = document.getElementById('lat-val').textContent;
+            if(latTxt && !isNaN(parseFloat(latTxt))) {
+                document.getElementById('zenith-val').textContent = Math.round(parseFloat(latTxt)) + "°";
+            }
+        }
+
+
+        function fetchAllData(lat, lng) {
+            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,weather_code,precipitation_probability&daily=sunrise,sunset,daylight_duration,moonrise,moonset,moon_phase,moon_illumination&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=1`;
             const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lng}&hourly=tide_height&timezone=auto&forecast_days=1`;
 
-            // FETCH WEATHER
+            // FETCH WEATHER & ASTRO
             fetch(weatherUrl).then(r=>r.json()).then(data => {
                 document.getElementById('weather-loading').style.display = 'none';
                 document.getElementById('weather-content').style.display = 'block';
@@ -1419,14 +1522,9 @@
                     `;
                     hourlyDiv.appendChild(el);
                 }
-            }).catch(e => {
-                document.getElementById('weather-loading').innerText = "Weather unavailable.";
-            });
 
-            // FETCH ASTRO (Moon & Earth)
-            fetch(astroUrl).then(r=>r.json()).then(data => {
+                // ASTRO (Moon & Earth)
                 const d = data.daily;
-                // Earth Status
                 const now = new Date();
                 const sunrise = new Date(d.sunrise[0]);
                 const sunset = new Date(d.sunset[0]);
@@ -1443,7 +1541,6 @@
                     </div>
                 `;
 
-                // Moon Status
                 const moonDiv = document.getElementById('moon-content');
                 const phase = d.moon_phase[0];
                 const illum = d.moon_illumination[0];
@@ -1462,6 +1559,7 @@
                         </div>
                     </div>
                 `;
+
             }).catch(e=>{});
 
             // FETCH TIDES
@@ -1499,6 +1597,10 @@
                 
                 initPreviewMap(lat, lng);
                 fetchAllData(lat, lng);
+                updatePolarisPanel(lat);
+                drawStarMap(lat, lng);
+                updateSiderealTime(lng);
+                
                 clearInterval(checkLoc);
             }
         }, 1000);
