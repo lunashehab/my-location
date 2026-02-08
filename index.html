@@ -385,42 +385,6 @@
                 <div id="wx-alert-msg" style="color:#cbd5e1; font-size:13px;">Clear — No warnings active.</div>
                 <div style="font-size:10px; color:var(--text-soft); margin-top:5px;">Always find shelter if conditions worsen.</div>
             </div>
-            <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
-                <h3 style="color:var(--neon-blue); font-size:14px; margin-bottom:10px;">🌊 Real-Time Tides</h3>
-                <div id="tide-content" style="font-size:13px; color:#cbd5e1;">Loading Tide Data...</div>
-            </div>
-            <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
-                <h3 style="color:#a855f7; font-size:14px; margin-bottom:10px;">🌖 Moon Phase</h3>
-                <div id="moon-content" style="font-size:13px; color:#cbd5e1;">Loading Moon Data...</div>
-            </div>
-            <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
-                <h3 style="color:#f59e0b; font-size:14px; margin-bottom:10px;">🌍 Day & Night Cycle</h3>
-                <div id="earth-content" style="font-size:13px; color:#cbd5e1;">Loading Solar Data...</div>
-            </div>
-            <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
-                <h3 style="color:#ffffff; font-size:14px; margin-bottom:10px;">⭐ Polaris (North Star)</h3>
-                <div id="polaris-content" style="font-size:13px; color:#cbd5e1;">Loading Star Position...</div>
-            </div>
-            <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
-                <h3 style="color:#ffffff; font-size:14px; margin-bottom:10px; display:flex; justify-content:space-between;">
-                    ✨ Star Map
-                    <span style="font-size:10px; color:#94a3b8; cursor:pointer;" onclick="document.getElementById('star-canvas').classList.toggle('hidden-map')">Toggle</span>
-                </h3>
-                <canvas id="star-canvas" width="300" height="200" style="width:100%; height:200px; background:#000; border-radius:12px; transition: opacity 0.5s ease;"></canvas>
-            </div>
-            <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
-                <h3 style="color:#38bdf8; font-size:14px; margin-bottom:10px;">🔭 Star Position Mode</h3>
-                <div id="sidereal-content" style="font-size:13px; color:#cbd5e1; display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
-                        <div style="font-size:10px; color:#94a3b8;">LST (Sidereal)</div>
-                        <div id="lst-val" style="font-weight:700; color:white;">--:--</div>
-                    </div>
-                    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
-                         <div style="font-size:10px; color:#94a3b8;">Zenith (Dec)</div>
-                         <div id="zenith-val" style="font-weight:700; color:white;">--°</div>
-                    </div>
-                </div>
-            </div>
             <div class="premium-dashboard">
                 <div class="p-card">
                     <span class="p-icon">🛰️</span>
@@ -1076,65 +1040,33 @@
     }
 
     function initGPS() {
-        if (!navigator.geolocation) { 
-            // FALLBACK TO IP IF GPS NOT SUPPORTED
-            fallbackToIP(); 
-            return; 
-        }
+        if (!navigator.geolocation) { els.addr.textContent = "GPS not supported"; return; }
         navigator.geolocation.getCurrentPosition(pos => {
             const { latitude, longitude, accuracy, altitude } = pos.coords;
-            updateGPSUI(latitude, longitude, accuracy, altitude);
-        }, (err) => { 
-            // FALLBACK TO IP IF PERMISSION DENIED OR ERROR
-            console.log("GPS Denied/Error, falling back to IP.");
-            fallbackToIP(); 
-        }, { enableHighAccuracy: true, timeout: 10000 });
-        
-        // Fetch IP info for display anyway
+            els.lat.textContent = latitude.toFixed(5);
+            els.lng.textContent = longitude.toFixed(5);
+            els.acc.textContent = `±${Math.round(accuracy)}m`;
+            
+            // Update New Premium Dashboard Fields
+            document.getElementById('alt-p').textContent = altitude ? Math.round(altitude) + 'm' : 'Sea Level';
+
+            if (!map) {
+                map = L.map("map", { zoomControl: false }).setView([latitude, longitude], 15);
+                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(map);
+                marker = L.marker([latitude, longitude]).addTo(map);
+                accuracyCircle = L.circle([latitude, longitude], { radius: accuracy }).addTo(map);
+            } else {
+                map.setView([latitude, longitude], 15);
+                marker.setLatLng([latitude, longitude]);
+                accuracyCircle.setLatLng([latitude, longitude]);
+                accuracyCircle.setRadius(accuracy);
+            }
+            updateDashboard(latitude, longitude, accuracy);
+        }, (err) => { els.addr.textContent = "Please enable Location Services."; }, { enableHighAccuracy: true });
         fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{
             els.ip.textContent = d.ip;
             els.isp.textContent = d.org;
         });
-    }
-
-    // NEW FUNCTION: Updates UI with coordinates (reused by both GPS and IP)
-    function updateGPSUI(lat, lng, acc, alt) {
-        els.lat.textContent = lat.toFixed(5);
-        els.lng.textContent = lng.toFixed(5);
-        els.acc.textContent = acc ? `±${Math.round(acc)}m` : "IP Estimate";
-        
-        // Update New Premium Dashboard Fields
-        document.getElementById('alt-p').textContent = alt ? Math.round(alt) + 'm' : 'Sea Level';
-
-        if (!map) {
-            map = L.map("map", { zoomControl: false }).setView([lat, lng], 15);
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(map);
-            marker = L.marker([lat, lng]).addTo(map);
-            accuracyCircle = L.circle([lat, lng], { radius: acc || 500 }).addTo(map);
-        } else {
-            map.setView([lat, lng], 15);
-            marker.setLatLng([lat, lng]);
-            accuracyCircle.setLatLng([lat, lng]);
-            accuracyCircle.setRadius(acc || 500);
-        }
-        updateDashboard(lat, lng, acc);
-    }
-
-    // NEW FUNCTION: IP Fallback
-    function fallbackToIP() {
-        fetch("https://ipapi.co/json/")
-            .then(r => r.json())
-            .then(data => {
-                if(data.latitude && data.longitude) {
-                    updateGPSUI(data.latitude, data.longitude, null, null);
-                    els.addr.textContent = `${data.city}, ${data.region}, ${data.country_name}`;
-                } else {
-                    els.addr.textContent = "Location Unavailable";
-                }
-            })
-            .catch(e => {
-                els.addr.textContent = "Location Unavailable";
-            });
     }
 
     document.getElementById("refresh-btn").addEventListener("click", () => location.reload());
@@ -1368,6 +1300,7 @@
 </script>
 
 <script>
+    // New Feature Module: Weather & Alerts
     (function() {
         // Init mini map var
         let miniMap = null;
@@ -1382,26 +1315,18 @@
             95: "STORM", 96: "STORM", 99: "HEAVY STORM"
         };
 
-        function getMoonPhaseName(p) {
-            if(p < 0.05 || p > 0.95) return "🌑 New Moon";
-            if(p < 0.20) return "🌒 Waxing Crescent";
-            if(p < 0.30) return "🌓 First Quarter";
-            if(p < 0.45) return "🌔 Waxing Gibbous";
-            if(p < 0.55) return "🌕 Full Moon";
-            if(p < 0.70) return "🌖 Waning Gibbous";
-            if(p < 0.80) return "🌗 Last Quarter";
-            return "🌘 Waning Crescent";
-        }
-
         function getDesc(code) { return weatherCodes[code] || "Unknown"; }
 
         function initPreviewMap(lat, lng) {
             if(!miniMap) {
+                // Initialize the preview map
                 miniMap = L.map('mini-map', { zoomControl: false, attributionControl: false }).setView([lat, lng], 13);
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                     maxZoom: 19
                 }).addTo(miniMap);
                 L.marker([lat, lng]).addTo(miniMap);
+                
+                // Expose to window for buttons
                 window.mapPreview = miniMap;
                 window.lastLat = lat;
                 window.lastLng = lng;
@@ -1409,120 +1334,28 @@
                 miniMap.setView([lat, lng], 13);
                 window.lastLat = lat;
                 window.lastLng = lng;
+                // In a real app we'd update the marker position too, but for a preview snippet, re-centering is key.
             }
         }
 
-        // --- Polaris Calculation ---
-        function updatePolarisPanel(lat) {
-            // Polaris altitude is approximately equal to the observer's latitude in the Northern Hemisphere.
-            // If in Southern Hemisphere, Polaris is not visible (below horizon).
-            const isNorth = lat > 0;
-            const alt = isNorth ? lat.toFixed(1) + "°" : "Below Horizon";
-            const vis = isNorth ? "Visible (Look North)" : "Not Visible";
+        function fetchExtendedWeather(lat, lng) {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,weather_code,precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=1`;
             
-            const el = document.getElementById('polaris-content');
-            if(el) {
-                el.innerHTML = `
-                    <div style="display:flex; align-items:center; justify-content:space-between;">
-                        <div>
-                            <div style="font-size:18px; color:white; font-weight:700;">${alt}</div>
-                            <div style="font-size:11px; color:#94a3b8;">Altitude Angle</div>
-                        </div>
-                        <div style="text-align:right;">
-                            <div style="font-size:12px; color:var(--neon-blue); font-weight:600;">${vis}</div>
-                            <div style="font-size:24px; margin-top:5px;">${isNorth ? '⬆️ N' : '🚫'}</div>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        // --- Simple Star Map (Canvas) ---
-        function drawStarMap(lat, lng) {
-            const canvas = document.getElementById('star-canvas');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const w = canvas.width;
-            const h = canvas.height;
-            
-            // Clear
-            ctx.fillStyle = "#0f172a";
-            ctx.fillRect(0, 0, w, h);
-            
-            // Simple pseudo-random star field seeded by lat/lng roughly
-            const seed = Math.abs(lat + lng); 
-            const starCount = 50;
-            
-            ctx.fillStyle = "#ffffff";
-            
-            for(let i=0; i<starCount; i++) {
-                // Pseudo-random based on index + seed
-                const x = ((Math.sin(i * seed) + 1) / 2) * w;
-                const y = ((Math.cos(i * seed * 0.5) + 1) / 2) * h;
-                const size = Math.random() * 1.5;
-                const opacity = Math.random();
-                
-                ctx.globalAlpha = opacity;
-                ctx.beginPath();
-                ctx.arc(x, y, size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            // Draw "Zenith" crosshair
-            ctx.globalAlpha = 0.3;
-            ctx.strokeStyle = "#38bdf8";
-            ctx.beginPath();
-            ctx.moveTo(w/2 - 10, h/2); ctx.lineTo(w/2 + 10, h/2);
-            ctx.moveTo(w/2, h/2 - 10); ctx.lineTo(w/2, h/2 + 10);
-            ctx.stroke();
-        }
-
-        // --- Local Sidereal Time Calculation ---
-        function updateSiderealTime(lng) {
-            const now = new Date();
-            // Approximate LST calculation
-            // Greenwhich Sidereal Time (GST)
-            // JD = days since J2000.0
-            const jd = (now.getTime() / 1000 / 86400) + 2440587.5;
-            const d = jd - 2451545.0;
-            const gst = (280.46061837 + 360.98564736629 * d) % 360;
-            // Local Sidereal Time = GST + Longitude
-            let lst = (gst + lng) % 360;
-            if(lst < 0) lst += 360;
-            
-            // Convert degrees to Hours:Minutes
-            const lstHours = Math.floor(lst / 15);
-            const lstMinutes = Math.floor((lst % 15) * 4);
-            const timeStr = `${String(lstHours).padStart(2,'0')}:${String(lstMinutes).padStart(2,'0')}`;
-            
-            const elLST = document.getElementById('lst-val');
-            if(elLST) elLST.textContent = timeStr;
-            
-            // Zenith declination is equal to Latitude
-            const latTxt = document.getElementById('lat-val').textContent;
-            if(latTxt && !isNaN(parseFloat(latTxt))) {
-                 const elZen = document.getElementById('zenith-val');
-                 if(elZen) elZen.textContent = Math.round(parseFloat(latTxt)) + "°";
-            }
-        }
-
-        function fetchAllData(lat, lng) {
-            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,weather_code,precipitation_probability&daily=sunrise,sunset,daylight_duration,moonrise,moonset,moon_phase,moon_illumination&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=1`;
-            const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lng}&hourly=tide_height&timezone=auto&forecast_days=1`;
-
-            // FETCH WEATHER & ASTRO
-            fetch(weatherUrl).then(r=>r.json()).then(data => {
+            fetch(url).then(r=>r.json()).then(data => {
                 document.getElementById('weather-loading').style.display = 'none';
                 document.getElementById('weather-content').style.display = 'block';
 
+                // Current
                 document.getElementById('wx-temp').innerText = Math.round(data.current.temperature_2m) + "°F";
                 document.getElementById('wx-desc').innerText = getDesc(data.current.weather_code);
                 document.getElementById('wx-wind').innerText = Math.round(data.current.wind_speed_10m) + " mph";
                 document.getElementById('wx-hum').innerText = data.current.relative_humidity_2m + "%";
                 document.getElementById('wx-uv').innerText = data.current.uv_index;
 
-                // Alerts Logic
+                // Alerts Logic (Simulated based on severity of current data, as Open-Meteo alerts endpoint requires different handling/parsing)
                 const panel = document.getElementById('wx-alert-panel');
                 const msg = document.getElementById('wx-alert-msg');
+                // Simple logic: if code is storm, or wind > 40mph, or UV > 8
                 if(data.current.weather_code >= 95 || data.current.wind_speed_10m > 40 || data.current.uv_index > 8) {
                     panel.style.borderColor = "#ef4444";
                     panel.style.background = "rgba(239, 68, 68, 0.1)";
@@ -1535,13 +1368,15 @@
                     msg.style.color = "#cbd5e1";
                 }
 
-                // Hourly Forecast
+                // Hourly Forecast (Next 12h)
                 const hourlyDiv = document.getElementById('wx-hourly');
                 hourlyDiv.innerHTML = "";
                 const nowHour = new Date().getHours();
                 
+                let startIndex = nowHour;
+                
                 for(let i=0; i<12; i++) { 
-                    let idx = nowHour + i;
+                    let idx = startIndex + i;
                     if(idx >= data.hourly.time.length) break;
                     
                     const t = Math.round(data.hourly.temperature_2m[idx]);
@@ -1559,78 +1394,13 @@
                     hourlyDiv.appendChild(el);
                 }
 
-                // ASTRO (Moon & Earth)
-                const d = data.daily;
-                const now = new Date();
-                const sunrise = new Date(d.sunrise[0]);
-                const sunset = new Date(d.sunset[0]);
-                const isDay = now > sunrise && now < sunset;
-                const earthDiv = document.getElementById('earth-content');
-                if(earthDiv) {
-                    earthDiv.innerHTML = `
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <div style="font-size:20px;">${isDay ? '☀️ Day' : '🌑 Night'}</div>
-                            <div style="text-align:right; font-size:11px; color:#94a3b8;">
-                                <div>🌅 Rise: ${sunrise.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
-                                <div>🌇 Set: ${sunset.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
-                                <div>Day Length: ${(d.daylight_duration[0]/3600).toFixed(1)}h</div>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                const moonDiv = document.getElementById('moon-content');
-                if(moonDiv) {
-                    const phase = d.moon_phase[0];
-                    const illum = d.moon_illumination[0];
-                    const rise = d.moonrise[0] ? new Date(d.moonrise[0]).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '--';
-                    const set = d.moonset[0] ? new Date(d.moonset[0]).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '--';
-                    
-                    moonDiv.innerHTML = `
-                         <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <div style="font-size:14px; font-weight:700; color:white;">${getMoonPhaseName(phase)}</div>
-                                <div style="font-size:11px; color:#a855f7;">Illumination: ${illum}%</div>
-                            </div>
-                            <div style="text-align:right; font-size:11px; color:#94a3b8;">
-                                <div>⬆️ Rise: ${rise}</div>
-                                <div>⬇️ Set: ${set}</div>
-                            </div>
-                        </div>
-                    `;
-                }
-
-            }).catch(e=>{});
-
-            // FETCH TIDES
-            fetch(marineUrl).then(r=>{
-                if(!r.ok) throw new Error("No data");
-                return r.json();
-            }).then(data => {
-                const tides = data.hourly.tide_height;
-                const nowHour = new Date().getHours();
-                const currentTide = tides[nowHour];
-                const nextTide = tides[nowHour+1];
-                const trend = nextTide > currentTide ? "Rising ↗️" : "Falling ↘️";
-                
-                const elTide = document.getElementById('tide-content');
-                if(elTide) {
-                    elTide.innerHTML = `
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                             <div style="font-size:18px; color:white; font-weight:700;">${currentTide.toFixed(2)}m</div>
-                             <div style="text-align:right;">
-                                <div style="color:var(--neon-blue); font-weight:600;">${trend}</div>
-                                <div style="font-size:10px; color:#94a3b8;">Data from nearest marine station</div>
-                             </div>
-                        </div>
-                    `;
-                }
             }).catch(e => {
-                const elTide = document.getElementById('tide-content');
-                if(elTide) elTide.innerText = "📍 Location is inland or no marine data available.";
+                document.getElementById('weather-loading').innerText = "Weather unavailable.";
             });
         }
 
+        // Initialize listener
+        // We poll for DOM changes because variable scope between script tags can be tricky with 'let'
         const checkLoc = setInterval(() => {
             const latTxt = document.getElementById('lat-val').textContent;
             const lngTxt = document.getElementById('lng-val').textContent;
@@ -1640,11 +1410,7 @@
                 const lng = parseFloat(lngTxt);
                 
                 initPreviewMap(lat, lng);
-                fetchAllData(lat, lng);
-                updatePolarisPanel(lat);
-                drawStarMap(lat, lng);
-                updateSiderealTime(lng);
-                
+                fetchExtendedWeather(lat, lng);
                 clearInterval(checkLoc);
             }
         }, 1000);
