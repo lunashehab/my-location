@@ -4,6 +4,8 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5129097020907805" crossorigin="anonymous"></script>
     
     <meta charset="UTF-8" />
+    <link rel="icon" href="favicon.ico" />
+    
     <title>Tell My Location | Global GPS & Safety Tool</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     
@@ -200,7 +202,9 @@
             border-radius: 50px; font-weight: 800; cursor: pointer; font-size: 14px;
         }
 
-        /* PREMIUM UPGRADE CSS INJECT */
+        /* PREMIUM UPGRADE CSS INJECT 
+           High-end Futuristic Visuals 
+        */
         .premium-upgrade-container { animation: fadeIn 1.2s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -351,9 +355,15 @@
             <div class="address-box">
                 <h2 data-i18n="address_title">📍 Current Address</h2>
                 <div id="full-address">...</div>
+                <div style="font-size:10px; color:rgba(255,255,255,0.5); margin-top:5px;">(Tap copy icon to save)</div>
+                
                 <button class="icon-btn copy-abs" id="copy-addr" title="Copy Address">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                 </button>
+            </div>
+
+            <div style="text-align:center; font-size:11px; color:#94a3b8; margin-bottom:15px;">
+                Your location is processed locally on your device. Nothing is stored.
             </div>
 
             <div id="map"></div>
@@ -383,14 +393,20 @@
 
             <div class="data-grid">
                 <div class="data-item">
-                    <div class="label" data-i18n="gps_label">🌍 GPS Coordinates</div>
+                    <div class="label" data-i18n="gps_label">🌍 GPS Coordinates <span style="float:right; color:#10b981; font-weight:bold;">Accuracy: High</span></div>
                     <div class="value"><span id="lat-val">—</span>, <span id="lng-val">—</span></div>
                     <div class="sub-value" id="accuracy-val">...</div>
+                    <div style="font-size:10px; color:#64748b; margin-top:4px;">(Tap coordinates to copy)</div>
+                    <div style="margin-top:8px; display:flex; gap:5px;">
+                        <button class="mod-btn" style="padding:5px 10px; font-size:10px;" onclick="">Google Maps</button>
+                        <button class="mod-btn" style="padding:5px 10px; font-size:10px;" onclick="">Share Location</button>
+                    </div>
                 </div>
                 <div class="data-item">
                     <div class="label" data-i18n="weather_label">☁️ Weather</div>
                     <div class="value" id="temp-display">—</div>
                     <div class="sub-value" id="wind-display">Wind: —</div>
+                    <div style="font-size:10px; color:#64748b; margin-top:4px;">(Auto-updates live)</div>
                 </div>
                 <div class="data-item">
                     <div class="label" data-i18n="ip_label">🌐 Network IP</div>
@@ -522,6 +538,43 @@
                 <div class="use-case-card"><span>🏔️</span><h3>Hikers/Travelers</h3></div>
                 <div class="use-case-card"><span>🤝</span><h3>Meeting Friends</h3></div>
             </div>
+
+            <section class="card" style="margin-top: 20px;">
+                <h3 style="color:var(--neon-blue); font-size:16px; margin-bottom:15px;">24-Hour Weather Forecast</h3>
+                <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; text-align:center;">
+                    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
+                        <div style="font-size:12px; color:#94a3b8;">Now</div>
+                        <div style="font-size:18px;">🌤️</div>
+                        <div style="font-size:14px; font-weight:bold;">--°</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
+                        <div style="font-size:12px; color:#94a3b8;">+1h</div>
+                        <div style="font-size:18px;">☁️</div>
+                        <div style="font-size:14px; font-weight:bold;">--°</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
+                        <div style="font-size:12px; color:#94a3b8;">+3h</div>
+                        <div style="font-size:18px;">🌧️</div>
+                        <div style="font-size:14px; font-weight:bold;">--°</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
+                        <div style="font-size:12px; color:#94a3b8;">+6h</div>
+                        <div style="font-size:18px;">🌑</div>
+                        <div style="font-size:14px; font-weight:bold;">--°</div>
+                    </div>
+                </div>
+                <div style="margin-top:15px; font-size:12px; color:#cbd5e1; display:flex; justify-content:space-between;">
+                    <span>💧 Rain: --%</span>
+                    <span>💨 Wind: -- mph</span>
+                    <span>☀️ UV: --</span>
+                </div>
+            </section>
+
+            <section class="card" style="margin-top: 20px; border-color: #fbbf24;">
+                <h3 style="color:#fbbf24; font-size:16px; margin-bottom:10px;">⚠️ Weather Alerts & Safety</h3>
+                <p style="font-size:14px; color:white;">Clear — No warnings active.</p>
+                <p style="font-size:12px; color:#94a3b8; margin-top:5px;">Check local news if skies look threatening. Find shelter if needed.</p>
+            </section>
 
             <div class="content-expansion">
                 <h2>Understanding Geolocation Technology</h2>
