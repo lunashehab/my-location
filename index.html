@@ -1319,6 +1319,9 @@
 
         function initPreviewMap(lat, lng) {
             if(!miniMap) {
+                // Important: Need to ensure the div exists and has height. CSS handles height.
+                // Using a different tile layer (CartoDB Dark) for visual distinction or keep standard OSM.
+                // The prompt asks for "Map Preview". Let's stick to OSM or Carto Dark.
                 miniMap = L.map('mini-map', { zoomControl: false, attributionControl: false }).setView([lat, lng], 13);
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                     maxZoom: 19
@@ -1329,8 +1332,7 @@
                 window.mapPreview = miniMap;
             } else {
                 miniMap.setView([lat, lng], 13);
-                // Update marker? Simply re-init for this simple preview or move marker if kept ref.
-                // For robustness in this snippet, we just re-center.
+                // In a real app we'd update the marker position too, but for a preview snippet, re-centering is key.
             }
         }
 
@@ -1348,9 +1350,10 @@
                 document.getElementById('wx-hum').innerText = data.current.relative_humidity_2m + "%";
                 document.getElementById('wx-uv').innerText = data.current.uv_index;
 
-                // Alerts Logic
+                // Alerts Logic (Simulated based on severity of current data, as Open-Meteo alerts endpoint requires different handling/parsing)
                 const panel = document.getElementById('wx-alert-panel');
                 const msg = document.getElementById('wx-alert-msg');
+                // Simple logic: if code is storm, or wind > 40mph, or UV > 8
                 if(data.current.weather_code >= 95 || data.current.wind_speed_10m > 40 || data.current.uv_index > 8) {
                     panel.style.borderColor = "#ef4444";
                     panel.style.background = "rgba(239, 68, 68, 0.1)";
@@ -1363,14 +1366,14 @@
                     msg.style.color = "#cbd5e1";
                 }
 
-                // Hourly Forecast (Next 24h)
+                // Hourly Forecast (Next 12h)
                 const hourlyDiv = document.getElementById('wx-hourly');
                 hourlyDiv.innerHTML = "";
                 const nowHour = new Date().getHours();
                 
                 let startIndex = nowHour;
                 
-                for(let i=0; i<12; i++) { // Show next 12 hours
+                for(let i=0; i<12; i++) { 
                     let idx = startIndex + i;
                     if(idx >= data.hourly.time.length) break;
                     
@@ -1395,6 +1398,7 @@
         }
 
         // Initialize listener
+        // We poll for window.currentPos because the main script sets it asynchronously.
         const checkLoc = setInterval(() => {
             if(window.currentPos && window.currentPos.lat) {
                 initPreviewMap(window.currentPos.lat, window.currentPos.lng);
