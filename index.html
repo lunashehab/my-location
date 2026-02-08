@@ -423,6 +423,38 @@
                 <div class="nearby-item">...</div>
             </div>
 
+            <div class="card" style="margin-top: 20px; padding: 15px; border: 1px solid var(--border);">
+                <h3 style="color:white; font-size:14px; margin-bottom:10px;">🗺️ Location Preview</h3>
+                <div id="mini-map" style="height:150px; border-radius:12px; margin-bottom:10px; z-index:0;"></div>
+                <div style="display:flex; gap:10px;">
+                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.mapPreview && window.currentPos){ window.mapPreview.setView([window.currentPos.lat, window.currentPos.lng], 15); }">⬇ Recenter Map</button>
+                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.currentPos){ window.open('https://www.google.com/maps/search/?api=1&query='+window.currentPos.lat+','+window.currentPos.lng); }">Open Full Map</button>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
+                <h3 style="color:var(--neon-blue); font-size:14px; margin-bottom:15px;">🌦️ Real-Time Weather</h3>
+                <div id="weather-loading" style="color:var(--text-soft); font-size:12px;">Loading weather data...</div>
+                <div id="weather-content" style="display:none;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                        <div>
+                            <div id="wx-temp" style="font-size:32px; font-weight:800; color:white;">--°</div>
+                            <div id="wx-desc" style="color:var(--text-soft); font-size:14px;">Unknown</div>
+                        </div>
+                        <div style="text-align:right; font-size:12px; color:#cbd5e1;">
+                            <div>💨 Wind: <span id="wx-wind">--</span></div>
+                            <div>💧 Hum: <span id="wx-hum">--</span></div>
+                            <div>☀️ UV: <span id="wx-uv">--</span></div>
+                        </div>
+                    </div>
+                    <div style="font-size:11px; color:var(--text-soft); text-transform:uppercase; margin-bottom:10px;">24-Hour Forecast</div>
+                    <div id="wx-hourly" style="display:flex; overflow-x:auto; gap:10px; padding-bottom:10px; scrollbar-width:thin;"></div>
+                </div>
+            </div>
+            <div class="card" id="wx-alert-panel" style="margin-top: 15px; padding: 15px; border-left: 4px solid #10b981; background:rgba(16, 185, 129, 0.05);">
+                <h3 style="color:white; font-size:14px; margin-bottom:5px;">⚠️ Weather Alerts</h3>
+                <div id="wx-alert-msg" style="color:#cbd5e1; font-size:13px;">Clear — No warnings active.</div>
+                <div style="font-size:10px; color:var(--text-soft); margin-top:5px;">Always find shelter if conditions worsen.</div>
+            </div>
             <div class="btn-stack">
                 <button class="btn btn-sos" id="sos-btn">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
@@ -707,42 +739,6 @@
                     <summary class="faq-q">How do I report a bug?</summary>
                     <div class="faq-a">Please use the "Contact Us" link in the footer to send us an email.</div>
                 </details>
-            </div>
-            
-            <div class="card" style="margin-top: 20px; text-align: center;">
-                <h3 style="color:white; margin-bottom:15px;">🗺️ Map Preview</h3>
-                <div style="width:100%; height:150px; background:#1e293b; border-radius:12px; display:flex; align-items:center; justify-content:center; border:1px dashed var(--text-soft); margin-bottom:15px;">
-                    <span style="color:var(--text-soft);">Map Placeholder</span>
-                </div>
-                <div class="btn-row">
-                    <button class="mod-btn mod-btn-primary" onclick="alert('Map Opening...')">Open Full Map</button>
-                    <button class="mod-btn" onclick="initGPS()">Recenter My Location</button>
-                </div>
-            </div>
-            <div class="card" style="margin-top: 20px;">
-                <h3 style="color:var(--neon-blue); margin-bottom:15px;">🌦️ Real-Time Weather & 24h Forecast</h3>
-                <div id="weather-loading" style="color:var(--text-soft); font-size:12px;">Loading weather data...</div>
-                <div id="weather-content" style="display:none;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                        <div>
-                            <div id="wx-temp" style="font-size:32px; font-weight:800; color:white;">--°</div>
-                            <div id="wx-desc" style="color:var(--text-soft); font-size:14px;">Unknown</div>
-                        </div>
-                        <div style="text-align:right; font-size:12px; color:#cbd5e1;">
-                            <div>💨 Wind: <span id="wx-wind">--</span></div>
-                            <div>💧 Hum: <span id="wx-hum">--</span></div>
-                            <div>☀️ UV: <span id="wx-uv">--</span></div>
-                        </div>
-                    </div>
-                    <div style="font-size:11px; color:var(--text-soft); text-transform:uppercase; margin-bottom:10px;">24-Hour Forecast</div>
-                    <div id="wx-hourly" style="display:flex; overflow-x:auto; gap:10px; padding-bottom:10px;">
-                        </div>
-                </div>
-            </div>
-            <div class="card" id="wx-alert-panel" style="margin-top: 20px; border-left: 4px solid #10b981;">
-                <h3 style="color:white; font-size:16px; margin-bottom:5px;">⚠️ Weather Alerts</h3>
-                <div id="wx-alert-msg" style="color:#cbd5e1; font-size:14px;">Clear — No warnings active.</div>
-                <div style="font-size:11px; color:var(--text-soft); margin-top:5px;">Always find shelter if conditions worsen.</div>
             </div>
             <p class="trust-badge">
                 <span data-i18n="trust_text">🔒 Privacy Guarantee: We do not save, need, or share your location. This website exists solely to help you or save you when needed. All data is processed securely on your device.</span>
@@ -1306,6 +1302,9 @@
 <script>
     // New Feature Module: Weather & Alerts
     (function() {
+        // Init mini map var
+        let miniMap = null;
+
         const weatherCodes = {
             0: "☀️ Clear", 1: "🌤️ Mostly Clear", 2: "⛅ Partly Cloudy", 3: "☁️ Overcast",
             45: "🌫️ Fog", 48: "🌫️ Rime Fog",
@@ -1317,6 +1316,23 @@
         };
 
         function getDesc(code) { return weatherCodes[code] || "Unknown"; }
+
+        function initPreviewMap(lat, lng) {
+            if(!miniMap) {
+                miniMap = L.map('mini-map', { zoomControl: false, attributionControl: false }).setView([lat, lng], 13);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    maxZoom: 19
+                }).addTo(miniMap);
+                L.marker([lat, lng]).addTo(miniMap);
+                
+                // Expose to window for buttons
+                window.mapPreview = miniMap;
+            } else {
+                miniMap.setView([lat, lng], 13);
+                // Update marker? Simply re-init for this simple preview or move marker if kept ref.
+                // For robustness in this snippet, we just re-center.
+            }
+        }
 
         function fetchExtendedWeather(lat, lng) {
             const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,weather_code,precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=1`;
@@ -1337,10 +1353,12 @@
                 const msg = document.getElementById('wx-alert-msg');
                 if(data.current.weather_code >= 95 || data.current.wind_speed_10m > 40 || data.current.uv_index > 8) {
                     panel.style.borderColor = "#ef4444";
+                    panel.style.background = "rgba(239, 68, 68, 0.1)";
                     msg.innerText = "⚠️ CAUTION: High winds, storm, or UV detected.";
                     msg.style.color = "#fca5a5";
                 } else {
                     panel.style.borderColor = "#10b981";
+                    panel.style.background = "rgba(16, 185, 129, 0.05)";
                     msg.innerText = "Clear — No severe warnings active.";
                     msg.style.color = "#cbd5e1";
                 }
@@ -1350,13 +1368,9 @@
                 hourlyDiv.innerHTML = "";
                 const nowHour = new Date().getHours();
                 
-                // Open-Meteo gives data starting from 00:00, need to find current index
-                // Rough approx: just take next 24 points? API returns aligned arrays.
-                // We'll just take the first 12 hours from "now" index if possible, or just first 12.
-                // Actually Open-Meteo "hourly" array usually starts at 00:00 today.
                 let startIndex = nowHour;
                 
-                for(let i=0; i<8; i++) { // Show next 8 hours
+                for(let i=0; i<12; i++) { // Show next 12 hours
                     let idx = startIndex + i;
                     if(idx >= data.hourly.time.length) break;
                     
@@ -1365,7 +1379,7 @@
                     const pop = data.hourly.precipitation_probability[idx];
                     
                     const el = document.createElement('div');
-                    el.style = "background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; min-width:60px; text-align:center;";
+                    el.style = "background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; min-width:60px; text-align:center; flex-shrink:0;";
                     el.innerHTML = `
                         <div style="font-size:10px; color:#94a3b8; margin-bottom:4px;">+${i}h</div>
                         <div style="font-size:16px; margin-bottom:2px;">${(code > 50) ? '🌧️' : ((code < 3) ? '☀️' : '☁️')}</div>
@@ -1383,10 +1397,11 @@
         // Initialize listener
         const checkLoc = setInterval(() => {
             if(window.currentPos && window.currentPos.lat) {
+                initPreviewMap(window.currentPos.lat, window.currentPos.lng);
                 fetchExtendedWeather(window.currentPos.lat, window.currentPos.lng);
                 clearInterval(checkLoc);
             }
-        }, 2000);
+        }, 1000);
     })();
 </script>
 </body>
