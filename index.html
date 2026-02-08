@@ -422,13 +422,13 @@
                 <div class="nearby-item">...</div>
                 <div class="nearby-item">...</div>
             </div>
-
+            
             <div class="card" style="margin-top: 20px; padding: 15px; border: 1px solid var(--border);">
                 <h3 style="color:white; font-size:14px; margin-bottom:10px;">🗺️ Location Preview</h3>
                 <div id="mini-map" style="height:150px; border-radius:12px; margin-bottom:10px; z-index:0;"></div>
                 <div style="display:flex; gap:10px;">
                     <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.mapPreview && window.currentPos){ window.mapPreview.setView([window.currentPos.lat, window.currentPos.lng], 15); }">⬇ Recenter Map</button>
-                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.currentPos){ window.open('https://www.google.com/maps/search/?api=1&query='+window.currentPos.lat+','+window.currentPos.lng); }">Open Full Map</button>
+                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.currentPos){ window.open('https://www.google.com/maps/search/?api=1&query='+window.currentPos.lat+','+window.currentPos.lng?q=' + window.currentPos.lat + ',' + window.currentPos.lng, '_blank'); }">Open Full Map</button>
                 </div>
             </div>
             <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
@@ -1300,7 +1300,6 @@
 </script>
 
 <script>
-    // New Feature Module: Weather & Alerts
     (function() {
         // Init mini map var
         let miniMap = null;
@@ -1319,9 +1318,7 @@
 
         function initPreviewMap(lat, lng) {
             if(!miniMap) {
-                // Important: Need to ensure the div exists and has height. CSS handles height.
-                // Using a different tile layer (CartoDB Dark) for visual distinction or keep standard OSM.
-                // The prompt asks for "Map Preview". Let's stick to OSM or Carto Dark.
+                // Initialize the preview map
                 miniMap = L.map('mini-map', { zoomControl: false, attributionControl: false }).setView([lat, lng], 13);
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                     maxZoom: 19
