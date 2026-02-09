@@ -202,9 +202,7 @@
             border-radius: 50px; font-weight: 800; cursor: pointer; font-size: 14px;
         }
 
-        /* PREMIUM UPGRADE CSS INJECT 
-           High-end Futuristic Visuals 
-        */
+        /* PREMIUM UPGRADE CSS INJECT */
         .premium-upgrade-container { animation: fadeIn 1.2s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -539,43 +537,6 @@
                 <div class="use-case-card"><span>🤝</span><h3>Meeting Friends</h3></div>
             </div>
 
-            <section class="card" style="margin-top: 20px;">
-                <h3 style="color:var(--neon-blue); font-size:16px; margin-bottom:15px;">24-Hour Weather Forecast</h3>
-                <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; text-align:center;">
-                    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
-                        <div style="font-size:12px; color:#94a3b8;">Now</div>
-                        <div style="font-size:18px;">🌤️</div>
-                        <div style="font-size:14px; font-weight:bold;">--°</div>
-                    </div>
-                    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
-                        <div style="font-size:12px; color:#94a3b8;">+1h</div>
-                        <div style="font-size:18px;">☁️</div>
-                        <div style="font-size:14px; font-weight:bold;">--°</div>
-                    </div>
-                    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
-                        <div style="font-size:12px; color:#94a3b8;">+3h</div>
-                        <div style="font-size:18px;">🌧️</div>
-                        <div style="font-size:14px; font-weight:bold;">--°</div>
-                    </div>
-                    <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;">
-                        <div style="font-size:12px; color:#94a3b8;">+6h</div>
-                        <div style="font-size:18px;">🌑</div>
-                        <div style="font-size:14px; font-weight:bold;">--°</div>
-                    </div>
-                </div>
-                <div style="margin-top:15px; font-size:12px; color:#cbd5e1; display:flex; justify-content:space-between;">
-                    <span>💧 Rain: --%</span>
-                    <span>💨 Wind: -- mph</span>
-                    <span>☀️ UV: --</span>
-                </div>
-            </section>
-
-            <section class="card" style="margin-top: 20px; border-color: #fbbf24;">
-                <h3 style="color:#fbbf24; font-size:16px; margin-bottom:10px;">⚠️ Weather Alerts & Safety</h3>
-                <p style="font-size:14px; color:white;">Clear — No warnings active.</p>
-                <p style="font-size:12px; color:#94a3b8; margin-top:5px;">Check local news if skies look threatening. Find shelter if needed.</p>
-            </section>
-
             <div class="content-expansion">
                 <h2>Understanding Geolocation Technology</h2>
                 <p>In the digital age, the question "Where am I?" is answered by a complex web of technologies working in unison. The most precise method is the <strong>Global Positioning System (GPS)</strong>, which uses a network of over 30 satellites orbiting the Earth. When your device connects to at least four of these satellites, it calculates your exact position through trilateration, often achieving accuracy within a few meters.</p>
@@ -747,6 +708,42 @@
                     <div class="faq-a">Please use the "Contact Us" link in the footer to send us an email.</div>
                 </details>
             </div>
+            
+            <div class="card" style="margin-top: 20px; text-align: center;">
+                <h3 style="color:white; margin-bottom:15px;">🗺️ Map Preview</h3>
+                <div style="width:100%; height:150px; background:#1e293b; border-radius:12px; display:flex; align-items:center; justify-content:center; border:1px dashed var(--text-soft); margin-bottom:15px;">
+                    <span style="color:var(--text-soft);">Map Placeholder</span>
+                </div>
+                <div class="btn-row">
+                    <button class="mod-btn mod-btn-primary" onclick="alert('Map Opening...')">Open Full Map</button>
+                    <button class="mod-btn" onclick="initGPS()">Recenter My Location</button>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 20px;">
+                <h3 style="color:var(--neon-blue); margin-bottom:15px;">🌦️ Real-Time Weather & 24h Forecast</h3>
+                <div id="weather-loading" style="color:var(--text-soft); font-size:12px;">Loading weather data...</div>
+                <div id="weather-content" style="display:none;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                        <div>
+                            <div id="wx-temp" style="font-size:32px; font-weight:800; color:white;">--°</div>
+                            <div id="wx-desc" style="color:var(--text-soft); font-size:14px;">Unknown</div>
+                        </div>
+                        <div style="text-align:right; font-size:12px; color:#cbd5e1;">
+                            <div>💨 Wind: <span id="wx-wind">--</span></div>
+                            <div>💧 Hum: <span id="wx-hum">--</span></div>
+                            <div>☀️ UV: <span id="wx-uv">--</span></div>
+                        </div>
+                    </div>
+                    <div style="font-size:11px; color:var(--text-soft); text-transform:uppercase; margin-bottom:10px;">24-Hour Forecast</div>
+                    <div id="wx-hourly" style="display:flex; overflow-x:auto; gap:10px; padding-bottom:10px;">
+                        </div>
+                </div>
+            </div>
+            <div class="card" id="wx-alert-panel" style="margin-top: 20px; border-left: 4px solid #10b981;">
+                <h3 style="color:white; font-size:16px; margin-bottom:5px;">⚠️ Weather Alerts</h3>
+                <div id="wx-alert-msg" style="color:#cbd5e1; font-size:14px;">Clear — No warnings active.</div>
+                <div style="font-size:11px; color:var(--text-soft); margin-top:5px;">Always find shelter if conditions worsen.</div>
+            </div>
             <p class="trust-badge">
                 <span data-i18n="trust_text">🔒 Privacy Guarantee: We do not save, need, or share your location. This website exists solely to help you or save you when needed. All data is processed securely on your device.</span>
             </p>
@@ -804,7 +801,12 @@
         </div>
         © 2026 TellMyLocation.com
     </footer>
-</div>
+
+    <div style="margin-top:40px; padding:20px; border-top:1px solid var(--border); color:rgba(255,255,255,0.2); font-size:10px; text-align:left; line-height:1.4;">
+        <strong>Search Keywords People Use to Find This Tool:</strong><br>
+        where am i, my location, current gps coordinates, location finder, weather near me, emergency sos, map near me, coordinates finder, share my location, open in maps, what is my zip code, my elevation, gps tracker, live location, satellite map, latitude longitude finder, my address, current position, find me, geolocate me, ip location, network ip, altitude finder, bearing compass, hiking gps, driver location tool, offline gps, no data map, privacy map, secure location sharing, find my coordinates, google maps coordinates, apple maps location, waze location, exact address, street view, city finder, country finder, postal code finder, time zone finder, sunrise sunset time, wind speed near me, uv index now, rain radar, storm alert, weather warning, tornado siren, earthquake tracker, police station near me, hospital near me, gas station finder, parking finder, rest stop locator, truck stop finder, marine gps, boating navigation, aviation coordinates, pilot tools, surveyor gps, land survey tool, geocaching tool, pokemon go coordinates, ingress intel, drone fly zone, no fly zone map, photography location scouter, golden hour map, blue hour map, milky way finder, star gazing map, light pollution map, hiking trails near me, camping spots, rv parking, van life parking, digital nomad tools, wifi finder, internet speed test location, isp finder, vpn detector, proxy checker, browser geolocation API, html5 geolocation, javascript gps, pwa map, progressive web app gps, mobile gps tool, desktop location finder, macbook location, windows location, android gps, ios gps, iphone location, samsung location, pixel location, accurate gps, precise location, high accuracy mode, battery saver gps, fast location loader, instant address, copy paste coordinates, send location sms, whatsapp location share, telegram location bot, messenger location, signal app location, privacy focused map, no tracking map, anonymous location, secret map, hidden location, safety check in, i am safe, help me, emergency beacon, sos button, panic button, personal safety app, lone worker safety, senior safety tool, child tracker, pet tracker, lost phone finder, find my device equivalent, browser based gps, no install map app, free gps tool, ad supported map, donationware map, open source map alternative, openstreetmap viewer, leaflet map example, mapbox alternative, google maps api alternative, bing maps alternative, here maps alternative, yandex maps alternative, baidu maps alternative, what3words alternative, plus codes, open location code, geohash, mgrs coordinates, utm coordinates, degrees minutes seconds, decimal degrees converter.
+    </div>
+    </div>
 
 <div id="cookie-banner">
     <div id="cookie-text" data-i18n="cookie_text">We use cookies to analyze traffic and show personalized ads to support this free tool.</div>
@@ -1299,6 +1301,93 @@
             }, 2000);
         }
     };
+</script>
+
+<script>
+    // New Feature Module: Weather & Alerts
+    (function() {
+        const weatherCodes = {
+            0: "☀️ Clear", 1: "🌤️ Mostly Clear", 2: "⛅ Partly Cloudy", 3: "☁️ Overcast",
+            45: "🌫️ Fog", 48: "🌫️ Rime Fog",
+            51: "DRIZZLE", 53: "DRIZZLE", 55: "DRIZZLE",
+            61: "Rain", 63: "Rain", 65: "Heavy Rain",
+            71: "Snow", 73: "Snow", 75: "Heavy Snow",
+            80: "Showers", 81: "Showers", 82: "Showers",
+            95: "STORM", 96: "STORM", 99: "HEAVY STORM"
+        };
+
+        function getDesc(code) { return weatherCodes[code] || "Unknown"; }
+
+        function fetchExtendedWeather(lat, lng) {
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,weather_code,precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=1`;
+            
+            fetch(url).then(r=>r.json()).then(data => {
+                document.getElementById('weather-loading').style.display = 'none';
+                document.getElementById('weather-content').style.display = 'block';
+
+                // Current
+                document.getElementById('wx-temp').innerText = Math.round(data.current.temperature_2m) + "°F";
+                document.getElementById('wx-desc').innerText = getDesc(data.current.weather_code);
+                document.getElementById('wx-wind').innerText = Math.round(data.current.wind_speed_10m) + " mph";
+                document.getElementById('wx-hum').innerText = data.current.relative_humidity_2m + "%";
+                document.getElementById('wx-uv').innerText = data.current.uv_index;
+
+                // Alerts Logic
+                const panel = document.getElementById('wx-alert-panel');
+                const msg = document.getElementById('wx-alert-msg');
+                if(data.current.weather_code >= 95 || data.current.wind_speed_10m > 40 || data.current.uv_index > 8) {
+                    panel.style.borderColor = "#ef4444";
+                    msg.innerText = "⚠️ CAUTION: High winds, storm, or UV detected.";
+                    msg.style.color = "#fca5a5";
+                } else {
+                    panel.style.borderColor = "#10b981";
+                    msg.innerText = "Clear — No severe warnings active.";
+                    msg.style.color = "#cbd5e1";
+                }
+
+                // Hourly Forecast (Next 24h)
+                const hourlyDiv = document.getElementById('wx-hourly');
+                hourlyDiv.innerHTML = "";
+                const nowHour = new Date().getHours();
+                
+                // Open-Meteo gives data starting from 00:00, need to find current index
+                // Rough approx: just take next 24 points? API returns aligned arrays.
+                // We'll just take the first 12 hours from "now" index if possible, or just first 12.
+                // Actually Open-Meteo "hourly" array usually starts at 00:00 today.
+                let startIndex = nowHour;
+                
+                for(let i=0; i<8; i++) { // Show next 8 hours
+                    let idx = startIndex + i;
+                    if(idx >= data.hourly.time.length) break;
+                    
+                    const t = Math.round(data.hourly.temperature_2m[idx]);
+                    const code = data.hourly.weather_code[idx];
+                    const pop = data.hourly.precipitation_probability[idx];
+                    
+                    const el = document.createElement('div');
+                    el.style = "background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; min-width:60px; text-align:center;";
+                    el.innerHTML = `
+                        <div style="font-size:10px; color:#94a3b8; margin-bottom:4px;">+${i}h</div>
+                        <div style="font-size:16px; margin-bottom:2px;">${(code > 50) ? '🌧️' : ((code < 3) ? '☀️' : '☁️')}</div>
+                        <div style="font-size:13px; font-weight:700;">${t}°</div>
+                        <div style="font-size:9px; color:#38bdf8;">${pop}%</div>
+                    `;
+                    hourlyDiv.appendChild(el);
+                }
+
+            }).catch(e => {
+                document.getElementById('weather-loading').innerText = "Weather unavailable.";
+            });
+        }
+
+        // Initialize listener
+        const checkLoc = setInterval(() => {
+            if(window.currentPos && window.currentPos.lat) {
+                fetchExtendedWeather(window.currentPos.lat, window.currentPos.lng);
+                clearInterval(checkLoc);
+            }
+        }, 2000);
+    })();
 </script>
 </body>
 </html>
