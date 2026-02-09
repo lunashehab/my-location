@@ -422,18 +422,18 @@
                 <div class="nearby-item">...</div>
                 <div class="nearby-item">...</div>
             </div>
-
+            
             <div class="card" style="margin-top: 20px; padding: 15px; border: 1px solid var(--border);">
                 <h3 style="color:white; font-size:14px; margin-bottom:10px;">🗺️ Location Preview</h3>
                 <div id="mini-map" style="height:150px; border-radius:12px; margin-bottom:10px; z-index:0;"></div>
                 <div style="display:flex; gap:10px;">
-                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.mapPreview && window.currentPos){ window.mapPreview.setView([window.currentPos.lat, window.currentPos.lng], 15); }">⬇ Recenter Map</button>
-                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.currentPos){ window.open('https://www.google.com/maps/search/?api=1&query='+window.currentPos.lat+','+window.currentPos.lng); }">Open Full Map</button>
+                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.mapPreview && window.lastLat){ window.mapPreview.setView([window.lastLat, window.lastLng], 15); }">⬇ Recenter Map</button>
+                    <button class="mod-btn" style="flex:1; font-size:11px;" onclick="if(window.lastLat){ window.open('https://www.google.com/maps?q=' + window.lastLat + ',' + window.lastLng, '_blank'); }">Open Full Map</button>
                 </div>
             </div>
             <div class="card" style="margin-top: 15px; padding: 15px; border: 1px solid var(--border);">
                 <h3 style="color:var(--neon-blue); font-size:14px; margin-bottom:15px;">🌦️ Real-Time Weather</h3>
-                <div id="weather-loading" style="color:var(--text-soft); font-size:12px;">Loading weather data...</div>
+                <div id="weather-loading" style="color:var(--text-soft); font-size:12px;">Waiting for location...</div>
                 <div id="weather-content" style="display:none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                         <div>
@@ -1319,6 +1319,7 @@
 
         function initPreviewMap(lat, lng) {
             if(!miniMap) {
+                // Initialize the preview map
                 miniMap = L.map('mini-map', { zoomControl: false, attributionControl: false }).setView([lat, lng], 13);
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                     maxZoom: 19
@@ -1327,10 +1328,13 @@
                 
                 // Expose to window for buttons
                 window.mapPreview = miniMap;
+                window.lastLat = lat;
+                window.lastLng = lng;
             } else {
                 miniMap.setView([lat, lng], 13);
-                // Update marker? Simply re-init for this simple preview or move marker if kept ref.
-                // For robustness in this snippet, we just re-center.
+                window.lastLat = lat;
+                window.lastLng = lng;
+                // In a real app we'd update the marker position too, but for a preview snippet, re-centering is key.
             }
         }
 
@@ -1348,9 +1352,10 @@
                 document.getElementById('wx-hum').innerText = data.current.relative_humidity_2m + "%";
                 document.getElementById('wx-uv').innerText = data.current.uv_index;
 
-                // Alerts Logic
+                // Alerts Logic (Simulated based on severity of current data, as Open-Meteo alerts endpoint requires different handling/parsing)
                 const panel = document.getElementById('wx-alert-panel');
                 const msg = document.getElementById('wx-alert-msg');
+                // Simple logic: if code is storm, or wind > 40mph, or UV > 8
                 if(data.current.weather_code >= 95 || data.current.wind_speed_10m > 40 || data.current.uv_index > 8) {
                     panel.style.borderColor = "#ef4444";
                     panel.style.background = "rgba(239, 68, 68, 0.1)";
@@ -1363,14 +1368,14 @@
                     msg.style.color = "#cbd5e1";
                 }
 
-                // Hourly Forecast (Next 24h)
+                // Hourly Forecast (Next 12h)
                 const hourlyDiv = document.getElementById('wx-hourly');
                 hourlyDiv.innerHTML = "";
                 const nowHour = new Date().getHours();
                 
                 let startIndex = nowHour;
                 
-                for(let i=0; i<12; i++) { // Show next 12 hours
+                for(let i=0; i<12; i++) { 
                     let idx = startIndex + i;
                     if(idx >= data.hourly.time.length) break;
                     
@@ -1395,10 +1400,17 @@
         }
 
         // Initialize listener
+        // We poll for DOM changes because variable scope between script tags can be tricky with 'let'
         const checkLoc = setInterval(() => {
-            if(window.currentPos && window.currentPos.lat) {
-                initPreviewMap(window.currentPos.lat, window.currentPos.lng);
-                fetchExtendedWeather(window.currentPos.lat, window.currentPos.lng);
+            const latTxt = document.getElementById('lat-val').textContent;
+            const lngTxt = document.getElementById('lng-val').textContent;
+            
+            if(latTxt !== '—' && !isNaN(parseFloat(latTxt))) {
+                const lat = parseFloat(latTxt);
+                const lng = parseFloat(lngTxt);
+                
+                initPreviewMap(lat, lng);
+                fetchExtendedWeather(lat, lng);
                 clearInterval(checkLoc);
             }
         }, 1000);
