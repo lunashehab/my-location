@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        // Default to denied
+        gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied'
+        });
+    </script>
+
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5129097020907805" crossorigin="anonymous"></script>
     
     <meta charset="UTF-8" />
@@ -810,23 +822,45 @@
             <p>We are a team of privacy-focused developers and outdoor enthusiasts who realized that most location tools are either too complex, riddled with invasive tracking, or slow to load. Our mission was simple: build the fastest, cleanest, and most secure "Where Am I" utility on the web.</p>
             <h3>Our Philosophy</h3>
             <p>Data should serve the user, not the corporation. That is why TellMyLocation is built as a client-side application. We do not store your history. We do not build profiles. We simply give you the data you need—Coordinates, Address, Weather—and then we get out of your way.</p>
+            
+            <h3 style="color:#ef4444; margin-top:30px;">Mandatory Liability Disclaimer</h3>
+            <p><strong>Use at Your Own Risk:</strong> The Global Positioning System (GPS) data, weather information, and map tiles provided on this website are for informational purposes only. Do not rely on this tool for critical navigation, aviation, or life-saving situations where precise accuracy is required.</p>
+            <p><strong>Accuracy Limitations:</strong> GPS signals are subject to interference from buildings, atmospheric conditions, and device hardware limitations. We make no warranty regarding the accuracy, reliability, or completeness of the data displayed.</p>
         </div>
     </main>
 
     <main id="privacy-page" class="card hidden-page">
         <div class="content-expansion" style="margin-top:0; border-top:none;">
             <h2>Privacy Policy</h2>
-            <p><strong>Last Updated: February 2026</strong></p>
-            <p>Your privacy is non-negotiable. This policy outlines exactly how TellMyLocation.com handles your data.</p>
+            <p><strong>Effective Date: February 2026</strong></p>
+            <p>Your privacy is paramount. This policy outlines our commitment to data protection under global standards, including GDPR and CCPA.</p>
             
-            <h3>1. Location Data</h3>
-            <p>We do not store, record, or transmit your GPS coordinates to any private server. Your location data is retrieved by your browser directly from your device's GPS hardware and is processed locally to display on your screen. The only time coordinates leave your device is when you explicitly use the "Share" or "SOS" features.</p>
+            <h3>1. Data Minimization & Local Processing</h3>
+            <p><strong>We Practice "Zero-Knowledge" Architecture:</strong> TellMyLocation.com is designed so that your geolocation data is processed exclusively on your device (Client-Side). We do not have a database. We do not store your coordinates, search history, or movement logs on our servers.</p>
 
-            <h3>2. Third-Party Services</h3>
-            <p>We utilize trusted third-party APIs to provide functionality: OpenStreetMap (for map tiles) and Open-Meteo (for weather data). These services receive coordinate requests to generate maps/weather but do not receive your personal identity.</p>
+            <h3>2. GDPR Compliance (European Union)</h3>
+            <p>If you are accessing this site from the EEA, UK, or Switzerland, you have specific rights:</p>
+            <ul>
+                <li><strong>Lawfulness of Processing:</strong> We rely on your explicit consent (activating "Location Services" in your browser) to process your location data transiently to display it to you.</li>
+                <li><strong>Right to Erasure ("Right to be Forgotten"):</strong> Since we do not store your data, there is nothing to erase. Closing your browser tab instantly wipes your session from your device's memory.</li>
+                <li><strong>Legitimate Interest:</strong> We display non-personalized advertisements to support the maintenance of this free tool.</li>
+            </ul>
 
-            <h3>3. Cookies & Advertising</h3>
-            <p>We use Google AdSense to serve advertisements. Google uses cookies to serve ads based on your prior visits to this website or other websites. You may opt-out of personalized advertising by visiting Google's Ads Settings.</p>
+            <h3>3. CCPA/CPRA Compliance (California)</h3>
+            <p>For residents of California:</p>
+            <ul>
+                <li><strong>Right to Know:</strong> You have the right to know what personal information is collected. We collect: Geolocation data (transiently) and IP address (for localized weather/ads).</li>
+                <li><strong>Do Not Sell My Personal Information:</strong> We do not sell your personal data to third parties. We do not maintain user profiles for sale.</li>
+                <li><strong>Right to Limit Use:</strong> You may limit the use of your sensitive personal information (geolocation) by simply revoking browser location permissions at any time.</li>
+            </ul>
+
+            <h3>4. Third-Party Data Processors</h3>
+            <p>We utilize trusted third-party APIs to provide functionality. These services receive necessary data to function but do not receive your personal identity:</p>
+            <ul>
+                <li><strong>OpenStreetMap:</strong> Receives coordinate requests to generate map tiles.</li>
+                <li><strong>Open-Meteo:</strong> Receives coordinates to fetch local weather data.</li>
+                <li><strong>Google AdSense:</strong> Uses cookies to serve ads based on prior visits.</li>
+            </ul>
         </div>
     </main>
 
@@ -1065,6 +1099,16 @@
     function acceptCookies() {
         localStorage.setItem('cookiesAccepted', 'true');
         document.getElementById('cookie-banner').style.display = 'none';
+        
+        // Consent Mode Update on Accept
+        if (typeof gtag === 'function') {
+            gtag('consent', 'update', {
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted',
+                'analytics_storage': 'granted'
+            });
+        }
     }
 
     const els = {
