@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5129097020907805" crossorigin="anonymous"></script>
+
+    <meta charset="UTF-8" />
+    <link rel="icon" href="favicon.ico" />
+    <title>About Us | Tell My Location</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <meta name="description" content="Learn about the team and technology behind TellMyLocation.com - The world's fastest privacy-focused GPS tool.">
+    <meta name="theme-color" content="#0f172a">
+
+    <style>
+        /* --- COPYING YOUR EXACT THEME FOR CONSISTENCY --- */
+        :root {
+            --card: rgba(13, 17, 23, 0.85);
+            --accent: #ff0055;
+            --neon-blue: #38bdf8;
+            --text-main: #ffffff;
+            --text-soft: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #111827 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .shell { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 16px; }
+
+        /* Navigation Bar */
+        .nav-menu {
+            display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;
+            background: rgba(15, 23, 42, 0.6); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border);
+            backdrop-filter: blur(5px);
+        }
+        .nav-menu a { color: var(--text-soft); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        .nav-menu a:hover { color: var(--neon-blue); }
+        .nav-menu a.active { color: var(--neon-blue); border-bottom: 2px solid var(--neon-blue); }
+
+        .card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+
+        h1 { font-size: 28px; font-weight: 800; margin-bottom: 10px; color: white; }
+        h1 span { color: var(--accent); }
+        
+        h2 { font-size: 20px; color: var(--neon-blue); margin-top: 25px; margin-bottom: 10px; }
+        
+        p { color: var(--text-soft); line-height: 1.7; font-size: 15px; margin-bottom: 15px; }
+        
+        ul { margin-bottom: 20px; padding-left: 20px; color: var(--text-soft); }
+        li { margin-bottom: 8px; font-size: 15px; }
+        
+        .stat-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 30px 0;
+        }
+        .stat-box {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+            padding: 20px; border-radius: 16px; text-align: center;
+        }
+        .stat-val { font-size: 24px; font-weight: 800; color: white; display: block; }
+        .stat-lbl { font-size: 11px; text-transform: uppercase; color: var(--accent); letter-spacing: 1px; }
+
+        footer { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); width: 100%; padding-top: 20px;}
+        footer a { color: var(--text-soft); text-decoration: none; margin: 0 8px; transition: color 0.2s; }
+        footer a:hover { color: white; }
+    </style>
+</head>
+<body>
+
+<div class="shell">
+    
+    <nav class="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="about.html" class="active">About</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <main class="card">
+        <h1>About <span>TellMyLocation</span></h1>
+        <p>Welcome to the internet's most lightweight, privacy-centric geolocation utility. We built this tool to answer one simple question: <strong>"Where am I right now?"</strong> without the bloat, tracking, or complexity of modern map applications.</p>
+
+        <div class="stat-grid">
+            <div class="stat-box">
+                <span class="stat-val">0%</span>
+                <span class="stat-lbl">Data Stored</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-val">10ms</span>
+                <span class="stat-lbl">Latency</span>
+            </div>
+        </div>
+
+        <h2>Our Mission: Privacy First</h2>
+        <p>In an era where location data is often sold to the highest bidder, we take a different approach. <strong>TellMyLocation.com operates on a "Zero-Knowledge" architecture.</strong> This means:</p>
+        <ul>
+            <li>We do not have a database of user locations.</li>
+            <li>Your coordinates are processed strictly on your device (Client-Side).</li>
+            <li>When you close this tab, your session data is instantly wiped from memory.</li>
+        </ul>
+
+        <h2>The Technology</h2>
+        <p>We utilize the <strong>HTML5 Geolocation API</strong> to communicate directly with your device's GPS hardware. By bypassing intermediate servers, we can offer accuracy down to 5 meters (depending on signal strength).</p>
+        <p>For weather data, we partner with <strong>Open-Meteo</strong>, an open-source weather API that aggregates data from national weather services (NOAA, DWD, MeteoFrance) to provide hyper-local forecasts without tracking your identity.</p>
+
+        <h2>Why We Built This</h2>
+        <p>This tool was created by a small team of developers and outdoor enthusiasts. We needed a way to quickly check our altitude, coordinates, and weather while hiking in low-bandwidth areas. Standard map apps were too slow to load and drained too much battery.</p>
+        <p>TellMyLocation is the solution: A Progressive Web App (PWA) that loads instantly, caches essential assets for offline use, and respects your battery life.</p>
+    </main>
+
+    <footer>
+        <div style="margin-bottom: 12px;">
+            <a href="privacy.html">Privacy Policy</a> • 
+            <a href="terms.html">Terms of Use</a> • 
+            <a href="contact.html">Contact Us</a>
+        </div>
+        © 2026 TellMyLocation.com
+    </footer>
+
+</div>
+
+</body>
+</html>
