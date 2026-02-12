@@ -322,10 +322,10 @@
 <div class="shell premium-upgrade-container">
 
     <nav class="nav-menu">
-        <a href="#" onclick="showPage('home'); return false;" class="active">Home</a>
-        <a href="#about" onclick="showPage('about'); return false;">About</a>
-        <a href="#privacy" onclick="showPage('privacy'); return false;">Privacy</a>
-        <a href="#contact" onclick="showPage('contact'); return false;">Contact</a>
+        <a href="/" onclick="route(event)" class="active">Home</a>
+        <a href="/about" onclick="route(event)">About</a>
+        <a href="/privacy" onclick="route(event)">Privacy</a>
+        <a href="/contact" onclick="route(event)">Contact</a>
     </nav>
 
     <div id="home-view">
@@ -791,6 +791,7 @@
                     </div>
                 </details>
             </div>
+
             <p class="trust-badge">
                 <span data-i18n="trust_text">🔒 Privacy Guarantee: We do not save, need, or share your location. This website exists solely to help you or save you when needed. All data is processed securely on your device.</span>
             </p>
@@ -842,9 +843,9 @@
 
     <footer>
         <div style="margin-bottom: 12px;">
-            <a href="#" onclick="showPage('privacy'); return false;" data-i18n="link_privacy">Privacy Policy</a> • 
-            <a href="#" onclick="showPage('about'); return false;" data-i18n="link_terms">Terms of Use</a> • 
-            <a href="#" onclick="showPage('contact'); return false;" data-i18n="link_contact">Contact Us</a>
+            <a href="/privacy" onclick="route(event)" data-i18n="link_privacy">Privacy Policy</a> • 
+            <a href="/about" onclick="route(event)" data-i18n="link_terms">Terms of Use</a> • 
+            <a href="/contact" onclick="route(event)" data-i18n="link_contact">Contact Us</a>
         </div>
         © 2026 TellMyLocation.com
     </footer>
@@ -861,7 +862,44 @@
 </div>
 
 <script>
-    /* ADDED PAGE TOGGLE LOGIC (Clean & Safe) */
+    /* SPA ROUTER & HISTORY API (Replaces Hash System) */
+    const routes = {
+        '/': 'home',
+        '/about': 'about',
+        '/privacy': 'privacy',
+        '/contact': 'contact'
+    };
+
+    function route(event) {
+        event = event || window.event;
+        event.preventDefault();
+        window.history.pushState({}, "", event.target.href);
+        handleLocation();
+    }
+
+    async function handleLocation() {
+        const path = window.location.pathname;
+        const route = routes[path] || routes['/'];
+        showPage(route);
+        refreshAds(); // Ad Refresh Trigger
+    }
+
+    window.onpopstate = handleLocation;
+
+    /* AD REFRESH TRIGGER */
+    function refreshAds() {
+        try {
+            // Trigger AdSense refresh for SPAs
+            // Note: This relies on existing ad slots being present in DOM
+            var ads = document.getElementsByClassName("adsbygoogle");
+            if(ads.length > 0 && window.adsbygoogle) {
+                // Only push if there are ads to push to
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            }
+        } catch (e) { console.log("Ad refresh skipped", e); }
+    }
+
+    /* EXISTING PAGE TOGGLE LOGIC */
     function showPage(pageId) {
         // Hide all views
         document.getElementById('home-view').style.display = 'none';
@@ -875,14 +913,23 @@
         // Show selected view
         if (pageId === 'home') {
             document.getElementById('home-view').style.display = 'block';
-            document.querySelector('.nav-menu a[href="#"]').classList.add('active');
+            document.querySelector('.nav-menu a[href="/"]').classList.add('active');
         } else {
             document.getElementById(pageId + '-page').style.display = 'block';
-            document.querySelector('.nav-menu a[href="#' + pageId + '"]').classList.add('active');
+            document.querySelector('.nav-menu a[href="/' + pageId + '"]').classList.add('active');
         }
         
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* DEBOUNCE UTILITY (The "Brakes") */
+    let debounceTimer;
+    function debounce(func, timeout = 1000){
+        return (...args) => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => { func.apply(this, args); }, timeout);
+        };
     }
 
     /* EXISTING LOGIC PRESERVED BELOW */
@@ -914,8 +961,7 @@
         document.getElementById('time-p').textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
     }, 1000);
 
-    /* ORIGINAL SCRIPT CONTINUES BELOW 
-    */
+    /* ORIGINAL SCRIPT CONTINUES BELOW */
     const i18n = {
         en: {
             tagline: "The fastest 'Where am I?' tool on the internet.",
@@ -1045,7 +1091,8 @@
         return { km: km.toFixed(2), mi: (km * 0.621371).toFixed(2) };
     }
 
-    async function updateDashboard(lat, lng, acc) {
+    // RENAMED TO runDashboardUpdate for Debouncing
+    async function runDashboardUpdate(lat, lng, acc) {
         currentPos = { lat, lng };
         try {
             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
@@ -1089,6 +1136,11 @@
             });
         } catch(e) { console.log("Nearby Error"); }
     }
+
+    // WRAP UPDATE IN DEBOUNCE (1 second delay)
+    const updateDashboard = debounce((lat, lng, acc) => {
+        runDashboardUpdate(lat, lng, acc);
+    }, 1000);
 
     function initGPS() {
         if (!navigator.geolocation) { els.addr.textContent = "GPS not supported"; return; }
@@ -1333,6 +1385,9 @@
 
     /* --- CHECK URL PARAMS ON LOAD --- */
     window.onload = function() {
+        // Handle direct landing on a route
+        handleLocation();
+
         const params = new URLSearchParams(window.location.search);
         const pLat = params.get('lat');
         const pLng = params.get('lng');
@@ -1389,7 +1444,8 @@
             }
         }
 
-        function fetchExtendedWeather(lat, lng) {
+        // DEBOUNCE THIS ONE TOO
+        const fetchExtendedWeather = debounce((lat, lng) => {
             const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,weather_code,precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=1`;
             
             fetch(url).then(r=>r.json()).then(data => {
@@ -1448,7 +1504,7 @@
             }).catch(e => {
                 document.getElementById('weather-loading').innerText = "Weather unavailable.";
             });
-        }
+        }, 1000);
 
         // Initialize listener
         // We poll for DOM changes because variable scope between script tags can be tricky with 'let'
