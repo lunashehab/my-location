@@ -255,9 +255,9 @@
         .use-case-card { 
             background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 20px; border-radius: 18px;
             text-align: center; transition: 0.3s;
-            cursor: pointer; /* Added pointer cursor for clickable feel */
+            cursor: pointer;
         }
-        .use-case-card:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); transform: translateY(-2px); } /* Added hover effect */
+        .use-case-card:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); transform: translateY(-2px); } 
         .use-case-card h3 { font-size: 13px; text-transform: uppercase; margin-top: 10px; color: var(--text-main); }
 
         .why-section { 
@@ -337,6 +337,17 @@
         .kb-body strong { color: white; font-weight: 600; }
         .kb-body ul { margin: 15px 0; padding-left: 20px; }
         .kb-body li { margin-bottom: 8px; }
+        
+        /* AD SLOT STYLING */
+        .ad-container {
+            border-radius: 12px;
+            background: rgba(255,255,255,0.02);
+            border: 1px dashed var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
     </style>
 </head>
 <body>
@@ -365,6 +376,10 @@
             <h1>TELLMY<span>LOCATION</span>.COM <span id="offline-indicator" class="offline-badge">OFFLINE</span></h1>
             <p class="tagline" data-i18n="tagline">The fastest "Where am I?" tool on the internet.</p>
         </header>
+
+        <div class="ad-container" style="text-align:center; margin: 10px auto 20px; min-height: 90px; width: 100%; max-width: 728px; overflow: hidden;">
+             <span style="font-size:10px; color:#334155; margin-bottom: 5px;">ADVERTISEMENT</span>
+             </div>
 
         <div class="compass-wrap">
             <svg id="compass-svg" viewBox="0 0 100 100">
@@ -592,6 +607,11 @@
                     </div>
                 </div>
             </div>
+
+            <div class="ad-container" style="text-align:center; margin: 30px 0; min-height: 250px; width: 100%; overflow: hidden;">
+                 <span style="font-size:10px; color:#334155; margin-bottom: 5px;">ADVERTISEMENT</span>
+                 </div>
+
             <section class="why-section">
                 <h2>Why This Interface Matters</h2>
                 <p>TellMyLocation utilizes high-frequency satellite pings combined with low-latency network triangulation to deliver hyper-accurate data in milliseconds. We prioritize privacy by ensuring zero data persistence on our backend—your location is your business.</p>
@@ -888,9 +908,6 @@
     function showPage(pageId) {
         // Hide all views
         document.getElementById('home-view').style.display = 'none';
-        document.getElementById('about-page').style.display = 'none';
-        document.getElementById('privacy-page').style.display = 'none';
-        document.getElementById('contact-page').style.display = 'none';
         
         // Remove active class from nav
         document.querySelectorAll('.nav-menu a').forEach(el => el.classList.remove('active'));
@@ -900,8 +917,9 @@
             document.getElementById('home-view').style.display = 'block';
             document.querySelector('.nav-menu a[href="/"]').classList.add('active');
         } else {
-            document.getElementById(pageId + '-page').style.display = 'block';
-            document.querySelector('.nav-menu a[href="/' + pageId + '"]').classList.add('active');
+            // Because we are now using real files, we technically just redirect.
+            // But if the router is catching clicks, we need to let it default.
+            window.location.href = pageId + ".html";
         }
         
         // Scroll to top
@@ -1386,9 +1404,6 @@
 
     /* --- CHECK URL PARAMS ON LOAD --- */
     window.onload = function() {
-        // Handle direct landing on a route
-        handleLocation();
-
         const params = new URLSearchParams(window.location.search);
         const pLat = params.get('lat');
         const pLng = params.get('lng');
