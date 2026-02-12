@@ -873,6 +873,65 @@
 </div>
 
 <script>
+    /* SPA ROUTER & HISTORY API (Replaces Hash System) */
+    const routes = {
+        '/': 'home',
+        '/about': 'about',
+        '/privacy': 'privacy',
+        '/contact': 'contact'
+    };
+
+    function route(event) {
+        event = event || window.event;
+        event.preventDefault();
+        window.history.pushState({}, "", event.target.href);
+        handleLocation();
+    }
+
+    async function handleLocation() {
+        const path = window.location.pathname;
+        const route = routes[path] || routes['/'];
+        showPage(route);
+        refreshAds(); // Ad Refresh Trigger
+    }
+
+    window.onpopstate = handleLocation;
+
+    /* AD REFRESH TRIGGER */
+    function refreshAds() {
+        try {
+            // Trigger AdSense refresh for SPAs
+            // Note: This relies on existing ad slots being present in DOM
+            var ads = document.getElementsByClassName("adsbygoogle");
+            if(ads.length > 0 && window.adsbygoogle) {
+                // Only push if there are ads to push to
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            }
+        } catch (e) { console.log("Ad refresh skipped", e); }
+    }
+
+    /* EXISTING PAGE TOGGLE LOGIC */
+    function showPage(pageId) {
+        // Hide all views
+        document.getElementById('home-view').style.display = 'none';
+        
+        // Remove active class from nav
+        document.querySelectorAll('.nav-menu a').forEach(el => el.classList.remove('active'));
+
+        // Show selected view
+        if (pageId === 'home') {
+            document.getElementById('home-view').style.display = 'block';
+            document.querySelector('.nav-menu a[href="/"]').classList.add('active');
+        } else {
+            // Because we are now using real files, we technically just redirect.
+            // But if the router is catching clicks, we need to let it default.
+            window.location.href = pageId + ".html";
+        }
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     /* DEBOUNCE UTILITY (The "Brakes") */
     let debounceTimer;
     function debounce(func, timeout = 1000){
@@ -1351,9 +1410,6 @@
 
     /* --- CHECK URL PARAMS ON LOAD --- */
     window.onload = function() {
-        // Handle direct landing on a route
-        handleLocation();
-
         const params = new URLSearchParams(window.location.search);
         const pLat = params.get('lat');
         const pLng = params.get('lng');
