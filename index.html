@@ -1137,7 +1137,7 @@
         } catch(e) { console.log("Nearby Error"); }
     }
 
-    // WRAP UPDATE IN DEBOUNCE (1 second delay)
+    // WRAP UPDATE IN DEBOUNCE (1 second delay) for Heavy API Calls
     const updateDashboard = debounce((lat, lng, acc) => {
         runDashboardUpdate(lat, lng, acc);
     }, 1000);
@@ -1146,6 +1146,8 @@
         if (!navigator.geolocation) { els.addr.textContent = "GPS not supported"; return; }
         navigator.geolocation.getCurrentPosition(pos => {
             const { latitude, longitude, accuracy, altitude } = pos.coords;
+            
+            // 1. INSTANT UPDATE: Update Coordinates UI Immediately (No Delay)
             els.lat.textContent = latitude.toFixed(5);
             els.lng.textContent = longitude.toFixed(5);
             els.acc.textContent = `±${Math.round(accuracy)}m`;
@@ -1164,7 +1166,10 @@
                 accuracyCircle.setLatLng([latitude, longitude]);
                 accuracyCircle.setRadius(accuracy);
             }
+            
+            // 2. DEBOUNCED UPDATE: Fetch Address/Weather (Wait for settle)
             updateDashboard(latitude, longitude, accuracy);
+            
         }, (err) => { els.addr.textContent = "Please enable Location Services."; }, { enableHighAccuracy: true });
         fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{
             els.ip.textContent = d.ip;
