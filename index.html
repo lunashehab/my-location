@@ -1167,8 +1167,9 @@
                 accuracyCircle.setRadius(accuracy);
             }
             
-            // 2. DEBOUNCED UPDATE: Fetch Address/Weather (Wait for settle)
-            updateDashboard(latitude, longitude, accuracy);
+            // 2. INSTANT UPDATE: Run Address/Weather immediately on first load
+            // Bypassing the debounce wrapper to fix "Address not appearing" issue
+            runDashboardUpdate(latitude, longitude, accuracy);
             
         }, (err) => { els.addr.textContent = "Please enable Location Services."; }, { enableHighAccuracy: true });
         fetch("https://ipapi.co/json/").then(r=>r.json()).then(d=>{
@@ -1449,8 +1450,8 @@
             }
         }
 
-        // DEBOUNCE THIS ONE TOO
-        const fetchExtendedWeather = debounce((lat, lng) => {
+        // DEBOUNCE REMOVED for this function to ensure initial load works immediately
+        function fetchExtendedWeather(lat, lng) {
             const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,weather_code,precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=1`;
             
             fetch(url).then(r=>r.json()).then(data => {
@@ -1509,7 +1510,7 @@
             }).catch(e => {
                 document.getElementById('weather-loading').innerText = "Weather unavailable.";
             });
-        }, 1000);
+        }
 
         // Initialize listener
         // We poll for DOM changes because variable scope between script tags can be tricky with 'let'
