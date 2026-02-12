@@ -302,6 +302,19 @@
         summary.faq-q::after { content: '+'; font-size: 18px; color: var(--neon-blue); transition: transform 0.2s; }
         details[open] summary.faq-q::after { transform: rotate(45deg); }
         .faq-a { padding: 15px; padding-top: 0; color: var(--text-soft); font-size: 14px; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); }
+
+        /* --- NEW CONTENT INJECTION STYLES (KNOWLEDGE BASE) --- */
+        .kb-section { margin-top: 50px; border-top: 1px solid var(--border); padding-top: 30px; }
+        .kb-header { font-size: 20px; color: white; margin-bottom: 20px; font-weight: 800; text-align: center; letter-spacing: -0.5px; }
+        .kb-details { margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; background: rgba(0,0,0,0.2); }
+        .kb-details[open] { border-color: var(--neon-blue); background: rgba(56, 189, 248, 0.02); }
+        .kb-summary { padding: 18px; font-weight: 700; cursor: pointer; color: #e2e8f0; list-style: none; display: flex; align-items: center; justify-content: space-between; font-size: 15px; }
+        .kb-summary::after { content: '⬇'; font-size: 12px; color: var(--text-soft); transition: 0.3s; }
+        .kb-details[open] .kb-summary::after { transform: rotate(180deg); color: var(--neon-blue); }
+        .kb-body { padding: 0 20px 20px 20px; color: #94a3b8; font-size: 14px; line-height: 1.8; text-align: left; }
+        .kb-body strong { color: white; font-weight: 600; }
+        .kb-body ul { margin: 15px 0; padding-left: 20px; }
+        .kb-body li { margin-bottom: 8px; }
     </style>
 </head>
 <body>
@@ -738,6 +751,44 @@
                 <details class="faq-item">
                     <summary class="faq-q">How do I report a bug?</summary>
                     <div class="faq-a">Please use the "Contact Us" link in the footer to send us an email.</div>
+                </details>
+            </div>
+
+            <div class="kb-section">
+                <div class="kb-header">Technical Knowledge Base</div>
+                
+                <details class="kb-details">
+                    <summary class="kb-summary">The Science of Precision: GPS Trilateration Explained</summary>
+                    <div class="kb-body">
+                        <p>At the core of TellMyLocation.com is a process known as <strong>Trilateration</strong>. Unlike triangulation, which uses angles, trilateration uses distances to determine a precise location. Your device calculates these distances based on the "Time of Flight" (ToF) of radio signals traveling from satellites to your receiver at the speed of light.</p>
+                        <p>To pinpoint your location in 3D space (Latitude, Longitude, and Altitude), your device must solve for four unknowns: X, Y, Z, and Time. This requires a simultaneous lock on at least <strong>four satellites</strong>:</p>
+                        <ul>
+                            <li><strong>3 Satellites:</strong> Determine your 2D position (Lat/Long) but assume you are at sea level.</li>
+                            <li><strong>4th Satellite:</strong> Corrects the internal clock error of your device's receiver against the atomic clocks on board the GPS satellites, allowing for accurate altitude calculation.</li>
+                        </ul>
+                        <p><strong>GDOP (Geometric Dilution of Precision):</strong> The accuracy of your fix depends heavily on the geometry of the satellites currently visible. If all visible satellites are clustered in one part of the sky, the overlap of their signal spheres is large, resulting in a high margin of error (High GDOP). TellMyLocation filters these low-quality fixes to ensure the coordinates we display are actionable.</p>
+                    </div>
+                </details>
+
+                <details class="kb-details">
+                    <summary class="kb-summary">Privacy Architecture: Zero-Knowledge Engineering</summary>
+                    <div class="kb-body">
+                        <p>We believe that location data is the most sensitive metadata a user can generate. As such, we have engineered this tool using a <strong>Zero-Knowledge Architecture</strong>. This means the server has no technical capability to view or store your data.</p>
+                        <ul>
+                            <li><strong>Client-Side Execution:</strong> All geolocation logic occurs within your browser's sandbox using the HTML5 Geolocation API (`navigator.geolocation`). The coordinates are rendered directly to the DOM (Document Object Model) via JavaScript without ever being POSTed to our backend.</li>
+                            <li><strong>Ephemeral Sessions:</strong> There is no user database. No login system. No tracking cookies for location history. Once you close the tab, the RAM allocated to your session is cleared by the browser's garbage collector, and the data ceases to exist.</li>
+                            <li><strong>HTTPS Encryption:</strong> While we do not transmit your location, the connection between your browser and our static file server is secured via TLS 1.3. This prevents "Man-in-the-Middle" attacks where a malicious Wi-Fi hotspot could inject code to siphon your data.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="kb-details">
+                    <summary class="kb-summary">Safety Protocols & Emergency Utility</summary>
+                    <div class="kb-body">
+                        <p>In emergency scenarios, standard map applications often fail due to feature bloat or heavy data requirements. This tool is optimized for <strong>High-Stress, Low-Bandwidth</strong> environments.</p>
+                        <p><strong>Cold Start vs. Warm Start:</strong> A "Cold Start" occurs when your GPS receiver has no valid almanac or ephemeris data (e.g., after a long flight or battery drain). This can take up to 12 minutes to acquire a lock. We utilize <strong>A-GPS (Assisted GPS)</strong> triggers via the browser API to force a "Warm Start," utilizing cellular tower triangulation to approximate your location instantly while the satellite lock refines the precision in the background.</p>
+                        <p><strong>Battery Optimization:</strong> Continuous GPS usage is power-intensive. Our logic utilizes an "On-Demand" polling strategy. We maintain a high-accuracy watch (`enableHighAccuracy: true`) only while the tab is visible. When the browser is minimized, we degrade the polling frequency to preserve your battery life—crucial in survival situations.</p>
+                    </div>
                 </details>
             </div>
             <p class="trust-badge">
