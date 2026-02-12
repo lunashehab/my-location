@@ -201,13 +201,22 @@
         footer a:hover { color: white; }
 
         #cookie-banner {
-            display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(30, 41, 59, 0.95); padding: 20px; border-radius: 16px; 
-            border: 1px solid var(--neon-blue); 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
-            width: 90%; max-width: 400px; z-index: 10000; text-align: center;
-            backdrop-filter: blur(10px);
-        }
+    display: none; 
+    position: fixed; 
+    bottom: 80px; /* CHANGED from 20px to 80px to make room for Google Ads */
+    left: 50%; 
+    transform: translateX(-50%);
+    background: rgba(30, 41, 59, 0.95); 
+    padding: 20px; 
+    border-radius: 16px; 
+    border: 1px solid var(--neon-blue); 
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+    width: 90%; 
+    max-width: 400px; 
+    z-index: 10000; 
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
         #cookie-text { margin-bottom: 15px; font-size: 13px; color: #cbd5e1; line-height: 1.5; }
         #cookie-btn {
             background: var(--neon-blue); color: #0f172a; border: none; padding: 10px 24px;
