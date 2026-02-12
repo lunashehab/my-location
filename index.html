@@ -1131,8 +1131,9 @@
         } catch(e) { els.temp.textContent = "N/A"; }
 
         try {
+            // FIXED 504 TIMEOUT: Switched to faster mirror 'overpass.kumi.systems'
             const query = `[out:json][timeout:10];(node["amenity"~"police|hospital|fuel"](around:5000,${lat},${lng}););out body 10;`;
-            const res = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: query });
+            const res = await fetch("https://overpass.kumi.systems/api/interpreter", { method: "POST", body: query });
             const data = await res.json();
             const types = { police: "Police", hospital: "Hospital", fuel: "Fuel" };
             let best = { police: null, hospital: null, fuel: null };
@@ -1153,7 +1154,10 @@
                     `<div class="nearby-type">${types[k]}</div><div class="nearby-name" style="color:#555">None</div>`;
                 els.nearby.appendChild(div);
             });
-        } catch(e) { console.log("Nearby Error"); }
+        } catch(e) { 
+            console.log("Nearby Error: ", e); 
+            els.nearby.innerHTML = '<div style="color:#ef4444; font-size:12px; padding:10px;">Service temporarily unavailable due to high traffic.</div>';
+        }
     }
 
     // WRAP UPDATE IN DEBOUNCE (1 second delay) for Heavy API Calls
