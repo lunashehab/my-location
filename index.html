@@ -201,22 +201,22 @@
         footer a:hover { color: white; }
 
         #cookie-banner {
-    display: none; 
-    position: fixed; 
-    bottom: 80px; /* CHANGED from 20px to 80px to make room for Google Ads */
-    left: 50%; 
-    transform: translateX(-50%);
-    background: rgba(30, 41, 59, 0.95); 
-    padding: 20px; 
-    border-radius: 16px; 
-    border: 1px solid var(--neon-blue); 
-    box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
-    width: 90%; 
-    max-width: 400px; 
-    z-index: 10000; 
-    text-align: center;
-    backdrop-filter: blur(10px);
-}
+            display: none; 
+            position: fixed; 
+            bottom: 80px; /* AdSense Safe Zone */
+            left: 50%; 
+            transform: translateX(-50%);
+            background: rgba(30, 41, 59, 0.95); 
+            padding: 20px; 
+            border-radius: 16px; 
+            border: 1px solid var(--neon-blue); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+            width: 90%; 
+            max-width: 400px; 
+            z-index: 10000; 
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
         #cookie-text { margin-bottom: 15px; font-size: 13px; color: #cbd5e1; line-height: 1.5; }
         #cookie-btn {
             background: var(--neon-blue); color: #0f172a; border: none; padding: 10px 24px;
@@ -255,8 +255,9 @@
         .use-case-card { 
             background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 20px; border-radius: 18px;
             text-align: center; transition: 0.3s;
+            cursor: pointer; /* Added pointer cursor for clickable feel */
         }
-        .use-case-card:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); }
+        .use-case-card:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); transform: translateY(-2px); } /* Added hover effect */
         .use-case-card h3 { font-size: 13px; text-transform: uppercase; margin-top: 10px; color: var(--text-main); }
 
         .why-section { 
@@ -597,10 +598,10 @@
             </section>
 
             <div class="use-case-grid">
-                <div class="use-case-card"><span>🚚</span><h3>Delivery Drivers</h3></div>
-                <div class="use-case-card"><span>🚨</span><h3>Emergency SOS</h3></div>
-                <div class="use-case-card"><span>🏔️</span><h3>Hikers/Travelers</h3></div>
-                <div class="use-case-card"><span>🤝</span><h3>Meeting Friends</h3></div>
+                <div class="use-case-card" onclick="toggleModule('driver-mod')"><span>🚚</span><h3>Delivery Drivers</h3></div>
+                <div class="use-case-card" onclick="triggerSOSMode()"><span>🚨</span><h3>Emergency SOS</h3></div>
+                <div class="use-case-card" onclick="toggleModule('hiker-mod')"><span>🏔️</span><h3>Hikers/Travelers</h3></div>
+                <div class="use-case-card" onclick="toggleModule('friend-mod')"><span>🤝</span><h3>Meeting Friends</h3></div>
             </div>
 
             <div class="content-expansion">
@@ -846,6 +847,67 @@
 </div>
 
 <script>
+    /* SPA ROUTER & HISTORY API (Replaces Hash System) */
+    const routes = {
+        '/': 'home',
+        '/about': 'about',
+        '/privacy': 'privacy',
+        '/contact': 'contact'
+    };
+
+    function route(event) {
+        event = event || window.event;
+        event.preventDefault();
+        window.history.pushState({}, "", event.target.href);
+        handleLocation();
+    }
+
+    async function handleLocation() {
+        const path = window.location.pathname;
+        const route = routes[path] || routes['/'];
+        showPage(route);
+        refreshAds(); // Ad Refresh Trigger
+    }
+
+    window.onpopstate = handleLocation;
+
+    /* AD REFRESH TRIGGER */
+    function refreshAds() {
+        try {
+            // Trigger AdSense refresh for SPAs
+            // Note: This relies on existing ad slots being present in DOM
+            var ads = document.getElementsByClassName("adsbygoogle");
+            if(ads.length > 0 && window.adsbygoogle) {
+                // Only push if there are ads to push to
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            }
+        } catch (e) { console.log("Ad refresh skipped", e); }
+    }
+
+    /* EXISTING PAGE TOGGLE LOGIC */
+    function showPage(pageId) {
+        // Hide all views
+        document.getElementById('home-view').style.display = 'none';
+        document.getElementById('about-page').style.display = 'none';
+        document.getElementById('privacy-page').style.display = 'none';
+        document.getElementById('contact-page').style.display = 'none';
+        
+        // Remove active class from nav
+        document.querySelectorAll('.nav-menu a').forEach(el => el.classList.remove('active'));
+
+        // Show selected view
+        if (pageId === 'home') {
+            document.getElementById('home-view').style.display = 'block';
+            document.querySelector('.nav-menu a[href="/"]').classList.add('active');
+        } else {
+            document.getElementById(pageId + '-page').style.display = 'block';
+            document.querySelector('.nav-menu a[href="/' + pageId + '"]').classList.add('active');
+        }
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     /* DEBOUNCE UTILITY (The "Brakes") */
     let debounceTimer;
     function debounce(func, timeout = 1000){
@@ -1324,6 +1386,9 @@
 
     /* --- CHECK URL PARAMS ON LOAD --- */
     window.onload = function() {
+        // Handle direct landing on a route
+        handleLocation();
+
         const params = new URLSearchParams(window.location.search);
         const pLat = params.get('lat');
         const pLng = params.get('lng');
@@ -1380,8 +1445,8 @@
             }
         }
 
-        // DEBOUNCE THIS ONE TOO
-        const fetchExtendedWeather = debounce((lat, lng) => {
+        // DEBOUNCE REMOVED for this function to ensure initial load works immediately
+        function fetchExtendedWeather(lat, lng) {
             const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,weather_code,precipitation_probability&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=1`;
             
             fetch(url).then(r=>r.json()).then(data => {
@@ -1440,7 +1505,7 @@
             }).catch(e => {
                 document.getElementById('weather-loading').innerText = "Weather unavailable.";
             });
-        }, 1000);
+        }
 
         // Initialize listener
         // We poll for DOM changes because variable scope between script tags can be tricky with 'let'
