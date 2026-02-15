@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Complete Guide to Offline GPS Navigation | Tell My Location</title>
+    <title>EXIF Data Warning: Are Your Photos Leaking Location? | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="canonical" href="https://tellmylocation.com/guide-offline" />
-    <meta name="description" content="How to use GPS without data. Step-by-step guide to caching maps on Google Maps, Apple Maps, and using TellMyLocation offline.">
+    <link rel="canonical" href="https://tellmylocation.com/guide-exif" />
+    <meta name="description" content="Learn how hidden metadata in your photos can reveal your home address. How to view and remove GPS tags from images.">
     <meta name="author" content="Don Odibat">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
@@ -21,7 +21,7 @@
         h2 { color: var(--accent); font-size: 20px; margin-top: 40px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
         h3 { color: white; font-size: 16px; margin-top: 25px; font-weight: 700; }
         p, li { color: #cbd5e1; font-size: 16px; margin-bottom: 15px; }
-        .step-box { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin: 20px 0; }
+        .alert-box { border-left: 4px solid #ef4444; background: rgba(239, 68, 68, 0.1); padding: 20px; margin: 30px 0; border-radius: 8px; }
         footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px; }
     </style>
 </head>
@@ -30,55 +30,46 @@
         <nav><a href="/">Home</a><a href="guides.html">Guides</a><a href="contact.html">Contact</a></nav>
 
         <article class="article-card">
-            <h1>Complete Guide to Offline GPS Navigation</h1>
-            <p>One of the most dangerous myths in modern travel is that "No Service" means "No Maps." In reality, your phone's GPS chip works perfectly without a data connection. The problem isn't the location—it's the <strong>map images</strong> (tiles) that require internet.</p>
-            <p>This guide explains how to prepare your device for "Zero-Data" environments so you never get lost, even in Airplane Mode.</p>
+            <h1>The Invisible Danger: Geotags in Your Photos (EXIF)</h1>
+            <p>You snap a photo of a new item you bought and post it to a marketplace. Or you email a picture of your kids to a "friend" you met online. Without realizing it, you may have just handed them a map to your front door.</p>
+            <p>This is caused by <strong>EXIF (Exchangeable Image File Format)</strong> data. This guide explains what it is and how to strip it.</p>
 
-            <h2>The Difference: "Blue Dot" vs. "Map Tiles"</h2>
-            <p>When you open a map app, two things happen:</p>
-            <ol>
-                <li><strong>The Hardware (Offline):</strong> Your GPS chip talks to satellites to find your coordinates (Latitude/Longitude). This <strong>always works</strong> offline.</li>
-                <li><strong>The Software (Online):</strong> The app downloads images of streets and parks to draw under the blue dot. This <strong>fails</strong> offline.</li>
-            </ol>
-            <p>To navigate offline, you must save the "Software" part before you leave home.</p>
-
-            <h2>Method 1: Using TellMyLocation.com Offline</h2>
-            <p>Our website is built as a <strong>Progressive Web App (PWA)</strong>. This means it can cache its own code.</p>
-            <div class="step-box">
-                <strong>The Protocol:</strong><br>
-                1. Open <strong>tellmylocation.com</strong> while you still have Wi-Fi.<br>
-                2. Leave the tab open in your browser.<br>
-                3. Even if you lose signal, the Latitude/Longitude numbers will continue to update in real-time because the logic is loaded into your phone's RAM.<br>
-                4. <em>Note: The visual map background might turn grey, but the raw coordinates remain 100% accurate for emergency use.</em>
-            </div>
-
-            <h2>Method 2: Google Maps "Offline Areas"</h2>
-            <p>Most users don't know they can download entire cities.</p>
-            <div class="step-box">
-                <strong>How to Cache:</strong><br>
-                1. Open Google Maps > Tap your Profile Icon.<br>
-                2. Select <strong>Offline Maps</strong>.<br>
-                3. Tap "Select Your Own Map."<br>
-                4. Pinch to zoom out and cover the area you are visiting.<br>
-                5. Tap <strong>Download</strong>. This data stays valid for 30 days.
-            </div>
-
-            <h2>Method 3: Apple Maps (iOS 17+)</h2>
-            <p>Apple finally added this feature in recent updates.</p>
-            <div class="step-box">
-                <strong>How to Cache:</strong><br>
-                1. Tap your profile picture in Apple Maps.<br>
-                2. Tap <strong>Offline Maps</strong> > <strong>Download New Map</strong>.<br>
-                3. Search for the city or park name.<br>
-                4. Adjust the frame and download.
-            </div>
-
-            <h2>Battery Management in Offline Mode</h2>
-            <p>Searching for a weak cell signal is the #1 drain on your battery. If you are navigating offline:</p>
+            <h2>What is Hidden Inside a JPEG?</h2>
+            <p>When a smartphone takes a photo, it doesn't just save the image. It embeds a hidden text file inside the image containing:</p>
             <ul>
-                <li><strong>Turn ON Airplane Mode:</strong> This kills the cellular radio but keeps the GPS chip active (on most modern phones).</li>
-                <li><strong>Dim Screen Brightness:</strong> The screen consumes more power than the GPS chip.</li>
-                <li><strong>Close Background Apps:</strong> Prevent social media apps from trying to ping servers.</li>
+                <li><strong>Device Model:</strong> (e.g., iPhone 15 Pro)</li>
+                <li><strong>Date/Time:</strong> Exact second the shutter clicked.</li>
+                <li><strong>GPS Coordinates:</strong> Latitude, Longitude, and even Altitude.</li>
+            </ul>
+
+            <div class="alert-box">
+                <strong>The Risk:</strong> If you take a photo in your living room and email it, the recipient can download the file, view the properties, and plug the coordinates into Google Maps to see your house.
+            </div>
+
+            <h2>How to Check Your Own Photos</h2>
+            <p>You can audit your privacy right now without special software.</p>
+            
+            <h3>On iPhone (iOS 15+)</h3>
+            <p>Open a photo in the Photos app. Tap the "i" (Info) button at the bottom. If location was saved, you will see a map. Tap "Adjust" > "No Location" to remove it.</p>
+
+            <h3>On Windows PC</h3>
+            <p>Right-click the image file > <strong>Properties</strong> > <strong>Details</strong> tab. Scroll down to the "GPS" section. If you see numbers there, your location is exposed.</p>
+
+            <h3>On Mac (macOS)</h3>
+            <p>Open the image in Preview. Press <strong>Cmd+I</strong> (Inspector). Click the "GPS" tab (if it exists).</p>
+
+            <h2>When is it Safe? (Social Media Scrubbing)</h2>
+            <p>The good news is that most major social platforms automatically "scrub" (delete) EXIF data when you upload:</p>
+            <ul>
+                <li><strong>Safe (Scrubbed):</strong> Facebook, Instagram, X (Twitter), LinkedIn, WhatsApp (Status).</li>
+                <li><strong>Dangerous (Not Scrubbed):</strong> Email attachments, iMessage, AirDrop, Dropbox links, Original Quality file transfers.</li>
+            </ul>
+
+            <h2>How to Turn It Off</h2>
+            <p>If you prefer privacy over features, you can disable geotagging at the source:</p>
+            <ul>
+                <li><strong>iOS:</strong> Settings > Privacy > Location Services > Camera > Never.</li>
+                <li><strong>Android:</strong> Open Camera App > Settings (Gear Icon) > Location Tags > Off.</li>
             </ul>
 
             <div style="margin-top: 30px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px;">
