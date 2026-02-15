@@ -2,24 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Hidden Location Data in Photos (EXIF) | Tell My Location</title>
+    <title>EXIF Data Warning: Are Your Photos Leaking Location? | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="canonical" href="https://tellmylocation.com/guide-exif.html" />
-    <meta name="description" content="How your photos reveal your home address and how to strip EXIF location data.">
+    <link rel="canonical" href="https://tellmylocation.com/guide-exif" />
+    <meta name="description" content="Learn how hidden metadata in your photos can reveal your home address. How to view and remove GPS tags from images.">
     <meta name="author" content="Don Odibat">
-    <meta name="publisher" content="Don System Holdings">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "The Invisible Danger: Geotags in Your Photos",
-      "author": { "@type": "Person", "name": "Don Odibat" },
-      "publisher": { "@type": "Organization", "name": "Don System Holdings" }
-    }
-    </script>
-
     <style>
         /* SHARED CSS */
         :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #38bdf8; --text: #ffffff; --text-soft: #94a3b8; --border: rgba(255, 255, 255, 0.1); }
@@ -31,44 +19,61 @@
         .article-card { background: var(--card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); }
         h1 { font-size: 32px; margin-bottom: 10px; font-weight: 800; }
         h2 { color: var(--accent); font-size: 20px; margin-top: 40px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
-        p { margin-bottom: 20px; color: #cbd5e1; font-size: 16px; }
-        ul { padding-left: 20px; margin-bottom: 20px; color: #cbd5e1; }
+        h3 { color: white; font-size: 16px; margin-top: 25px; font-weight: 700; }
+        p, li { color: #cbd5e1; font-size: 16px; margin-bottom: 15px; }
+        .alert-box { border-left: 4px solid #ef4444; background: rgba(239, 68, 68, 0.1); padding: 20px; margin: 30px 0; border-radius: 8px; }
         footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px; }
     </style>
 </head>
 <body>
     <div class="shell">
-        <nav>
-            <a href="/">Home</a>
-            <a href="guides">Guides</a>
-            <a href="contact">Contact</a>
-        </nav>
+        <nav><a href="/">Home</a><a href="guides">Guides</a><a href="contact">Contact</a></nav>
 
         <article class="article-card">
-            <h1>The Invisible Danger: Geotags in Your Photos</h1>
-            <p>You snap a photo of your new home and email it to a friend. You might have just sent them your exact GPS coordinates, accurate to within 3 meters. This is due to <strong>EXIF Metadata</strong>.</p>
+            <h1>The Invisible Danger: Geotags in Your Photos (EXIF)</h1>
+            <p>You snap a photo of a new item you bought and post it to a marketplace. Or you email a picture of your kids to a "friend" you met online. Without realizing it, you may have just handed them a map to your front door.</p>
+            <p>This is caused by <strong>EXIF (Exchangeable Image File Format)</strong> data. This guide explains what it is and how to strip it.</p>
 
-            <h2>What is EXIF Data?</h2>
-            <p>Exchangeable Image File Format (EXIF) is a standard that stores hidden data inside JPG and HEIC image files. This data includes:</p>
+            <h2>What is Hidden Inside a JPEG?</h2>
+            <p>When a smartphone takes a photo, it doesn't just save the image. It embeds a hidden text file inside the image containing:</p>
             <ul>
-                <li>Camera Model (e.g., iPhone 15 Pro)</li>
-                <li>Date and Time</li>
-                <li><strong>Latitude, Longitude, and Altitude</strong></li>
+                <li><strong>Device Model:</strong> (e.g., iPhone 15 Pro)</li>
+                <li><strong>Date/Time:</strong> Exact second the shutter clicked.</li>
+                <li><strong>GPS Coordinates:</strong> Latitude, Longitude, and even Altitude.</li>
             </ul>
 
-            <h2>When is it Safe? When is it Dangerous?</h2>
-            <p><strong>Social Media (Safe):</strong> Major platforms like Facebook, Instagram, and X (Twitter) automatically strip EXIF data when you upload. If you post a photo there, the location is removed.</p>
-            <p><strong>Direct Sharing (Dangerous):</strong> If you send a photo via <strong>Email, iMessage, or AirDrop</strong>, the file is usually sent "original quality," meaning the GPS coordinates remain embedded. A recipient can download the image, view "Properties," and see exactly where you live.</p>
+            <div class="alert-box">
+                <strong>The Risk:</strong> If you take a photo in your living room and email it, the recipient can download the file, view the properties, and plug the coordinates into Google Maps to see your house.
+            </div>
 
-            <h2>How to Protect Yourself</h2>
-            <p>On Android and iOS, go to your Camera settings and toggle "Save Location" to OFF if you are concerned about privacy. For existing photos, use an "EXIF Remover" tool before emailing sensitive images.</p>
+            <h2>How to Check Your Own Photos</h2>
+            <p>You can audit your privacy right now without special software.</p>
+            
+            <h3>On iPhone (iOS 15+)</h3>
+            <p>Open a photo in the Photos app. Tap the "i" (Info) button at the bottom. If location was saved, you will see a map. Tap "Adjust" > "No Location" to remove it.</p>
 
-            <div style="margin-top: 40px; background: rgba(56, 189, 248, 0.05); padding: 20px; border-radius: 12px; display: flex; align-items: center; gap: 15px; border: 1px solid rgba(56, 189, 248, 0.2);">
-                <div style="width: 50px; height: 50px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #0f172a;">DO</div>
-                <div>
-                    <div style="font-size: 11px; color: #38bdf8; text-transform: uppercase; font-weight: 700;">Author</div>
-                    <div style="font-weight: 700; color: white;">Don Odibat</div>
-                </div>
+            <h3>On Windows PC</h3>
+            <p>Right-click the image file > <strong>Properties</strong> > <strong>Details</strong> tab. Scroll down to the "GPS" section. If you see numbers there, your location is exposed.</p>
+
+            <h3>On Mac (macOS)</h3>
+            <p>Open the image in Preview. Press <strong>Cmd+I</strong> (Inspector). Click the "GPS" tab (if it exists).</p>
+
+            <h2>When is it Safe? (Social Media Scrubbing)</h2>
+            <p>The good news is that most major social platforms automatically "scrub" (delete) EXIF data when you upload:</p>
+            <ul>
+                <li><strong>Safe (Scrubbed):</strong> Facebook, Instagram, X (Twitter), LinkedIn, WhatsApp (Status).</li>
+                <li><strong>Dangerous (Not Scrubbed):</strong> Email attachments, iMessage, AirDrop, Dropbox links, Original Quality file transfers.</li>
+            </ul>
+
+            <h2>How to Turn It Off</h2>
+            <p>If you prefer privacy over features, you can disable geotagging at the source:</p>
+            <ul>
+                <li><strong>iOS:</strong> Settings > Privacy > Location Services > Camera > Never.</li>
+                <li><strong>Android:</strong> Open Camera App > Settings (Gear Icon) > Location Tags > Off.</li>
+            </ul>
+
+            <div style="margin-top: 30px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px;">
+                <strong>Author:</strong> <a href="author-don.html" style="color:#38bdf8;">Don Odibat</a> • <strong>Updated:</strong> Feb 2026
             </div>
         </article>
 
