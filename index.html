@@ -471,8 +471,8 @@
                     <div class="sub-value" id="accuracy-val">...</div>
                     <div style="font-size:10px; color:#64748b; margin-top:4px;">(Tap coordinates to copy)</div>
                     <div style="margin-top:8px; display:flex; gap:5px;">
-                        <button class="mod-btn" style="padding:5px 10px; font-size:10px;" onclick="">Google Maps</button>
-                        <button class="mod-btn" style="padding:5px 10px; font-size:10px;" onclick="">Share Location</button>
+                        <button class="mod-btn" style="padding:5px 10px; font-size:10px;" onclick="openDirectMap()">Google Maps</button>
+                        <button class="mod-btn" style="padding:5px 10px; font-size:10px;" onclick="toggleModule('share-mod')">Share Location</button>
                     </div>
                 </div>
                 <div class="data-item">
@@ -744,6 +744,11 @@
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => { func.apply(this, args); }, timeout);
         };
+    }
+
+    function openDirectMap() {
+        if (!currentPos) return alert("Waiting for location...");
+        window.open(`https://www.google.com/maps?q=${currentPos.lat},${currentPos.lng}`, '_blank');
     }
 
     // Generate QR Code
