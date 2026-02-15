@@ -2,25 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Does GPS Work Without Data? Offline Guide | Tell My Location</title>
+    <title>Complete Guide to Offline GPS Navigation | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="canonical" href="https://tellmylocation.com/guide-offline.html" />
-    <meta name="description" content="Learn how to use GPS navigation without a SIM card or internet connection.">
+    <link rel="canonical" href="https://tellmylocation.com/guide-offline" />
+    <meta name="description" content="How to use GPS without data. Step-by-step guide to caching maps on Google Maps, Apple Maps, and using TellMyLocation offline.">
     <meta name="author" content="Don Odibat">
-    <meta name="publisher" content="Don System Holdings">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Does GPS Work Without Internet? A Field Guide",
-      "author": { "@type": "Person", "name": "Don Odibat" },
-      "publisher": { "@type": "Organization", "name": "Don System Holdings" }
-    }
-    </script>
-
     <style>
+        /* SHARED CSS */
         :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #38bdf8; --text: #ffffff; --text-soft: #94a3b8; --border: rgba(255, 255, 255, 0.1); }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.8; }
         .shell { max-width: 800px; margin: 0 auto; }
@@ -30,43 +19,70 @@
         .article-card { background: var(--card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); }
         h1 { font-size: 32px; margin-bottom: 10px; font-weight: 800; }
         h2 { color: var(--accent); font-size: 20px; margin-top: 40px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
-        p { margin-bottom: 20px; color: #cbd5e1; font-size: 16px; }
-        ul { padding-left: 20px; margin-bottom: 20px; color: #cbd5e1; }
+        h3 { color: white; font-size: 16px; margin-top: 25px; font-weight: 700; }
+        p, li { color: #cbd5e1; font-size: 16px; margin-bottom: 15px; }
+        .step-box { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border: 1px solid var(--border); margin: 20px 0; }
         footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px; }
     </style>
 </head>
 <body>
     <div class="shell">
-        <nav>
-            <a href="/">Home</a>
-            <a href="guides">Guides</a>
-            <a href="contact">Contact</a>
-        </nav>
+        <nav><a href="/">Home</a><a href="guides">Guides</a><a href="contact">Contact</a></nav>
 
         <article class="article-card">
-            <h1>Does GPS Work Without Internet? A Field Guide</h1>
-            <p>A common myth is that you need a data plan (4G/5G) to use GPS. This is false. This guide explains the difference between <strong>Satellite Reception</strong> and <strong>Map Data</strong>, and how to navigate when you are completely offline.</p>
+            <h1>Complete Guide to Offline GPS Navigation</h1>
+            <p>One of the most dangerous myths in modern travel is that "No Service" means "No Maps." In reality, your phone's GPS chip works perfectly without a data connection. The problem isn't the location—it's the <strong>map images</strong> (tiles) that require internet.</p>
+            <p>This guide explains how to prepare your device for "Zero-Data" environments so you never get lost, even in Airplane Mode.</p>
 
-            <h2>1. The Difference: GPS Chip vs. Data Connection</h2>
-            <p>Your phone has two separate radios involved in location:</p>
+            <h2>The Difference: "Blue Dot" vs. "Map Tiles"</h2>
+            <p>When you open a map app, two things happen:</p>
+            <ol>
+                <li><strong>The Hardware (Offline):</strong> Your GPS chip talks to satellites to find your coordinates (Latitude/Longitude). This <strong>always works</strong> offline.</li>
+                <li><strong>The Software (Online):</strong> The app downloads images of streets and parks to draw under the blue dot. This <strong>fails</strong> offline.</li>
+            </ol>
+            <p>To navigate offline, you must save the "Software" part before you leave home.</p>
+
+            <h2>Method 1: Using TellMyLocation.com Offline</h2>
+            <p>Our website is built as a <strong>Progressive Web App (PWA)</strong>. This means it can cache its own code.</p>
+            <div class="step-box">
+                <strong>The Protocol:</strong><br>
+                1. Open <strong>tellmylocation.com</strong> while you still have Wi-Fi.<br>
+                2. Leave the tab open in your browser.<br>
+                3. Even if you lose signal, the Latitude/Longitude numbers will continue to update in real-time because the logic is loaded into your phone's RAM.<br>
+                4. <em>Note: The visual map background might turn grey, but the raw coordinates remain 100% accurate for emergency use.</em>
+            </div>
+
+            <h2>Method 2: Google Maps "Offline Areas"</h2>
+            <p>Most users don't know they can download entire cities.</p>
+            <div class="step-box">
+                <strong>How to Cache:</strong><br>
+                1. Open Google Maps > Tap your Profile Icon.<br>
+                2. Select <strong>Offline Maps</strong>.<br>
+                3. Tap "Select Your Own Map."<br>
+                4. Pinch to zoom out and cover the area you are visiting.<br>
+                5. Tap <strong>Download</strong>. This data stays valid for 30 days.
+            </div>
+
+            <h2>Method 3: Apple Maps (iOS 17+)</h2>
+            <p>Apple finally added this feature in recent updates.</p>
+            <div class="step-box">
+                <strong>How to Cache:</strong><br>
+                1. Tap your profile picture in Apple Maps.<br>
+                2. Tap <strong>Offline Maps</strong> > <strong>Download New Map</strong>.<br>
+                3. Search for the city or park name.<br>
+                4. Adjust the frame and download.
+            </div>
+
+            <h2>Battery Management in Offline Mode</h2>
+            <p>Searching for a weak cell signal is the #1 drain on your battery. If you are navigating offline:</p>
             <ul>
-                <li><strong>The GPS Receiver:</strong> This is a "listen-only" chip. It hears "pings" from satellites in space. It requires <strong>zero internet</strong> and costs zero money to operate. It works in the middle of the ocean or the Sahara desert.</li>
-                <li><strong>The Cellular Radio:</strong> This connects to cell towers to download the <em>visual map tiles</em> (the drawing of streets and buildings) and traffic data.</li>
+                <li><strong>Turn ON Airplane Mode:</strong> This kills the cellular radio but keeps the GPS chip active (on most modern phones).</li>
+                <li><strong>Dim Screen Brightness:</strong> The screen consumes more power than the GPS chip.</li>
+                <li><strong>Close Background Apps:</strong> Prevent social media apps from trying to ping servers.</li>
             </ul>
 
-            <h2>2. How to Navigate Offline</h2>
-            <p>If you are hiking or traveling without a SIM card, your blue dot will still move accurately because the GPS chip is working. However, the background might be a grey grid because the map images cannot download.</p>
-            <p><strong>The Fix:</strong> Use TellMyLocation.com <em>before</em> you leave Wi-Fi. Our Progressive Web App (PWA) technology caches the core code. If you keep the tab open, you will still see your Latitude/Longitude coordinates update in real-time, even in "Airplane Mode."</p>
-
-            <h2>3. Battery Conservation</h2>
-            <p>Searching for a weak cellular signal drains battery fast. In emergencies, turn on <strong>Airplane Mode</strong> but leave <strong>Location Services ON</strong>. This disables the battery-draining cellular radio while keeping the GPS chip active for navigation.</p>
-
-            <div style="margin-top: 40px; background: rgba(56, 189, 248, 0.05); padding: 20px; border-radius: 12px; display: flex; align-items: center; gap: 15px; border: 1px solid rgba(56, 189, 248, 0.2);">
-                <div style="width: 50px; height: 50px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #0f172a;">DO</div>
-                <div>
-                    <div style="font-size: 11px; color: #38bdf8; text-transform: uppercase; font-weight: 700;">Author</div>
-                    <div style="font-weight: 700; color: white;">Don Odibat</div>
-                </div>
+            <div style="margin-top: 30px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px;">
+                <strong>Author:</strong> <a href="author-don.html" style="color:#38bdf8;">Don Odibat</a> • <strong>Updated:</strong> Feb 2026
             </div>
         </article>
 
