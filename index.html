@@ -4,6 +4,7 @@
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
+        // Default to denied for GDPR compliance
         gtag('consent', 'default', {
             'ad_storage': 'denied',
             'ad_user_data': 'denied',
@@ -31,7 +32,7 @@
     <meta name="keywords" content="gps coordinates, current location, my address, latitude longitude, emergency location, weather, ip address">
     
     <meta property="og:title" content="Tell My Location | Global GPS Tool">
-    <meta property="og:description" content="Get your current GPS coordinates, address, and nearest emergency services instantly.">
+    <meta property="og:description" content="Get your exact GPS coordinates, address, and nearest emergency services instantly.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tellmylocation.com">
     <meta property="og:image" content="https://tellmylocation.com/icon.png"> 
@@ -128,10 +129,6 @@
             <p class="tagline" data-i18n="tagline">Instant, Private, & Accurate</p>
         </header>
 
-        <div class="ad-container" style="text-align:center; margin: 10px auto 20px; min-height: 90px; width: 100%; max-width: 728px; overflow: hidden;">
-             <span style="font-size:10px; color:#334155; margin-bottom: 5px;">ADVERTISEMENT</span>
-        </div>
-
         <div class="compass-wrap">
             <svg id="compass-svg" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="48" class="compass-ring"/>
@@ -214,6 +211,10 @@
                     <div class="value" id="ip-val" style="font-size:14px">—</div>
                     <div class="sub-value" id="isp-val">ISP: —</div>
                 </div>
+            </div>
+
+            <div class="ad-container" style="text-align:center; margin: 20px 0; min-height: 90px; width: 100%; overflow: hidden;">
+                 <span style="font-size:10px; color:#334155; margin-bottom: 5px;">ADVERTISEMENT</span>
             </div>
 
             <div class="nearby-header">
@@ -404,52 +405,6 @@
     </div>
 </div>
 
-<script>
-    /* ... EXISTING JS LOGIC (GPS, WEATHER, MODULES, CONSENT) ... */
-    
-    // --- CONSENT LOGIC ---
-    function checkConsent() {
-        const consent = localStorage.getItem('cookiesAccepted');
-        if (!consent) {
-            document.getElementById('cookie-banner').style.display = 'block';
-        } else if (consent === 'granted') {
-            gtag('consent', 'update', {
-                'ad_storage': 'granted',
-                'ad_user_data': 'granted',
-                'ad_personalization': 'granted',
-                'analytics_storage': 'granted'
-            });
-        }
-    }
-    function acceptCookies() {
-        localStorage.setItem('cookiesAccepted', 'granted');
-        document.getElementById('cookie-banner').style.display = 'none';
-        gtag('consent', 'update', {
-            'ad_storage': 'granted',
-            'ad_user_data': 'granted',
-            'ad_personalization': 'granted',
-            'analytics_storage': 'granted'
-        });
-    }
-    function rejectCookies() {
-        localStorage.setItem('cookiesAccepted', 'denied');
-        document.getElementById('cookie-banner').style.display = 'none';
-        gtag('consent', 'update', {
-            'ad_storage': 'denied',
-            'ad_user_data': 'denied',
-            'ad_personalization': 'denied',
-            'analytics_storage': 'denied'
-        });
-    }
-    function showCookieBanner() {
-        document.getElementById('cookie-banner').style.display = 'block';
-    }
-    checkConsent();
-
-    // ... (Keep existing debounce, QR, GPS, and Weather functions from previous version) ...
-    // Note: I'm not re-pasting the 500 lines of JS logic to save space, but ensure you keep the script block from the previous full index.html provided in Turn 12.
-    // The key update here was the HEAD metadata and schema.
-</script>
 <script>
     /* DEBOUNCE UTILITY (The "Brakes") */
     let debounceTimer;
