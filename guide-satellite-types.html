@@ -2,42 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>GPS vs GLONASS vs Galileo: Understanding Satellites | Tell My Location</title>
+    <title>GNSS Guide: GPS vs GLONASS vs Galileo | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="description" content="Your phone uses more than just GPS. Learn about GLONASS, Galileo, and BeiDou satellite constellations and how they improve location accuracy.">
+    
     <link rel="canonical" href="https://tellmylocation.com/guide-satellite-types.html" />
     <meta name="author" content="Don Odibat">
+    <meta name="publisher" content="Don System Holdings">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <style>/* Same CSS */ :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #38bdf8; --text: #ffffff; --text-soft: #94a3b8; --border: rgba(255, 255, 255, 0.1); } body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.8; } .shell { max-width: 800px; margin: 0 auto; } nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; background: rgba(15, 23, 42, 0.6); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); width: fit-content; margin-left: auto; margin-right: auto; backdrop-filter: blur(5px); } nav a { color: var(--text-soft); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; } nav a:hover { color: var(--accent); } .article-card { background: var(--card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); } h1 { font-size: 32px; margin-bottom: 10px; font-weight: 800; } h2 { color: var(--accent); font-size: 20px; margin-top: 40px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; } p, li { color: #cbd5e1; font-size: 16px; margin-bottom: 15px; } footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px; }</style>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Beyond GPS: Understanding GNSS Constellations",
+      "author": { "@type": "Person", "name": "Don Odibat" },
+      "publisher": { "@type": "Organization", "name": "Don System Holdings" }
+    }
+    </script>
+
+    <style>/* SAME CSS */ :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #38bdf8; --text: #ffffff; --text-soft: #94a3b8; --border: rgba(255, 255, 255, 0.1); } body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.8; } .shell { max-width: 800px; margin: 0 auto; } nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; background: rgba(15, 23, 42, 0.6); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); width: fit-content; margin-left: auto; margin-right: auto; backdrop-filter: blur(5px); } nav a { color: var(--text-soft); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; } nav a:hover { color: var(--accent); } .article-card { background: var(--card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); } h1 { font-size: 32px; margin-bottom: 10px; font-weight: 800; } h2 { color: var(--accent); font-size: 20px; margin-top: 40px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; } p, li { color: #cbd5e1; font-size: 16px; margin-bottom: 15px; } footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px; }</style>
 </head>
 <body>
     <div class="shell">
         <nav><a href="/">Home</a><a href="guides.html">Guides</a><a href="contact.html">Contact</a></nav>
 
         <article class="article-card">
-            <h1>GPS vs. GLONASS vs. Galileo: What Connects You?</h1>
-            <p>We often use "GPS" as a generic term for location, but GPS is actually just one specific network owned by the United States. Your phone likely connects to three or four different "constellations" simultaneously to determine where you are.</p>
+            <h1>Beyond GPS: Understanding Your Phone's Satellite Connection</h1>
+            <p>We typically say "I'm using GPS," but this is technically incorrect. GPS is just one brand of satellite network owned by the United States. Modern smartphones are actually <strong>Multi-GNSS</strong> devices (Global Navigation Satellite Systems), meaning they connect to up to four different space networks simultaneously to pinpoint your location.</p>
 
-            <h2>1. GPS (Global Positioning System)</h2>
+            <h2>The Big Four Constellations</h2>
+            <p>Your phone constantly scans the sky for signals from these networks:</p>
+            
+            <h3>1. GPS (Global Positioning System)</h3>
             <ul>
-                <li><strong>Owner:</strong> USA Space Force</li>
+                <li><strong>Owner:</strong> USA (Space Force)</li>
                 <li><strong>Satellites:</strong> ~31 operational</li>
-                <li><strong>Global Coverage:</strong> 100%</li>
+                <li><strong>Strengths:</strong> The original global standard. Highly reliable and integrated into every chipset.</li>
             </ul>
 
-            <h2>2. GLONASS</h2>
+            <h3>2. GLONASS</h3>
             <ul>
                 <li><strong>Owner:</strong> Russia (Roscosmos)</li>
-                <li><strong>Specialty:</strong> Better accuracy in high northern latitudes (Canada, Scandinavia, Russia). If you are near the Arctic Circle, your phone relies heavily on GLONASS.</li>
+                <li><strong>Satellites:</strong> ~24 operational</li>
+                <li><strong>Strengths:</strong> High-latitude performance. Because of its orbital inclination, GLONASS is often more accurate than GPS if you are in Canada, Scandinavia, or Northern Europe.</li>
             </ul>
 
-            <h2>3. Galileo</h2>
+            <h3>3. Galileo</h3>
             <ul>
-                <li><strong>Owner:</strong> European Union</li>
-                <li><strong>Specialty:</strong> Civilian precision. Unlike GPS/GLONASS which were military-first, Galileo is civilian-run and offers meter-level precision for emergency services (eCall).</li>
+                <li><strong>Owner:</strong> European Union (ESA)</li>
+                <li><strong>Satellites:</strong> ~26 operational</li>
+                <li><strong>Strengths:</strong> Civilian precision. Unlike GPS and GLONASS which were built for military use first, Galileo is civilian-controlled. It offers better accuracy (down to 1 meter) for commercial devices.</li>
             </ul>
 
-            <h2>How "Multi-GNSS" Improves Accuracy</h2>
-            <p>Modern smartphones use a "Multi-GNSS" chip. Instead of looking for 4 GPS satellites, your phone looks for <em>any</em> 4 satellites from <em>any</em> system. By pooling them together (e.g., 2 GPS + 1 Galileo + 1 GLONASS), your Time-To-Fix is faster and your accuracy is sharper.</p>
+            <h3>4. BeiDou</h3>
+            <ul>
+                <li><strong>Owner:</strong> China</li>
+                <li><strong>Satellites:</strong> ~35 operational</li>
+                <li><strong>Strengths:</strong> Extremely dense coverage in Asia and the Pacific, though now globally available.</li>
+            </ul>
+
+            <h2>Why "Multi-Band" Matters (L1 vs. L5)</h2>
+            <p>Newer phones (like the iPhone 14/15 Pro and Samsung S24) utilize <strong>Dual-Frequency GPS</strong>. </p>
+            <p>Older phones only listened to the <strong>L1 frequency</strong>. This signal bounces off skyscrapers easily, causing "Multipath Errors" where your blue dot jumps across the street in a city. </p>
+            <p>New phones listen to <strong>L5</strong> (a newer, stronger frequency) in addition to L1. The L5 signal passes through clouds and trees better and is easier for the phone to distinguish from a reflection. This allows TellMyLocation.com to achieve 3-meter accuracy even in "Urban Canyons" like New York City or Tokyo.</p>
 
             <div style="margin-top: 30px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px;">
                 <strong>Author:</strong> <a href="author-don.html" style="color:#38bdf8;">Don Odibat</a>
