@@ -183,7 +183,6 @@
         .btn-sos { 
             background: var(--sos-red); color: white; width: 100%; font-size: 16px;
             box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
-            /* Removed pulse animation to reduce "Alarmist" design */
         }
 
         .btn-primary { background: linear-gradient(135deg, #ff0055, #ff4d7d); color: white; }
@@ -646,160 +645,24 @@
                 <p>Beyond emergencies, precise coordinates are vital for professionals and hobbyists alike. <strong>Delivery drivers</strong> use them to pinpoint unmapped entrances. <strong>Landscape photographers</strong> log specific spots to return when the lighting is perfect. <strong>Drone pilots</strong> need exact latitude and longitude to respect no-fly zones and plan flight paths. By providing raw, unadulterated data, this tool serves as a Swiss Army knife for location-based tasks.</p>
             </div>
 
-            <div class="content-expansion" style="border-top: 1px solid var(--border); margin-top: 30px; padding-top: 30px;">
-                
-                <h3>🚨 Emergency & Safety Layer</h3>
-                <p>When every second counts, knowing your exact coordinates can be the difference between life and death. Emergency dispatchers often struggle to locate callers from mobile signals alone. By reading your Latitude and Longitude directly from this tool, you provide first responders with pinpoint accuracy.</p>
-                <ul>
-                    <li><strong>Silent SOS:</strong> Our One-Tap SOS feature generates a pre-filled text message with your coordinates, allowing you to signal for help without speaking.</li>
-                    <li><strong>Drift Correction:</strong> We monitor signal drift to ensure the coordinates you see are stabilized before you share them.</li>
-                </ul>
-
-                <h3>🛠️ Global Utility Tools</h3>
-                <p>We support universal standards for location data. Whether you are a pilot, a surveyor, or a developer, we provide raw data access.</p>
-                <ul>
-                    <li><strong>Formats:</strong> We display Decimal Degrees (DD) by default, the standard for digital mapping.</li>
-                    <li><strong>Altitude:</strong> Using barometric sensors (where available) and GPS triangulation to estimate height above sea level.</li>
-                    <li><strong>ISP Data:</strong> We cross-reference your IP address to identify your network provider, helping diagnose connectivity issues.</li>
-                </ul>
-
-                <h3>✈️ Travel & Navigation</h3>
-                <p>Modern travel requires more than just a destination; it requires orientation. This tool is designed for the "Last Mile" of navigation.</p>
-                <ul>
-                    <li><strong>Boating & Marine:</strong> Use our bearing and compass tools to verify heading when visual landmarks are obscured by fog.</li>
-                    <li><strong>Urban Exploration:</strong> Navigate dense city streets where skyscraper interference often confuses standard map apps.</li>
-                </ul>
-
-                <h3>📡 Live Tracking (Privacy First)</h3>
-                <p>Most tracking apps require accounts, logins, and permanent history. We reject that model. Our "Live Tracking" is ephemeral.</p>
-                <ul>
-                    <li><strong>Session Based:</strong> Tracking exists only as long as you keep the tab open.</li>
-                    <li><strong>No Database:</strong> We do not write your movement history to a disk. It flows from your device to your recipient directly via signed URLs.</li>
-                </ul>
-
-                <h3>🌲 Offline Survival Mode</h3>
-                <p>This tool is PWA-ready (Progressive Web App). Once loaded, the core GPS functionality works without a data connection.</p>
-                <ul>
-                    <li><strong>Cached Resources:</strong> The interface remains functional even in "Airplane Mode".</li>
-                    <li><strong>Hardware Access:</strong> Your phone's GPS chip does not require cellular data to receive satellite signals, meaning you can still find your coordinates in the middle of a desert.</li>
-                </ul>
-
-                <h3>📊 Data & Analytics</h3>
-                <p>We provide transparency on signal quality. The "Accuracy" reading (e.g., ±5m) tells you exactly how much trust to place in the current reading.</p>
-                
-                <h3>🔗 Share & Export</h3>
-                <p>Seamlessly move data from our tool to your favorite apps. We support deep-linking to Google Maps, Apple Maps, Waze, and OpenStreetMap.</p>
-
-                <h3>🤖 AI & Smart Positioning</h3>
-                <p>We use lightweight heuristic algorithms to filter out "noise" from GPS jumps, providing a smoother location experience than raw sensor data alone.</p>
-
-                <h3>🔌 API Access (Coming Soon)</h3>
-                <p>Developers will soon be able to integrate our lightweight geolocation engine into their own apps via a simple REST API. Stay tuned.</p>
-
-                <h3>🔍 Search & Discovery</h3>
-                <p>Common queries solved by this tool: <em>"What is my zip code?"</em>, <em>"What city am I in right now?"</em>, <em>"My elevation"</em>, and <em>"Current GPS coordinates"</em>. We answer these instantly without clutter.</p>
-
-                <h3>❓ Frequently Asked Questions</h3>
-                
-                <details class="faq-item">
-                    <summary class="faq-q">Is this tool free to use?</summary>
-                    <div class="faq-a">Yes, TellMyLocation is 100% free. We are supported by minimal, non-intrusive ads.</div>
-                </details>
-                
-                <details class="faq-item">
-                    <summary class="faq-q">Do you save my location history?</summary>
-                    <div class="faq-a">Absolutely not. Your location data is processed locally on your device and is never stored on our servers.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">Why is the location slightly off?</summary>
-                    <div class="faq-a">GPS accuracy depends on your view of the sky. Indoors, your device uses Wi-Fi triangulation which is less precise (±30m) than satellite GPS (±5m).</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">Does this work without internet?</summary>
-                    <div class="faq-a">Yes! If you have already loaded the page, the GPS coordinates will continue to update offline using your device's sensors. Map tiles, however, require internet.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">How do I share my location?</summary>
-                    <div class="faq-a">Click the "Share Link" button to copy a URL, or use the "One-Tap SOS" to draft a text message with your coordinates.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">Does this drain my battery?</summary>
-                    <div class="faq-a">GPS is battery-intensive. We optimize this by only querying high-accuracy location while the tab is active. Closing the tab stops the battery drain.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">Can I use this on a desktop computer?</summary>
-                    <div class="faq-a">Yes, but desktop accuracy is lower as it relies on IP address and Wi-Fi networks rather than a dedicated GPS chip.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">What is "Hiker Mode"?</summary>
-                    <div class="faq-a">Hiker Mode enables a simplified interface that allows you to drop temporary pins to mark your path, which is useful for backtracking.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">What is "Driver Mode"?</summary>
-                    <div class="faq-a">Driver Mode enlarges the text for speed and heading, making it safer to glance at while mounting your phone in a vehicle.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">How does the SOS feature work?</summary>
-                    <div class="faq-a">It creates a pre-filled SMS or WhatsApp message with your coordinates and a "Help me" text. You must still press "Send" on your device.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">Why does it ask for permission?</summary>
-                    <div class="faq-a">Browser security requires your explicit consent to access the GPS hardware. We cannot see your location without this permission.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">Can I find someone else's location?</summary>
-                    <div class="faq-a">No. This tool is for finding *your* location. You cannot track others unless they voluntarily send you their link.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">What is the "Coffee" button?</summary>
-                    <div class="faq-a">It links to a donation page to help support the developers who maintain this free tool.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">Is the weather accurate?</summary>
-                    <div class="faq-a">We use the Open-Meteo API which aggregates data from national weather services for high local accuracy.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">What datum format is used?</summary>
-                    <div class="faq-a">We use WGS84, the standard coordinate system for GPS, ensuring compatibility with Google Maps and Apple Maps.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">Can I measure distance?</summary>
-                    <div class="faq-a">Yes, use the "Meet Friend" module to calculate the distance and midpoint between you and another set of coordinates.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">Does VPN affect accuracy?</summary>
-                    <div class="faq-a">If you are on a desktop without GPS, a VPN will mask your location. On mobile, GPS data overrides the VPN IP location.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">How do I copy my address?</summary>
-                    <div class="faq-a">Click the small "Copy" icon next to the address display box at the top of the card.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">Is there a dark mode?</summary>
-                    <div class="faq-a">The site is built in Dark Mode by default to save battery on OLED screens and reduce eye strain at night.</div>
-                </details>
-
-                <details class="faq-item">
-                    <summary class="faq-q">How do I report a bug?</summary>
-                    <div class="faq-a">Please use the "Contact Us" link in the footer to send us an email.</div>
-                </details>
+            <div class="card" style="margin-top: 30px; padding: 20px; border: 1px solid var(--accent);">
+                <h3 style="color:white; font-size:16px; margin-bottom:15px;">📚 Featured Safety Guides</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                    <a href="guide-safety.html" style="text-decoration:none;">
+                        <div class="nearby-item" style="height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center; transition:0.3s; cursor:pointer; background:rgba(56, 189, 248, 0.1);">
+                            <div style="font-size:24px; margin-bottom:5px;">🚨</div>
+                            <div style="color:white; font-weight:700; font-size:13px;">Emergency GPS Protocol</div>
+                            <div style="color:var(--text-soft); font-size:10px; margin-top:5px;">How to signal for help offline.</div>
+                        </div>
+                    </a>
+                    <a href="guide-accuracy.html" style="text-decoration:none;">
+                        <div class="nearby-item" style="height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center; transition:0.3s; cursor:pointer; background:rgba(56, 189, 248, 0.1);">
+                            <div style="font-size:24px; margin-bottom:5px;">🎯</div>
+                            <div style="color:white; font-weight:700; font-size:13px;">Fix Location Accuracy</div>
+                            <div style="color:var(--text-soft); font-size:10px; margin-top:5px;">Why GPS drift happens.</div>
+                        </div>
+                    </a>
+                </div>
             </div>
 
             <div class="kb-section">
