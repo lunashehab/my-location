@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <script>
+        // 1. Define dataLayer and the gtag function.
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
-        // Default to denied for GDPR compliance
+
+        // 2. Set default consent to 'denied' as a placeholder
         gtag('consent', 'default', {
             'ad_storage': 'denied',
             'ad_user_data': 'denied',
@@ -199,28 +201,29 @@
         footer a { color: var(--text-soft); text-decoration: none; margin: 0 8px; transition: color 0.2s; }
         footer a:hover { color: white; }
 
+        /* CONSENT MANAGER CSS */
         #cookie-banner {
             display: none; 
             position: fixed; 
-            bottom: 80px; /* AdSense Safe Zone */
-            left: 50%; 
-            transform: translateX(-50%);
-            background: rgba(30, 41, 59, 0.95); 
-            padding: 20px; 
-            border-radius: 16px; 
-            border: 1px solid var(--neon-blue); 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
-            width: 90%; 
-            max-width: 400px; 
+            bottom: 0; left: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.98);
+            border-top: 1px solid var(--border);
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.8); 
             z-index: 10000; 
+            padding: 20px;
             text-align: center;
             backdrop-filter: blur(10px);
         }
+        .cookie-content { max-width: 600px; margin: 0 auto; }
         #cookie-text { margin-bottom: 15px; font-size: 13px; color: #cbd5e1; line-height: 1.5; }
-        #cookie-btn {
-            background: var(--neon-blue); color: #0f172a; border: none; padding: 10px 24px;
-            border-radius: 50px; font-weight: 800; cursor: pointer; font-size: 14px;
+        .cookie-buttons { display: flex; gap: 10px; justify-content: center; }
+        .cookie-btn {
+            border: none; padding: 10px 24px; border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 13px; transition: 0.2s;
         }
+        .btn-accept { background: var(--neon-blue); color: #0f172a; }
+        .btn-accept:hover { background: white; }
+        .btn-reject { background: transparent; border: 1px solid var(--text-soft); color: var(--text-soft); }
+        .btn-reject:hover { border-color: white; color: white; }
 
         /* PREMIUM UPGRADE CSS INJECT */
         .premium-upgrade-container { animation: fadeIn 1.2s ease-out; }
@@ -454,7 +457,7 @@
                 </div>
                 <div class="p-card">
                     <span class="p-icon">🛡️</span>
-                    <span class="p-label">Security</span>
+                    <span class="p-label">Connection</span>
                     <span class="p-value">Secure</span>
                 </div>
                 <div class="p-card">
@@ -717,7 +720,8 @@
         <div style="margin-bottom: 12px;">
             <a href="privacy.html" data-i18n="link_privacy">Privacy Policy</a> • 
             <a href="terms.html" data-i18n="link_terms">Terms of Use</a> • 
-            <a href="contact.html" data-i18n="link_contact">Contact Us</a>
+            <a href="contact.html" data-i18n="link_contact">Contact Us</a> •
+            <a href="#" onclick="showCookieBanner(); return false;">Cookie Preferences</a>
         </div>
         © 2026 TellMyLocation.com
     </footer>
@@ -725,8 +729,13 @@
     </div>
 
 <div id="cookie-banner">
-    <div id="cookie-text" data-i18n="cookie_text">We use cookies to analyze traffic and show personalized ads to support this free tool.</div>
-    <button id="cookie-btn" onclick="acceptCookies()" data-i18n="btn_accept">I Accept</button>
+    <div class="cookie-content">
+        <div id="cookie-text" data-i18n="cookie_text">We use cookies to analyze traffic and show personalized ads to support this free tool.</div>
+        <div class="cookie-buttons">
+            <button class="cookie-btn btn-reject" onclick="rejectCookies()">Decline</button>
+            <button class="cookie-btn btn-accept" onclick="acceptCookies()" data-i18n="btn_accept">Accept All</button>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -774,7 +783,7 @@
     /* ORIGINAL SCRIPT CONTINUES BELOW */
     const i18n = {
         en: {
-            tagline: "The fastest 'Where am I?' tool on the internet.",
+            tagline: "Instant, Private, & Accurate",
             address_title: "Current Address",
             gps_label: "GPS Coordinates",
             weather_label: "Weather",
@@ -787,10 +796,10 @@
             trust_text: "🔒 Privacy Guarantee: We do not save, need, or share your location. This website exists solely to help you or save you when needed. All data is processed securely on your device.",
             link_privacy: "Privacy Policy", link_terms: "Terms of Use", link_contact: "Contact Us",
             cookie_text: "We use cookies to analyze traffic and show personalized ads to support this free tool.",
-            btn_accept: "I Accept"
+            btn_accept: "Accept All"
         },
         es: {
-            tagline: "La herramienta '¿Dónde estoy?' más rápida de internet.",
+            tagline: "Instantáneo, Privado y Preciso",
             address_title: "Dirección Actual",
             gps_label: "Coordenadas GPS",
             weather_label: "Clima",
@@ -806,7 +815,7 @@
             btn_accept: "Aceptar"
         },
         fr: {
-            tagline: "L'outil 'Où suis-je ?' le plus rapide d'internet.",
+            tagline: "Instantané, Privé et Précis",
             address_title: "Adresse Actuelle",
             gps_label: "Coordonnées GPS",
             weather_label: "Météo",
@@ -822,7 +831,7 @@
             btn_accept: "Accepter"
         },
         ru: {
-            tagline: "Самый быстрый инструмент определения местоположения.",
+            tagline: "Мгновенно, приватно и точно",
             address_title: "Текущий адрес",
             gps_label: "Координаты GPS",
             weather_label: "Погода",
@@ -838,7 +847,7 @@
             btn_accept: "Принять"
         },
         ar: {
-            tagline: "أسرع أداة لمعرفة موقعك الحالي على الإنترنت.",
+            tagline: "فوري، خاص، ودقيق",
             address_title: "العنوان الحالي",
             gps_label: "إحداثيات GPS",
             weather_label: "الطقس",
@@ -869,15 +878,12 @@
     document.getElementById('language').value = savedLang;
     changeLanguage(savedLang);
 
-    if (!localStorage.getItem('cookiesAccepted')) {
-        document.getElementById('cookie-banner').style.display = 'block';
-    }
-    function acceptCookies() {
-        localStorage.setItem('cookiesAccepted', 'true');
-        document.getElementById('cookie-banner').style.display = 'none';
-        
-        // Consent Mode Update on Accept
-        if (typeof gtag === 'function') {
+    // --- CONSENT LOGIC START ---
+    function checkConsent() {
+        const consent = localStorage.getItem('cookiesAccepted');
+        if (!consent) {
+            document.getElementById('cookie-banner').style.display = 'block';
+        } else if (consent === 'granted') {
             gtag('consent', 'update', {
                 'ad_storage': 'granted',
                 'ad_user_data': 'granted',
@@ -885,7 +891,39 @@
                 'analytics_storage': 'granted'
             });
         }
+        // If 'denied', we do nothing (default is denied)
     }
+
+    function acceptCookies() {
+        localStorage.setItem('cookiesAccepted', 'granted');
+        document.getElementById('cookie-banner').style.display = 'none';
+        gtag('consent', 'update', {
+            'ad_storage': 'granted',
+            'ad_user_data': 'granted',
+            'ad_personalization': 'granted',
+            'analytics_storage': 'granted'
+        });
+    }
+
+    function rejectCookies() {
+        localStorage.setItem('cookiesAccepted', 'denied');
+        document.getElementById('cookie-banner').style.display = 'none';
+        // Explicitly set denied just in case
+        gtag('consent', 'update', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied'
+        });
+    }
+
+    function showCookieBanner() {
+        document.getElementById('cookie-banner').style.display = 'block';
+    }
+
+    // Run check on load
+    checkConsent();
+    // --- CONSENT LOGIC END ---
 
     const els = {
         lat: document.getElementById("lat-val"),
