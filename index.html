@@ -179,15 +179,11 @@
             transition: transform 0.1s;
         }
         
+        /* DE-RISKED SOS BUTTON */
         .btn-sos { 
             background: var(--sos-red); color: white; width: 100%; font-size: 16px;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+            /* Removed pulse animation to reduce "Alarmist" design */
         }
 
         .btn-primary { background: linear-gradient(135deg, #ff0055, #ff4d7d); color: white; }
@@ -307,8 +303,12 @@
         .mod-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; border-radius: 8px; margin-bottom: 10px; outline: none; }
         .mod-input:focus { border-color: var(--neon-blue); }
 
-        .sos-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #3f0000; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; animation: sosFlash 1s infinite; }
-        @keyframes sosFlash { 0% {background:#3f0000;} 50% {background:#7f1d1d;} 100% {background:#3f0000;} }
+        /* DE-RISKED OVERLAY (Static, High Contrast, No Flash) */
+        .sos-overlay { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: rgba(30, 0, 0, 0.95); z-index: 9999; 
+            display: none; flex-direction: column; align-items: center; justify-content: center; 
+        }
         .sos-msg { font-size: 24px; font-weight: 900; color: white; margin-bottom: 30px; text-align: center; padding: 20px; }
         
         .driver-hud { display: flex; justify-content: space-around; margin: 15px 0; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; }
@@ -378,7 +378,7 @@
 
         <header class="brand">
             <a href="/" style="color:inherit; text-decoration:none;">
-                <h1>TELLMY<span>LOCATION</span>.COM <span id="offline-indicator" class="offline-badge">OFFLINE</span></h1>
+                <h1>TELLMY<span>LOCATION</span>.COM <span id="offline-indicator" class="offline-badge">OFFLINE MODE</span></h1>
             </a>
             <p class="tagline" data-i18n="tagline">The fastest "Where am I?" tool on the internet.</p>
         </header>
@@ -509,7 +509,7 @@
             <div class="btn-stack">
                 <button class="btn btn-sos" id="sos-btn">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                    <span data-i18n="btn_sos">ONE-TAP SOS SHARE</span>
+                    <span data-i18n="btn_sos">SHARE LOCATION (SOS)</span>
                 </button>
                 <div class="btn-row">
                     <button class="btn btn-primary" id="refresh-btn">
@@ -847,9 +847,9 @@
     </div>
 
     <div id="sos-overlay" class="sos-overlay">
-        <div class="sos-msg">EMERGENCY SOS ACTIVE</div>
-        <button class="mod-btn" style="background:white; color:red; padding:20px 40px; font-size:18px;" onclick="stopSOS()">STOP ALARM</button>
-        <div style="margin-top:20px; color:white;">Sharing location...</div>
+        <div class="sos-msg">LOCATION SHARE READY</div>
+        <button class="mod-btn" style="background:white; color:red; padding:20px 40px; font-size:18px;" onclick="stopSOS()">CANCEL</button>
+        <div style="margin-top:20px; color:white;">Select a contact to share...</div>
     </div>
 
     <footer>
@@ -918,7 +918,7 @@
             weather_label: "Weather",
             ip_label: "Network IP",
             nearby_label: "Nearest Emergency Services",
-            btn_sos: "ONE-TAP SOS SHARE",
+            btn_sos: "SHARE LOCATION (SOS)",
             btn_refresh: "Refresh",
             btn_copy: "Copy Lat/Long",
             btn_coffee: "Buy Me a Coffee",
@@ -934,7 +934,7 @@
             weather_label: "Clima",
             ip_label: "IP de Red",
             nearby_label: "Servicios de Emergencia",
-            btn_sos: "SOS - COMPARTIR UBICACIÓN",
+            btn_sos: "COMPARTIR UBICACIÓN (SOS)",
             btn_refresh: "Actualizar",
             btn_copy: "Copiar Lat/Long",
             btn_coffee: "Invítame un Café",
@@ -950,7 +950,7 @@
             weather_label: "Météo",
             ip_label: "IP Réseau",
             nearby_label: "Services d'Urgence Proches",
-            btn_sos: "SOS - PARTAGER MA POSITION",
+            btn_sos: "PARTAGER POSITION (SOS)",
             btn_refresh: "Actualiser",
             btn_copy: "Copiar Lat/Long",
             btn_coffee: "Offrez-moi un café",
@@ -966,7 +966,7 @@
             weather_label: "Погода",
             ip_label: "IP-адрес сети",
             nearby_label: "Ближайшие экстренные службы",
-            btn_sos: "SOS - ОТПРАВИТЬ ГЕОПОЗИЦИЮ",
+            btn_sos: "ПОДЕЛИТЬСЯ (SOS)",
             btn_refresh: "Обновить",
             btn_copy: "Копировать",
             btn_coffee: "Купить мне кофе",
@@ -982,7 +982,7 @@
             weather_label: "الطقس",
             ip_label: "عنوان IP",
             nearby_label: "أقرب خدمات الطوارئ",
-            btn_sos: "SOS - مشاركة الموقع للطوارئ",
+            btn_sos: "مشاركة الموقع (SOS)",
             btn_refresh: "تحديث البيانات",
             btn_copy: "نسخ الإحداثيات",
             btn_coffee: "دعم الموقع (قهوة)",
@@ -1330,14 +1330,11 @@
         const overlay = document.getElementById('sos-overlay');
         overlay.style.display = 'flex';
         
-        // Loop Alarm (Stubbing Audio)
-        // sosAudio = new Audio('alarm.mp3'); sosAudio.loop = true; sosAudio.play();
-        
-        // Auto share
+        // Auto share (Standardized)
         if (navigator.share && currentPos) {
             navigator.share({
-                title: 'EMERGENCY SOS',
-                text: 'I NEED HELP. My Location:',
+                title: 'EMERGENCY LOCATION',
+                text: 'Emergency Location:',
                 url: `https://tellmylocation.com/?lat=${currentPos.lat}&lng=${currentPos.lng}`
             }).catch(console.log);
         }
