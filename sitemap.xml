@@ -13,6 +13,18 @@
       <priority>0.8</priority>
    </url>
    <url>
+      <loc>https://tellmylocation.com/guide-safety.html</loc>
+      <lastmod>2026-02-14</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>https://tellmylocation.com/guide-accuracy.html</loc>
+      <lastmod>2026-02-14</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+   </url>
+   <url>
       <loc>https://tellmylocation.com/about.html</loc>
       <lastmod>2026-02-14</lastmod>
       <changefreq>monthly</changefreq>
