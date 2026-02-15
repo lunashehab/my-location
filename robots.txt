@@ -4,4 +4,12 @@ Allow: /
 User-agent: Mediapartners-Google
 Allow: /
 
+User-agent: Googlebot
+Allow: /
+
+# Disallow sensitive system files if you have any (standard practice)
+Disallow: /private/
+Disallow: /tmp/
+
+# Point bots to the sitemap
 Sitemap: https://tellmylocation.com/sitemap.xml
