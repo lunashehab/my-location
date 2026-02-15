@@ -10,9 +10,10 @@
     <meta name="publisher" content="Don System Holdings">
     <meta name="copyright" content="2026 Don System Holdings">
     <meta name="date" content="2026-02-15">
-    <meta name="description" content="Technical overview of the TellMyLocation architecture, client-side geolocation protocols, and our privacy-first manifesto.">
     
+    <meta name="description" content="Technical overview of the TellMyLocation architecture, client-side geolocation protocols, and privacy standards.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    
     <style>
         :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #38bdf8; --text: #ffffff; --text-soft: #94a3b8; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.8; }
@@ -44,30 +45,29 @@
 
         <div class="card">
             <h1>About TellMyLocation</h1>
-            <span class="subtitle">Engineering Transparency in Geolocation</span>
+            <span class="subtitle">Transparency in Geolocation</span>
 
-            <p>TellMyLocation.com is not just a utility; it is a proof-of-concept for <strong>Privacy-First Engineering</strong>. In an ecosystem dominated by mobile apps that aggressively harvest, store, and monetize user movement history, we built the antithesis: a stateless, client-side tool that delivers military-grade precision without the surveillance.</p>
+            <p>TellMyLocation.com is a technical utility designed for <strong>Privacy-First Positioning</strong>. In an ecosystem where many applications persistently track movement history, we provide an alternative: a stateless, client-side tool that utilizes standard hardware sensors to provide high-accuracy data without server-side storage.</p>
 
             <h2>The Architecture of Privacy</h2>
-            <p>Most "Where Am I" services operate on a server-centric model: your device sends its coordinates to a remote server, the server processes the map, and sends an image back. This creates a permanent log of your location on someone else's computer.</p>
-            <p><strong>We rejected this model.</strong> Instead, we use a <strong>Client-Side Architecture</strong>:</p>
+            <p>We utilize a <strong>Client-Side Architecture</strong> to ensure data minimization:</p>
             <ul>
                 <li><strong>Local Execution:</strong> The JavaScript code that calculates your position runs entirely inside your browser's memory (RAM).</li>
-                <li><strong>Direct Hardware Access:</strong> We interface directly with the <code>navigator.geolocation</code> API standard, allowing your browser to talk to your device's GPS chip without a middleman.</li>
-                <li><strong>Ephemeral Sessions:</strong> There is no database. There are no user accounts. When you close the tab, the data instance is destroyed instantly.</li>
+                <li><strong>Direct Hardware Access:</strong> We interface directly with the <code>navigator.geolocation</code> API standard, allowing your browser to communicate with your device's GPS chip.</li>
+                <li><strong>Ephemeral Sessions:</strong> There is no database. There are no user accounts. When you close the tab, the data instance is cleared.</li>
             </ul>
 
             <div class="tech-box">
                 <h3>Technical Specification: W3C Geolocation Standard</h3>
-                <p>We strictly adhere to the W3C High-Accuracy protocols. When you grant permission, we request a <code>PositionOptions</code> object with <code>enableHighAccuracy: true</code>. This forces the device to prioritize satellite trilateration over generic Wi-Fi triangulation, ensuring 3-meter accuracy rather than the standard 100-meter block-level approximation.</p>
+                <p>We adhere to W3C High-Accuracy protocols. When permitted, we request a <code>PositionOptions</code> object with <code>enableHighAccuracy: true</code>. This instructs the device to prioritize satellite trilateration over generic Wi-Fi triangulation, aiming for the highest accuracy available to the device hardware (typically 5-20 meters).</p>
             </div>
 
-            <h2>How It Works: The "Tri-Hybrid" Lock</h2>
-            <p>To provide the fastest possible fix, our tool utilizes a hybrid positioning system that layers three distinct technologies:</p>
+            <h2>How It Works: Multi-Source Positioning</h2>
+            <p>To provide a fast and reliable fix, modern devices utilize a hybrid positioning system. Our tool displays the aggregate data from:</p>
             <ol style="padding-left: 20px; color: #cbd5e1; margin-bottom: 25px;">
-                <li style="margin-bottom: 15px;"><strong>A-GPS (Assisted GPS):</strong> Uses cellular tower data to download satellite almanacs faster, reducing "Time to First Fix" (TTFF) from minutes to milliseconds.</li>
-                <li style="margin-bottom: 15px;"><strong>Wi-Fi Fingerprinting:</strong> In dense urban environments (Urban Canyons) where skyscrapers block the sky, we utilize local Wi-Fi SSIDs to triangulate position relative to known routers.</li>
-                <li style="margin-bottom: 15px;"><strong>Barometric Altimetry:</strong> On supported devices, we access the internal pressure sensor to determine altitude, helping distinguish whether you are on the ground floor or the 50th floor.</li>
+                <li style="margin-bottom: 15px;"><strong>GNSS (Global Navigation Satellite Systems):</strong> Direct signals from GPS, GLONASS, Galileo, or BeiDou satellites.</li>
+                <li style="margin-bottom: 15px;"><strong>Wi-Fi Positioning System (WPS):</strong> In urban environments where satellite line-of-sight is blocked, devices may triangulate position relative to known Wi-Fi access points.</li>
+                <li style="margin-bottom: 15px;"><strong>Cellular Trilateration:</strong> Uses signal timing from nearby cell towers to approximate location when other methods fail.</li>
             </ol>
 
             <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px;">
@@ -82,7 +82,7 @@
                                 <div style="font-size: 11px; color: #38bdf8; text-transform: uppercase; letter-spacing: 1px; font-weight:700;">Founder & Chief Architect</div>
                             </div>
                         </div>
-                        <p style="font-size: 13px; color: #cbd5e1; margin-bottom:0;">Lead strategist responsible for the platform's zero-knowledge privacy architecture, serverless infrastructure, and high-availability systems.</p>
+                        <p style="font-size: 13px; color: #cbd5e1; margin-bottom:0;">Lead strategist responsible for the platform's zero-knowledge privacy architecture and serverless infrastructure.</p>
                     </div>
 
                     <div style="flex: 1; min-width: 250px; background: rgba(255,255,255,0.03); padding: 25px; border-radius: 16px; border: 1px solid rgba(56, 189, 248, 0.2);">
@@ -93,7 +93,7 @@
                                 <div style="font-size: 11px; color: #ff0055; text-transform: uppercase; letter-spacing: 1px; font-weight:700;">Lead Developer</div>
                             </div>
                         </div>
-                        <p style="font-size: 13px; color: #cbd5e1; margin-bottom:0;">Head of engineering focusing on client-side GPS optimization, PWA compliance, and responsive UI/UX performance standards.</p>
+                        <p style="font-size: 13px; color: #cbd5e1; margin-bottom:0;">Head of engineering focusing on client-side GPS optimization, PWA compliance, and responsive performance.</p>
                     </div>
                 </div>
             </div>
