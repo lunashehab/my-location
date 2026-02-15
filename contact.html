@@ -2,38 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Contact Support | Tell My Location</title>
+    <title>Contact Engineering & Support | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <meta name="description" content="Contact the TellMyLocation engineering team for technical support, bug reports, or privacy inquiries. Based in Tupelo, MS.">
+    <meta name="description" content="Contact the Don System Holdings engineering team for bug reports, API inquiries, or privacy audits. 24-hour response time.">
     <link rel="canonical" href="https://tellmylocation.com/contact.html" />
-    <meta name="author" content="Don Odibat, Founder">
+    <meta name="author" content="Don Odibat">
     <meta name="publisher" content="Don System Holdings">
     
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
-        :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #38bdf8; --text: #ffffff; --text-soft: #94a3b8; }
-        body { font-family: sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.6; }
+        :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #38bdf8; --text: #ffffff; --text-soft: #94a3b8; --border: rgba(255, 255, 255, 0.1); }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.8; }
         .shell { max-width: 800px; margin: 0 auto; }
-        nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; background: rgba(15, 23, 42, 0.6); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); width: fit-content; margin-left: auto; margin-right: auto; backdrop-filter: blur(5px); }
+        nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; background: rgba(15, 23, 42, 0.6); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); width: fit-content; margin-left: auto; margin-right: auto; backdrop-filter: blur(5px); }
         nav a { color: var(--text-soft); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
         nav a:hover { color: var(--accent); }
-        .card { background: var(--card); padding: 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; text-align: center; }
-        h1 { font-size: 32px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; margin-bottom: 30px; }
-        p { margin-bottom: 20px; color: #cbd5e1; }
-        .contact-box { background: rgba(56, 189, 248, 0.1); padding: 30px; border-radius: 12px; display: inline-block; margin-top: 20px; border: 1px solid var(--accent); }
-        .email-link { color: white; font-size: 20px; font-weight: bold; text-decoration: none; display: block; margin-bottom: 10px; }
-        .checklist { text-align: left; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin: 30px 0; border: 1px solid rgba(255,255,255,0.1); }
-        .checklist h3 { color: white; font-size: 16px; margin-bottom: 15px; }
-        .checklist ul { padding-left: 20px; color: #94a3b8; font-size: 14px; }
-        footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        
+        .card { background: var(--card); padding: 40px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 30px; }
+        h1 { font-size: 32px; margin-bottom: 10px; font-weight: 800; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        h2 { color: var(--accent); font-size: 18px; margin-top: 30px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        p { margin-bottom: 20px; color: #cbd5e1; font-size: 15px; }
+        
+        .dept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
+        .dept-card { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border: 1px solid var(--border); }
+        .dept-title { color: white; font-weight: 700; margin-bottom: 5px; }
+        .dept-email { color: var(--accent); font-weight: 600; text-decoration: none; display: block; margin-bottom: 10px; }
+        .dept-desc { font-size: 12px; color: var(--text-soft); }
+        
+        .sla-box { border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.05); padding: 20px; border-radius: 0 12px 12px 0; margin: 30px 0; }
+        
+        footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px; }
+        @media(max-width: 600px) { .dept-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div class="shell">
         <nav>
-            <a href="index.html">Home</a>
-            <a href="learn.html">Guides</a>
+            <a href="/">Home</a>
+            <a href="guides.html">Guides</a>
             <a href="about.html">About</a>
             <a href="privacy.html">Privacy</a>
             <a href="contact.html" style="color:white;">Contact</a>
@@ -41,35 +47,56 @@
 
         <div class="card">
             <h1>Contact Support</h1>
-            <p>Our engineering team is available to assist with bug reports, API integration questions, and privacy inquiries.</p>
+            <p>TellMyLocation.com is managed by the engineering team at Don System Holdings. To ensure your request is routed to the correct department, please review the channels below.</p>
 
-            <div class="checklist">
-                <h3>Before You Email: Troubleshooting Checklist</h3>
-                <ul>
-                    <li><strong>Location Blocked?</strong> Ensure you have clicked the "Lock" icon in your browser address bar and set Location to "Allow".</li>
-                    <li><strong>Wrong Address?</strong> If on Desktop, this is normal (IP Geolocation is inaccurate). Try on Mobile for GPS precision.</li>
-                    <li><strong>Map Not Loading?</strong> Check your internet connection. The GPS works offline, but map tiles require data.</li>
-                </ul>
+            <div class="sla-box">
+                <strong>⏱️ Response SLA:</strong> We aim to respond to all technical support inquiries within <strong>24 hours</strong> during business days (Mon-Fri). Critical security reports are prioritized.
             </div>
 
-            <div class="contact-box">
-                <p style="text-transform: uppercase; font-size: 12px; letter-spacing: 1px; color: var(--accent);">Direct Email</p>
-                <a href="mailto:don.odibat@gmail.com" class="email-link">don.odibat@gmail.com</a>
-                <p style="font-size: 12px; margin-top: 15px; color: #94a3b8;">Response time: Usually within 24 hours.</p>
+            <h2>Department Routing</h2>
+            <div class="dept-grid">
+                <div class="dept-card">
+                    <div class="dept-title">General Support</div>
+                    <a href="mailto:don.odibat@gmail.com" class="dept-email">don.odibat@gmail.com</a>
+                    <div class="dept-desc">For user feedback, feature requests, or general questions about the tool.</div>
+                </div>
+                
+                <div class="dept-card">
+                    <div class="dept-title">Privacy & Compliance</div>
+                    <a href="mailto:don.odibat@gmail.com?subject=Privacy Inquiry" class="dept-email">don.odibat@gmail.com</a>
+                    <div class="dept-desc">For GDPR data requests, CCPA opt-outs, or advertising inquiries.</div>
+                </div>
+                
+                <div class="dept-card">
+                    <div class="dept-title">Bug Reports</div>
+                    <a href="mailto:don.odibat@gmail.com?subject=Bug Report" class="dept-email">don.odibat@gmail.com</a>
+                    <div class="dept-desc">Found a glitch? Please include your Device Model and Browser Version.</div>
+                </div>
+
+                <div class="dept-card">
+                    <div class="dept-title">Partnerships</div>
+                    <a href="mailto:don.odibat@gmail.com?subject=Partnership" class="dept-email">don.odibat@gmail.com</a>
+                    <div class="dept-desc">For API integration requests or commercial licensing.</div>
+                </div>
             </div>
 
-            <div style="margin-top: 40px; text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px;">
-                <h2 style="font-size: 18px; color: white;">Business Mailing Address</h2>
-                <p style="font-size: 14px; color: #94a3b8;">
-                <strong>Don System Holdings</strong><br>
-                Tupelo, Mississippi<br>
-                Zip Code: 38801<br>
-                United States of America</p>
+            <h2>Before You Email: Common Solutions</h2>
+            <p><strong>1. "Location Denied" Error:</strong> This is a browser setting, not a site error. Click the "Lock" icon in your URL bar and toggle Location to "Allow."</p>
+            <p><strong>2. Accuracy Issues:</strong> If you are on a desktop PC, your location is based on your ISP, which may be miles away. For precision, please use a smartphone with a GPS chip.</p>
+
+            <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border);">
+                <h3 style="color:white; font-size:16px;">Corporate Mailing Address</h3>
+                <p style="color:var(--text-soft); font-size:14px; line-height:1.6;">
+                    Don System Holdings<br>
+                    Attn: Compliance Officer<br>
+                    Tupelo, Mississippi 38801<br>
+                    United States
+                </p>
             </div>
         </div>
 
         <footer>
-            © 2026 Don System Holdings. Tupelo, MS 38801. All Rights Reserved.
+            © 2026 Don System Holdings.
         </footer>
     </div>
 </body>
