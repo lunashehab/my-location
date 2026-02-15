@@ -45,23 +45,23 @@
                 2. OS: Retrieves GPS data from hardware chip.<br>
                 3. RAM: Data is stored in volatile memory to display map.<br>
                 4. TERMINATION: Tab close triggers garbage collection (data deletion).<br>
-                5. SERVER: NO LOGS CREATED.
+                5. SERVER: NO LOGS CREATED BY US.
             </div>
 
             <h2>2. External API Usage (Data Processors)</h2>
-            <p>To provide utility features like reverse-geocoding (finding your street address) and weather, anonymous queries are sent to trusted third-party APIs. We strip these queries of identifying metadata.</p>
+            <p>To provide utility features like address lookup and weather, your browser makes direct requests to trusted third-party APIs. While <strong>we do not transmit</strong> your personal identity, these requests function as standard web traffic:</p>
             <ul>
-                <li><strong>Nominatim (OpenStreetMap):</strong> Receives Latitude/Longitude only. No IP address or User ID is associated with the query.</li>
-                <li><strong>Open-Meteo:</strong> Receives coordinates to fetch temperature data. This connection uses TLS 1.3 encryption.</li>
-                <li><strong>Leaflet Maps:</strong> Fetches visual map tiles based on zoom level.</li>
+                <li><strong>Nominatim (OpenStreetMap):</strong> Receives Latitude/Longitude coordinates to return an address. As with any web request, they may log your IP address for security and abuse prevention purposes according to their own privacy policy.</li>
+                <li><strong>Open-Meteo:</strong> Receives coordinates to fetch temperature data. This connection uses TLS 1.3 encryption to protect the data in transit.</li>
+                <li><strong>Leaflet Maps:</strong> Fetches visual map tiles. These requests are subject to the standard server logging policies of the tile provider.</li>
             </ul>
 
             <h2>3. Cookie Policy & AdSense</h2>
             <p>We use Google AdSense to monetize this free tool. Google may place a cookie on your browser to serve relevant ads based on your general region (City/Country) or browsing history. </p>
-            <p><strong>Crucial Distinction:</strong> Google's ad cookies operate independently of our GPS tool. We do <strong>not</strong> pass your precise GPS coordinates to the ad network. They see your IP address (general location), while you see your GPS location (precise location).</p>
+            <p><strong>Crucial Distinction:</strong> Google's ad cookies operate independently of our GPS tool. We do <strong>not</strong> pass your precise GPS coordinates to the ad network. They utilize your IP address (general location), while you utilize your GPS location (precise location).</p>
 
             <h2>4. Your Rights (GDPR & CCPA)</h2>
-            <p>Because we do not store personal data, "Right to Delete" requests are technically moot (there is nothing to delete). However, we fully support your <strong>Right to Opt-Out</strong> of non-essential tracking via our Consent Manager located in the site footer.</p>
+            <p>Because we do not store personal data on our servers, "Right to Delete" requests are not applicable to our own database (as it does not exist). However, we fully support your <strong>Right to Opt-Out</strong> of non-essential tracking via our Consent Manager located in the site footer.</p>
 
             <h2>5. Contact & Compliance</h2>
             <p>For security audits or privacy concerns, please reach our Data Compliance Officer at: <strong>don.odibat@gmail.com</strong>.</p>
