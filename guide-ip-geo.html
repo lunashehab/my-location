@@ -4,9 +4,13 @@
     <meta charset="UTF-8" />
     <title>How IP Geolocation Works | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link rel="canonical" href="https://tellmylocation.com/guide-ip-geo.html" />
+    <meta name="author" content="Don Odibat">
+    <meta name="description" content="The science behind mapping an Internet Protocol address to a physical street address.">
+    
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
-        /* SHARED CSS */
         :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #38bdf8; --text: #ffffff; --text-soft: #94a3b8; --border: rgba(255, 255, 255, 0.1); }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.8; }
         .shell { max-width: 800px; margin: 0 auto; }
@@ -17,6 +21,7 @@
         h1 { font-size: 32px; color: var(--text); margin-bottom: 10px; font-weight: 800; }
         h2 { color: var(--accent); font-size: 20px; margin-top: 40px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
         p { margin-bottom: 20px; color: #cbd5e1; font-size: 16px; }
+        ul { padding-left: 20px; margin-bottom: 20px; color: #cbd5e1; }
         footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px; }
     </style>
 </head>
@@ -30,25 +35,31 @@
 
         <article class="article-card">
             <h1>The Science of IP Geolocation</h1>
-            <p>Every device connected to the internet is assigned a unique number known as an IP Address (e.g., <code>192.168.1.1</code>). But how does a website turn that number into a physical location on a map?</p>
+            <p>Every device connected to the internet is assigned a unique number known as an IP Address. But how does a website turn that number into a physical location on a map?</p>
 
             <h2>The WHOIS Database</h2>
-            <p>When an Internet Service Provider (ISP) like Comcast or AT&T buys a block of IP addresses, they register them with a regional authority (like ARIN in North America). This registration often includes the city where that block of IPs is intended to be used.</p>
+            <p>When an Internet Service Provider (ISP) buys a block of IP addresses, they register them with a regional authority. This registration often includes the city where that block of IPs is intended to be used.</p>
 
             <h2>Why It is Often Inaccurate</h2>
-            <p>IP Geolocation is a "best guess." Here is why it might show you in the wrong city:</p>
             <ul>
-                <li><strong>The "Headquarters" Problem:</strong> An ISP might register all their IPs to their corporate HQ in a major city, even if the user is 500 miles away in a rural town.</li>
-                <li><strong>Dynamic IPs:</strong> ISPs frequently shuffle IP addresses between neighborhoods. A database might think an IP is in New York, but it was re-assigned to New Jersey yesterday.</li>
-                <li><strong>VPNs and Proxies:</strong> These tools intentionally route your traffic through a server in a different country to mask your true location.</li>
+                <li><strong>The "Headquarters" Problem:</strong> An ISP might register all their IPs to their corporate HQ in a major city, even if the user is 500 miles away.</li>
+                <li><strong>Dynamic IPs:</strong> ISPs frequently shuffle IP addresses. A database might think an IP is in New York, but it was re-assigned to New Jersey yesterday.</li>
             </ul>
 
             <h2>The Solution: Hardware GPS</h2>
-            <p>This is why <strong>TellMyLocation.com</strong> asks for "Location Permission." We bypass the inaccurate IP method and ask your device's actual GPS chip for the truth. This improves accuracy from "City Level" (IP) to "Street Level" (GPS).</p>
+            <p>TellMyLocation.com bypasses the inaccurate IP method and asks your device's actual GPS chip for the truth. This improves accuracy from "City Level" to "Street Level".</p>
+
+            <div style="margin-top: 40px; background: rgba(56, 189, 248, 0.05); padding: 20px; border-radius: 12px; display: flex; align-items: center; gap: 15px; border: 1px solid rgba(56, 189, 248, 0.2);">
+                <div style="width: 50px; height: 50px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #0f172a;">DO</div>
+                <div>
+                    <div style="font-size: 11px; color: #38bdf8; text-transform: uppercase; font-weight: 700;">Author</div>
+                    <div style="font-weight: 700; color: white;">Don Odibat</div>
+                </div>
+            </div>
         </article>
 
         <footer>
-            © 2026 Don System Holdings. Tupelo, MS.
+            © 2026 Don System Holdings.
         </footer>
     </div>
 </body>
