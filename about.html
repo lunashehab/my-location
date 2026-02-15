@@ -2,22 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>About Us | Tell My Location</title>
+    <title>About Our Technology | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Learn about the privacy-first mission behind TellMyLocation.com and the technology effectively saving lives.">
+    <meta name="description" content="Technical overview of the TellMyLocation architecture, client-side geolocation protocols, and our privacy-first manifesto.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
         :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #38bdf8; --text: #ffffff; --text-soft: #94a3b8; }
-        body { font-family: sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.6; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.8; }
         .shell { max-width: 800px; margin: 0 auto; }
         nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; background: rgba(15, 23, 42, 0.6); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); width: fit-content; margin-left: auto; margin-right: auto; backdrop-filter: blur(5px); }
         nav a { color: var(--text-soft); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
         nav a:hover { color: var(--accent); }
-        .card { background: var(--card); padding: 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
-        h1, h2 { color: var(--accent); }
-        h1 { font-size: 32px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; margin-bottom: 30px; }
-        p { margin-bottom: 20px; color: #cbd5e1; }
-        ul { padding-left: 20px; margin-bottom: 20px; color: #cbd5e1; }
+        .card { background: var(--card); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
+        h1 { font-size: 32px; margin-bottom: 10px; font-weight: 800; letter-spacing: -1px; }
+        .subtitle { color: var(--accent); font-size: 14px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 30px; display: block; }
+        h2 { color: var(--text); font-size: 22px; margin-top: 40px; margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 15px; }
+        h3 { color: #e2e8f0; font-size: 18px; margin-top: 25px; margin-bottom: 10px; }
+        p { margin-bottom: 20px; color: #cbd5e1; font-size: 16px; }
+        ul { padding-left: 20px; margin-bottom: 25px; color: #cbd5e1; }
+        li { margin-bottom: 10px; }
+        .tech-box { background: rgba(56, 189, 248, 0.05); border: 1px dashed var(--accent); padding: 25px; border-radius: 12px; margin: 30px 0; }
         footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
     </style>
 </head>
@@ -32,23 +36,35 @@
         </nav>
 
         <div class="card">
-            <h1>Our Mission: Privacy-First Positioning</h1>
-            <p><strong>TellMyLocation.com</strong> was engineered with a single, uncompromising philosophy: <em>Your location is your property.</em> In an era where apps constantly harvest, store, and sell movement data, we set out to build a professional-grade geolocation utility that operates on a "Zero-Knowledge" architecture.</p>
-            
-            <h2>The Technology Stack</h2>
-            <p>Unlike traditional mapping services that require server-side processing, our platform runs entirely within your browser's local sandbox (Client-Side Execution). We utilize the HTML5 Geolocation API to communicate directly with your device's GPS hardware, GLONASS satellites, and cellular triangulation modules.</p>
-            <p>This allows us to provide military-grade coordinate precision (down to 3 meters in optimal conditions) without a single byte of location data ever touching our servers. Whether you are a delivery driver navigating unmapped roads, a hiker checking elevation, or someone in an emergency situation needing to broadcast an SOS, our tool delivers raw, unfiltered data instantly.</p>
+            <h1>About TellMyLocation</h1>
+            <span class="subtitle">Engineering Transparency in Geolocation</span>
 
-            <h2>Why We Built This</h2>
-            <p>The internet lacks simple, fast, and private tools. Most "Where am I" websites are cluttered with pop-ups, require user accounts, or secretly log your history. We rejected that model. TellMyLocation is:</p>
+            <p>TellMyLocation.com is not just a utility; it is a proof-of-concept for <strong>Privacy-First Engineering</strong>. In an ecosystem dominated by mobile apps that aggressively harvest, store, and monetize user movement history, we built the antithesis: a stateless, client-side tool that delivers military-grade precision without the surveillance.</p>
+
+            <h2>The Architecture of Privacy</h2>
+            <p>Most "Where Am I" services operate on a server-centric model: your device sends its coordinates to a remote server, the server processes the map, and sends an image back. This creates a permanent log of your location on someone else's computer.</p>
+            <p><strong>We rejected this model.</strong> Instead, we use a <strong>Client-Side Architecture</strong>:</p>
             <ul>
-                <li><strong>Stateless:</strong> No database. No login. No history logs.</li>
-                <li><strong>Lightweight:</strong> Optimized for low-bandwidth 4G/3G networks in rural areas.</li>
-                <li><strong>Transparent:</strong> We explain exactly how we get your data and what happens to it (nothing).</li>
+                <li><strong>Local Execution:</strong> The JavaScript code that calculates your position runs entirely inside your browser's memory (RAM).</li>
+                <li><strong>Direct Hardware Access:</strong> We interface directly with the <code>navigator.geolocation</code> API standard, allowing your browser to talk to your device's GPS chip without a middleman.</li>
+                <li><strong>Ephemeral Sessions:</strong> There is no database. There are no user accounts. When you close the tab, the data instance is destroyed instantly.</li>
             </ul>
 
-            <h2>For Professionals & Civilians</h2>
-            <p>While often used for casual navigation, our tool has been adopted by drone pilots for checking no-fly zone coordinates, photographers scouting "Golden Hour" locations, and marine navigators verifying bearing data. By stripping away the bloat, we provide the raw data that professionals need to make decisions.</p>
+            <div class="tech-box">
+                <h3>Technical Specification: W3C Geolocation Standard</h3>
+                <p>We strictly adhere to the W3C High-Accuracy protocols. When you grant permission, we request a <code>PositionOptions</code> object with <code>enableHighAccuracy: true</code>. This forces the device to prioritize satellite trilateration over generic Wi-Fi triangulation, ensuring 3-meter accuracy rather than the standard 100-meter block-level approximation.</p>
+            </div>
+
+            <h2>How It Works: The "Tri-Hybrid" Lock</h2>
+            <p>To provide the fastest possible fix, our tool utilizes a hybrid positioning system that layers three distinct technologies:</p>
+            <ol style="padding-left: 20px; color: #cbd5e1; margin-bottom: 25px;">
+                <li style="margin-bottom: 15px;"><strong>A-GPS (Assisted GPS):</strong> Uses cellular tower data to download satellite almanacs faster, reducing "Time to First Fix" (TTFF) from minutes to milliseconds.</li>
+                <li style="margin-bottom: 15px;"><strong>Wi-Fi Fingerprinting:</strong> In dense urban environments (Urban Canyons) where skyscrapers block the sky, we utilize local Wi-Fi SSIDs to triangulate position relative to known routers.</li>
+                <li style="margin-bottom: 15px;"><strong>Barometric Altimetry:</strong> On supported devices, we access the internal pressure sensor to determine altitude, helping distinguish whether you are on the ground floor or the 50th floor.</li>
+            </ol>
+
+            <h2>Our Mission</h2>
+            <p>We believe that <strong>situational awareness is a human right</strong>. Whether you are a delivery driver trying to find an unmapped loading dock, a hiker verifying your elevation, or someone in a distress situation needing to communicate your exact coordinates, you deserve a tool that is fast, free, and free of tracking cookies.</p>
         </div>
 
         <footer>
