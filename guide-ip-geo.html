@@ -2,15 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>How IP Geolocation Works | Tell My Location</title>
+    <title>How IP Geolocation Works (Technical) | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <link rel="canonical" href="https://tellmylocation.com/guide-ip-geo.html" />
     <meta name="author" content="Don Odibat">
-    <meta name="description" content="The science behind mapping an Internet Protocol address to a physical street address.">
+    <meta name="publisher" content="Don System Holdings">
+    <meta name="description" content="A deep dive into the Regional Internet Registries (RIRs) and the science of mapping IP addresses to physical locations.">
     
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
+        /* SAME CSS AS ABOVE */
         :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #38bdf8; --text: #ffffff; --text-soft: #94a3b8; --border: rgba(255, 255, 255, 0.1); }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.8; }
         .shell { max-width: 800px; margin: 0 auto; }
@@ -20,6 +22,7 @@
         .article-card { background: var(--card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); }
         h1 { font-size: 32px; color: var(--text); margin-bottom: 10px; font-weight: 800; }
         h2 { color: var(--accent); font-size: 20px; margin-top: 40px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        h3 { color: white; font-size: 18px; margin-top: 25px; margin-bottom: 10px; font-weight: 700; }
         p { margin-bottom: 20px; color: #cbd5e1; font-size: 16px; }
         ul { padding-left: 20px; margin-bottom: 20px; color: #cbd5e1; }
         footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px; }
@@ -28,32 +31,43 @@
 <body>
     <div class="shell">
         <nav>
-            <a href="index.html">Home</a>
-            <a href="learn.html">Knowledge Hub</a>
+            <a href="/">Home</a>
+            <a href="guides.html">Guides</a>
             <a href="contact.html">Contact</a>
         </nav>
 
         <article class="article-card">
-            <h1>The Science of IP Geolocation</h1>
-            <p>Every device connected to the internet is assigned a unique number known as an IP Address. But how does a website turn that number into a physical location on a map?</p>
+            <h1>The Science of IP Geolocation: How the Internet Finds You</h1>
+            <p>Every device connected to the internet is assigned a unique identifier known as an Internet Protocol (IP) Address (e.g., <code>192.168.1.1</code>). But unlike a GPS chip, an IP address does not inherently know where it is physically located.</p>
+            <p>So, how do websites know which city you are in? They rely on massive databases maintained by Regional Internet Registries (RIRs).</p>
 
-            <h2>The WHOIS Database</h2>
-            <p>When an Internet Service Provider (ISP) buys a block of IP addresses, they register them with a regional authority. This registration often includes the city where that block of IPs is intended to be used.</p>
-
-            <h2>Why It is Often Inaccurate</h2>
+            <h2>1. The Registry Hierarchy (WHOIS)</h2>
+            <p>The world is divided into five zones managed by specific organizations. When an Internet Service Provider (ISP) like Comcast or AT&T buys a "block" of 100,000 IP addresses, they must register that block with the local authority:</p>
             <ul>
-                <li><strong>The "Headquarters" Problem:</strong> An ISP might register all their IPs to their corporate HQ in a major city, even if the user is 500 miles away.</li>
-                <li><strong>Dynamic IPs:</strong> ISPs frequently shuffle IP addresses. A database might think an IP is in New York, but it was re-assigned to New Jersey yesterday.</li>
+                <li><strong>ARIN:</strong> North America</li>
+                <li><strong>RIPE NCC:</strong> Europe, Middle East, Central Asia</li>
+                <li><strong>APNIC:</strong> Asia Pacific</li>
+                <li><strong>LACNIC:</strong> Latin America</li>
+                <li><strong>AFRINIC:</strong> Africa</li>
             </ul>
+            <p>The ISP fills out a "WHOIS" record, declaring: "This block of IPs will be used in Atlanta, Georgia." That declaration creates the initial map data.</p>
 
-            <h2>The Solution: Hardware GPS</h2>
-            <p>TellMyLocation.com bypasses the inaccurate IP method and asks your device's actual GPS chip for the truth. This improves accuracy from "City Level" to "Street Level".</p>
+            <h2>2. The "Last Mile" Problem</h2>
+            <p>This system is imperfect. ISPs frequently move blocks of IP addresses to different cities to balance network load. If a block registered in Atlanta is suddenly re-routed to serve customers in Savannah, the database might take weeks to update.</p>
+            <p>This is why you might visit a weather site on your desktop computer (which has no GPS) and see the weather for a city 50 miles away. The site isn't broken; the ISP's record is just stale.</p>
+
+            <h2>3. VPNs and Proxies: Intentional Obfuscation</h2>
+            <p>A Virtual Private Network (VPN) works by tunneling your traffic through a server in a different location. If you are in London but connect to a VPN server in New York, websites see the IP address of the New York server, not your home router.</p>
+            <p>This effectively "teleports" your digital identity. TellMyLocation.com can detect the location of that exit node, but we cannot see through the encryption tunnel to your true physical location without hardware GPS permission.</p>
+
+            <h2>4. The Solution: Hardware Verification</h2>
+            <p>Because IP Geolocation is an estimation (Accuracy: ~80%), mission-critical applications rely on <strong>Hardware GPS</strong>. By asking for browser permission (`navigator.geolocation`), we bypass the IP database entirely and ask your device's actual silicon chip where it is located relative to satellites.</p>
 
             <div style="margin-top: 40px; background: rgba(56, 189, 248, 0.05); padding: 20px; border-radius: 12px; display: flex; align-items: center; gap: 15px; border: 1px solid rgba(56, 189, 248, 0.2);">
                 <div style="width: 50px; height: 50px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #0f172a;">DO</div>
                 <div>
                     <div style="font-size: 11px; color: #38bdf8; text-transform: uppercase; font-weight: 700;">Author</div>
-                    <div style="font-weight: 700; color: white;">Don Odibat</div>
+                    <a href="author-don.html" style="font-weight: 700; color: white; text-decoration: underline;">Don Odibat</a>
                 </div>
             </div>
         </article>
