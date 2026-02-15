@@ -4,7 +4,6 @@
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
-        // Default to denied for GDPR compliance
         gtag('consent', 'default', {
             'ad_storage': 'denied',
             'ad_user_data': 'denied',
@@ -28,11 +27,11 @@
     <title>Tell My Location | Global GPS & Safety Tool</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     
-    <meta name="description" content="Instantly find your exact location, address, and local weather. A private, fast safety tool engineered by Don Odibat and Luna Shehab.">
+    <meta name="description" content="Instantly find your current coordinates, address, and local weather. A private, fast safety tool engineered by Don Odibat and Luna Shehab.">
     <meta name="keywords" content="gps coordinates, current location, my address, latitude longitude, emergency location, weather, ip address">
     
     <meta property="og:title" content="Tell My Location | Global GPS Tool">
-    <meta property="og:description" content="Get your exact GPS coordinates, address, and nearest emergency services instantly.">
+    <meta property="og:description" content="Get your current GPS coordinates, address, and nearest emergency services instantly.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tellmylocation.com">
     <meta property="og:image" content="https://tellmylocation.com/icon.png"> 
@@ -49,330 +48,54 @@
       "@type": "WebApplication",
       "name": "Tell My Location",
       "url": "https://tellmylocation.com",
-      "author": {
-        "@type": "Person",
-        "name": "Don Odibat",
-        "jobTitle": "Founder & Chief Architect"
-      },
-      "maintainer": {
-        "@type": "Person",
-        "name": "Luna Shehab",
-        "jobTitle": "Lead Developer",
-        "email": "luna.shehab@gmail.com"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Don System Holdings"
-      },
+      "author": { "@type": "Person", "name": "Don Odibat", "jobTitle": "Founder & Chief Architect" },
+      "maintainer": { "@type": "Person", "name": "Luna Shehab", "jobTitle": "Lead Developer" },
+      "publisher": { "@type": "Organization", "name": "Don System Holdings" },
       "applicationCategory": "Utility",
       "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "featureList": "GPS Coordinates, Address Lookup, Weather, SOS Sharing, Nearby Services"
     }
     </script>
 
     <style>
-        :root {
-            --card: rgba(13, 17, 23, 0.85);
-            --accent: #ff0055;
-            --neon-blue: #38bdf8;
-            --sos-red: #ef4444;
-            --text-main: #ffffff;
-            --text-soft: #94a3b8;
-            --border: rgba(255, 255, 255, 0.1);
-        }
-
+        :root { --card: rgba(13, 17, 23, 0.85); --accent: #ff0055; --neon-blue: #38bdf8; --sos-red: #ef4444; --text-main: #ffffff; --text-soft: #94a3b8; --border: rgba(255, 255, 255, 0.1); }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #111827 100%);
-            background-attachment: fixed;
-            color: var(--text-main);
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #111827 100%); background-attachment: fixed; color: var(--text-main); min-height: 100vh; padding: 20px; display: flex; flex-direction: column; align-items: center; }
         .shell { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 16px; position: relative; }
-
-        .lang-switch {
-            position: absolute;
-            top: 0;
-            right: 0;
-            z-index: 10;
-        }
-        
-        select#language {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 1px solid var(--border);
-            padding: 5px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            outline: none;
-        }
-        select#language option { background: #0f172a; color: white; }
-
-        body.rtl { direction: rtl; }
-        body.rtl .lang-switch { right: auto; left: 0; }
-        body.rtl .copy-abs { right: auto; left: 12px; }
-        body.rtl #full-address { padding-right: 0; padding-left: 30px; }
-        body.rtl .data-item, body.rtl .nearby-item { text-align: right; }
-
-        .brand { text-align: center; margin: 30px 0 15px; } 
-        /* CLICKABLE LOGO for AdSense UX Compliance */
-        .brand a { text-decoration: none; color: inherit; }
-        .brand h1 { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 6px; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
-        .brand h1 span { color: var(--accent); }
-        .tagline { color: var(--text-soft); font-size: 14px; font-weight: 400; }
-
-        .card {
-            background: var(--card);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            padding: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .address-box {
-            background: rgba(56, 189, 248, 0.05);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            padding: 18px;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            text-align: center;
-            position: relative;
-        }
-        .address-box h2 { font-size: 11px; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; font-weight: 700; }
-        #full-address { font-size: 16px; font-weight: 600; line-height: 1.5; color: #fff; padding-right: 30px; }
-        
-        .icon-btn {
-            background: none; border: none; cursor: pointer; color: var(--neon-blue);
-            padding: 5px; display: flex; align-items: center; justify-content: center;
-            transition: transform 0.2s;
-        }
-        .icon-btn:hover { transform: scale(1.1); }
-        .copy-abs { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
-
+        .lang-switch { position: absolute; top: 0; right: 0; z-index: 10; }
+        select#language { background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--border); padding: 5px 10px; border-radius: 8px; font-size: 12px; cursor: pointer; outline: none; } select#language option { background: #0f172a; color: white; }
+        body.rtl { direction: rtl; } body.rtl .lang-switch { right: auto; left: 0; } body.rtl .copy-abs { right: auto; left: 12px; } body.rtl #full-address { padding-right: 0; padding-left: 30px; } body.rtl .data-item, body.rtl .nearby-item { text-align: right; }
+        .brand { text-align: center; margin: 30px 0 15px; } .brand a { text-decoration: none; color: inherit; } .brand h1 { font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 6px; text-shadow: 0 4px 20px rgba(0,0,0,0.5); } .brand h1 span { color: var(--accent); } .tagline { color: var(--text-soft); font-size: 14px; font-weight: 400; }
+        .card { background: var(--card); backdrop-filter: blur(12px); border-radius: 24px; border: 1px solid var(--border); padding: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .address-box { background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.2); padding: 18px; border-radius: 16px; margin-bottom: 20px; text-align: center; position: relative; } .address-box h2 { font-size: 11px; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; font-weight: 700; } #full-address { font-size: 16px; font-weight: 600; line-height: 1.5; color: #fff; padding-right: 30px; }
+        .icon-btn { background: none; border: none; cursor: pointer; color: var(--neon-blue); padding: 5px; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; } .icon-btn:hover { transform: scale(1.1); } .copy-abs { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
         #map { width: 100%; height: 320px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 20px; z-index: 1; }
-
-        .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; }
-        .data-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            padding: 16px;
-            border-radius: 16px;
-            text-align: left;
-        }
-        .label { font-size: 10px; color: var(--text-soft); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
-        .value { font-size: 16px; font-weight: 700; color: #fff; }
-        .sub-value { font-size: 11px; color: var(--neon-blue); margin-top: 4px; }
-
-        .nearby-header { font-size: 12px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 10px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
-        .nearby-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        @media(max-width: 600px) { .nearby-list { grid-template-columns: 1fr; } }
-        
-        .nearby-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            padding: 12px;
-            border-radius: 12px;
-        }
-        .nearby-type { font-size: 9px; color: var(--accent); font-weight: 800; text-transform: uppercase; margin-bottom: 4px; }
-        .nearby-name { font-size: 13px; font-weight: 600; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .nearby-dist { font-size: 11px; color: var(--neon-blue); }
-
-        .btn-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 30px; }
-        .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-        .btn {
-            border: none; border-radius: 14px; padding: 16px; font-weight: 700; 
-            cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: transform 0.1s;
-        }
-        
-        /* DE-RISKED SOS BUTTON */
-        .btn-sos { 
-            background: var(--sos-red); color: white; width: 100%; font-size: 16px;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
-        }
-
-        .btn-primary { background: linear-gradient(135deg, #ff0055, #ff4d7d); color: white; }
-        .btn-ghost { background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border); }
-        .btn:active { transform: scale(0.98); }
-        .icon { width: 18px; height: 18px; stroke-width: 2.5; }
-
-        .trust-badge { 
-            font-size: 12px; color: #94a3b8; text-align: center; margin-top: 25px; line-height: 1.6;
-            background: rgba(15, 23, 42, 0.5); padding: 15px; border-radius: 12px; border: 1px dashed var(--border);
-        }
-        
-        footer { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-soft); padding-bottom: 30px; border-top: 1px solid var(--border); width: 100%; padding-top: 20px;}
-        footer a { color: var(--text-soft); text-decoration: none; margin: 0 8px; transition: color 0.2s; }
-        footer a:hover { color: white; }
-
-        /* CONSENT MANAGER CSS */
-        #cookie-banner {
-            display: none; 
-            position: fixed; 
-            bottom: 0; left: 0; width: 100%;
-            background: rgba(15, 23, 42, 0.98);
-            border-top: 1px solid var(--border);
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.8); 
-            z-index: 10000; 
-            padding: 20px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-        .cookie-content { max-width: 600px; margin: 0 auto; }
-        #cookie-text { margin-bottom: 15px; font-size: 13px; color: #cbd5e1; line-height: 1.5; }
-        .cookie-buttons { display: flex; gap: 10px; justify-content: center; }
-        .cookie-btn {
-            border: none; padding: 10px 24px; border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 13px; transition: 0.2s;
-        }
-        .btn-accept { background: var(--neon-blue); color: #0f172a; }
-        .btn-accept:hover { background: white; }
-        .btn-reject { background: transparent; border: 1px solid var(--text-soft); color: var(--text-soft); }
-        .btn-reject:hover { border-color: white; color: white; }
-
-        /* PREMIUM UPGRADE CSS INJECT */
-        .premium-upgrade-container { animation: fadeIn 1.2s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .qr-section { text-align: center; margin-bottom: 25px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 20px; border: 1px solid var(--border); }
-        .qr-label { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--neon-blue); margin-bottom: 10px; font-weight: 800; }
-        #qrcode { display: inline-block; padding: 10px; background: white; border-radius: 12px; box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
-
-        .premium-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin: 20px 0; }
-        .p-card { 
-            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-            border: 1px solid var(--border); padding: 20px; border-radius: 20px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: default;
-        }
-        .p-card:hover { border-color: var(--neon-blue); transform: scale(1.05); box-shadow: 0 10px 30px rgba(56,189,248,0.1); }
-        .p-icon { font-size: 20px; margin-bottom: 10px; display: block; opacity: 0.8; }
-        .p-label { font-size: 10px; text-transform: uppercase; color: var(--text-soft); }
-        .p-value { font-size: 18px; font-weight: 800; color: white; display: block; margin-top: 5px; }
-
-        .compass-wrap { 
-            position: relative; width: 220px; height: 220px; margin: 30px auto;
-            background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
-            border-radius: 50%; padding: 10px;
-        }
-        #compass-svg { width: 100%; height: 100%; transition: transform 0.1s linear; filter: drop-shadow(0 0 10px var(--neon-blue)); }
-        .compass-ring { fill: none; stroke: var(--border); stroke-width: 2; }
-        .compass-glow { fill: none; stroke: var(--neon-blue); stroke-width: 1; opacity: 0.5; }
-
-        .use-case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; }
-        .use-case-card { 
-            background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 20px; border-radius: 18px;
-            text-align: center; transition: 0.3s;
-            cursor: pointer;
-        }
-        .use-case-card:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); transform: translateY(-2px); } 
-        .use-case-card h3 { font-size: 13px; text-transform: uppercase; margin-top: 10px; color: var(--text-main); }
-
-        .why-section { 
-            padding: 30px; background: linear-gradient(to right, rgba(56,189,248,0.05), transparent);
-            border-left: 3px solid var(--neon-blue); border-radius: 12px; margin: 40px 0;
-        }
-        .why-section h2 { font-size: 18px; color: var(--neon-blue); margin-bottom: 10px; }
-        .why-section p { font-size: 14px; color: var(--text-soft); line-height: 1.6; }
-
-        /* --- ADDED CONTENT STYLES --- */
-        .nav-menu {
-            display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;
-            background: rgba(15, 23, 42, 0.6); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border);
-            backdrop-filter: blur(5px);
-        }
-        .nav-menu a { color: var(--text-soft); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
-        .nav-menu a:hover, .nav-menu a.active { color: var(--neon-blue); }
-
-        .content-expansion { margin-top: 50px; text-align: left; border-top: 1px solid var(--border); padding-top: 40px; }
-        .content-expansion h2 { color: white; font-size: 22px; margin-bottom: 20px; font-weight: 700; letter-spacing: -0.5px; }
-        .content-expansion h3 { color: var(--neon-blue); font-size: 16px; margin: 25px 0 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .content-expansion p { color: #cbd5e1; line-height: 1.8; font-size: 15px; margin-bottom: 15px; }
-        .content-expansion ul { margin-bottom: 20px; padding-left: 20px; }
-        .content-expansion li { color: #cbd5e1; margin-bottom: 10px; font-size: 15px; line-height: 1.6; }
-        
+        .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; } .data-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 16px; border-radius: 16px; text-align: left; } .label { font-size: 10px; color: var(--text-soft); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; } .value { font-size: 16px; font-weight: 700; color: #fff; } .sub-value { font-size: 11px; color: var(--neon-blue); margin-top: 4px; }
+        .nearby-header { font-size: 12px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 10px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; } .nearby-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; } @media(max-width: 600px) { .nearby-list { grid-template-columns: 1fr; } } .nearby-item { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 12px; border-radius: 12px; } .nearby-type { font-size: 9px; color: var(--accent); font-weight: 800; text-transform: uppercase; margin-bottom: 4px; } .nearby-name { font-size: 13px; font-weight: 600; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .nearby-dist { font-size: 11px; color: var(--neon-blue); }
+        .btn-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 30px; } .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; } .btn { border: none; border-radius: 14px; padding: 16px; font-weight: 700; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.1s; } .btn-sos { background: var(--sos-red); color: white; width: 100%; font-size: 16px; box-shadow: 0 0 20px rgba(239, 68, 68, 0.2); } .btn-primary { background: linear-gradient(135deg, #ff0055, #ff4d7d); color: white; } .btn-ghost { background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border); } .btn:active { transform: scale(0.98); } .icon { width: 18px; height: 18px; stroke-width: 2.5; }
+        .trust-badge { font-size: 12px; color: #94a3b8; text-align: center; margin-top: 25px; line-height: 1.6; background: rgba(15, 23, 42, 0.5); padding: 15px; border-radius: 12px; border: 1px dashed var(--border); }
+        footer { margin-top: 40px; text-align: center; font-size: 12px; color: var(--text-soft); padding-bottom: 30px; border-top: 1px solid var(--border); width: 100%; padding-top: 20px;} footer a { color: var(--text-soft); text-decoration: none; margin: 0 8px; transition: color 0.2s; } footer a:hover { color: white; }
+        #cookie-banner { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(15, 23, 42, 0.98); border-top: 1px solid var(--border); box-shadow: 0 -10px 40px rgba(0,0,0,0.8); z-index: 10000; padding: 20px; text-align: center; backdrop-filter: blur(10px); } .cookie-content { max-width: 600px; margin: 0 auto; } #cookie-text { margin-bottom: 15px; font-size: 13px; color: #cbd5e1; line-height: 1.5; } .cookie-buttons { display: flex; gap: 10px; justify-content: center; } .cookie-btn { border: none; padding: 10px 24px; border-radius: 50px; font-weight: 700; cursor: pointer; font-size: 13px; transition: 0.2s; } .btn-accept { background: var(--neon-blue); color: #0f172a; } .btn-accept:hover { background: white; } .btn-reject { background: transparent; border: 1px solid var(--text-soft); color: var(--text-soft); } .btn-reject:hover { border-color: white; color: white; }
+        .premium-upgrade-container { animation: fadeIn 1.2s ease-out; } @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .qr-section { text-align: center; margin-bottom: 25px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 20px; border: 1px solid var(--border); } .qr-label { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--neon-blue); margin-bottom: 10px; font-weight: 800; } #qrcode { display: inline-block; padding: 10px; background: white; border-radius: 12px; box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
+        .premium-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin: 20px 0; } .p-card { background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)); border: 1px solid var(--border); padding: 20px; border-radius: 20px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: default; } .p-card:hover { border-color: var(--neon-blue); transform: scale(1.05); box-shadow: 0 10px 30px rgba(56,189,248,0.1); } .p-icon { font-size: 20px; margin-bottom: 10px; display: block; opacity: 0.8; } .p-label { font-size: 10px; text-transform: uppercase; color: var(--text-soft); } .p-value { font-size: 18px; font-weight: 800; color: white; display: block; margin-top: 5px; }
+        .compass-wrap { position: relative; width: 220px; height: 220px; margin: 30px auto; background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%); border-radius: 50%; padding: 10px; } #compass-svg { width: 100%; height: 100%; transition: transform 0.1s linear; filter: drop-shadow(0 0 10px var(--neon-blue)); } .compass-ring { fill: none; stroke: var(--border); stroke-width: 2; } .compass-glow { fill: none; stroke: var(--neon-blue); stroke-width: 1; opacity: 0.5; }
+        .use-case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; } .use-case-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 20px; border-radius: 18px; text-align: center; transition: 0.3s; cursor: pointer; } .use-case-card:hover { background: rgba(255,255,255,0.05); border-color: var(--accent); transform: translateY(-2px); } .use-case-card h3 { font-size: 13px; text-transform: uppercase; margin-top: 10px; color: var(--text-main); }
+        .why-section { padding: 30px; background: linear-gradient(to right, rgba(56,189,248,0.05), transparent); border-left: 3px solid var(--neon-blue); border-radius: 12px; margin: 40px 0; } .why-section h2 { font-size: 18px; color: var(--neon-blue); margin-bottom: 10px; } .why-section p { font-size: 14px; color: var(--text-soft); line-height: 1.6; }
+        .nav-menu { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; background: rgba(15, 23, 42, 0.6); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); backdrop-filter: blur(5px); } .nav-menu a { color: var(--text-soft); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; } .nav-menu a:hover, .nav-menu a.active { color: var(--neon-blue); }
+        .content-expansion { margin-top: 50px; text-align: left; border-top: 1px solid var(--border); padding-top: 40px; } .content-expansion h2 { color: white; font-size: 22px; margin-bottom: 20px; font-weight: 700; letter-spacing: -0.5px; } .content-expansion h3 { color: var(--neon-blue); font-size: 16px; margin: 25px 0 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; } .content-expansion p { color: #cbd5e1; line-height: 1.8; font-size: 15px; margin-bottom: 15px; } .content-expansion ul { margin-bottom: 20px; padding-left: 20px; } .content-expansion li { color: #cbd5e1; margin-bottom: 10px; font-size: 15px; line-height: 1.6; }
         .hidden-page { display: none; margin-top: 20px; animation: fadeIn 0.5s ease; }
-
-        /* --- NEW MODULE STYLES (DEVELOPER MODE ADDITIONS) --- */
-        .new-module-container { display: none; margin-top: 20px; padding: 20px; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); text-align: left; }
-        .new-module-container.active-mod { display: block; animation: slideDown 0.3s ease-out; }
-        @keyframes slideDown { from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
-
-        .mod-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        .mod-title { font-size: 16px; font-weight: 700; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; }
-        .mod-close { cursor: pointer; color: var(--text-soft); font-size: 18px; background: none; border: none; }
-        
-        .mod-grid-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .mod-btn { padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: white; cursor: pointer; font-size: 13px; transition: 0.2s; }
-        .mod-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--neon-blue); }
-        .mod-btn-primary { background: var(--neon-blue); color: #0f172a; border: none; font-weight: 700; }
-        .mod-btn-danger { background: var(--sos-red); color: white; border: none; font-weight: 700; }
-
-        .mod-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; border-radius: 8px; margin-bottom: 10px; outline: none; }
-        .mod-input:focus { border-color: var(--neon-blue); }
-
-        /* DE-RISKED OVERLAY (Static, High Contrast, No Flash) */
-        .sos-overlay { 
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
-            background: rgba(30, 0, 0, 0.95); z-index: 9999; 
-            display: none; flex-direction: column; align-items: center; justify-content: center; 
-        }
-        .sos-msg { font-size: 24px; font-weight: 900; color: white; margin-bottom: 30px; text-align: center; padding: 20px; }
-        
-        .driver-hud { display: flex; justify-content: space-around; margin: 15px 0; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; }
-        .hud-item { text-align: center; }
-        .hud-val { font-size: 24px; font-weight: 800; color: white; display: block; }
-        .hud-lbl { font-size: 10px; text-transform: uppercase; color: var(--text-soft); }
-
-        .pin-list { margin-top: 10px; max-height: 150px; overflow-y: auto; }
-        .pin-item { padding: 8px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; }
-        .offline-badge { display: inline-block; padding: 4px 8px; background: #64748b; color: white; font-size: 10px; border-radius: 4px; margin-left: 10px; vertical-align: middle; display: none; }
-
-        /* --- FAQ & ACCORDION STYLES --- */
-        details.faq-item { background: rgba(255,255,255,0.02); margin-bottom: 10px; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; transition: 0.3s; }
-        details.faq-item:hover { border-color: var(--neon-blue); }
-        summary.faq-q { padding: 15px; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-        summary.faq-q::-webkit-details-marker { display: none; }
-        summary.faq-q::after { content: '+'; font-size: 18px; color: var(--neon-blue); transition: transform 0.2s; }
-        details[open] summary.faq-q::after { transform: rotate(45deg); }
-        .faq-a { padding: 15px; padding-top: 0; color: var(--text-soft); font-size: 14px; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); }
-
-        /* --- NEW CONTENT INJECTION STYLES (KNOWLEDGE BASE) --- */
-        .kb-section { margin-top: 50px; border-top: 1px solid var(--border); padding-top: 30px; }
-        .kb-header { font-size: 20px; color: white; margin-bottom: 20px; font-weight: 800; text-align: center; letter-spacing: -0.5px; }
-        .kb-details { margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; background: rgba(0,0,0,0.2); }
-        .kb-details[open] { border-color: var(--neon-blue); background: rgba(56, 189, 248, 0.02); }
-        .kb-summary { padding: 18px; font-weight: 700; cursor: pointer; color: #e2e8f0; list-style: none; display: flex; align-items: center; justify-content: space-between; font-size: 15px; }
-        .kb-summary::after { content: '⬇'; font-size: 12px; color: var(--text-soft); transition: 0.3s; }
-        .kb-details[open] .kb-summary::after { transform: rotate(180deg); color: var(--neon-blue); }
-        .kb-body { padding: 0 20px 20px 20px; color: #94a3b8; font-size: 14px; line-height: 1.8; text-align: left; }
-        .kb-body strong { color: white; font-weight: 600; }
-        .kb-body ul { margin: 15px 0; padding-left: 20px; }
-        .kb-body li { margin-bottom: 8px; }
-        
-        /* AD SLOT STYLING */
-        .ad-container {
-            border-radius: 12px;
-            background: rgba(255,255,255,0.02);
-            border: 1px dashed var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
+        .new-module-container { display: none; margin-top: 20px; padding: 20px; border-radius: 16px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); text-align: left; } .new-module-container.active-mod { display: block; animation: slideDown 0.3s ease-out; } @keyframes slideDown { from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
+        .mod-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; } .mod-title { font-size: 16px; font-weight: 700; color: var(--neon-blue); text-transform: uppercase; letter-spacing: 1px; } .mod-close { cursor: pointer; color: var(--text-soft); font-size: 18px; background: none; border: none; }
+        .mod-grid-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; } .mod-btn { padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: rgba(255,255,255,0.05); color: white; cursor: pointer; font-size: 13px; transition: 0.2s; } .mod-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--neon-blue); } .mod-btn-primary { background: var(--neon-blue); color: #0f172a; border: none; font-weight: 700; } .mod-btn-danger { background: var(--sos-red); color: white; border: none; font-weight: 700; }
+        .mod-input { width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); color: white; border-radius: 8px; margin-bottom: 10px; outline: none; } .mod-input:focus { border-color: var(--neon-blue); }
+        .sos-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(30, 0, 0, 0.95); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; } .sos-msg { font-size: 24px; font-weight: 900; color: white; margin-bottom: 30px; text-align: center; padding: 20px; }
+        .driver-hud { display: flex; justify-content: space-around; margin: 15px 0; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; } .hud-item { text-align: center; } .hud-val { font-size: 24px; font-weight: 800; color: white; display: block; } .hud-lbl { font-size: 10px; text-transform: uppercase; color: var(--text-soft); }
+        .pin-list { margin-top: 10px; max-height: 150px; overflow-y: auto; } .pin-item { padding: 8px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; } .offline-badge { display: inline-block; padding: 4px 8px; background: #64748b; color: white; font-size: 10px; border-radius: 4px; margin-left: 10px; vertical-align: middle; display: none; }
+        details.faq-item { background: rgba(255,255,255,0.02); margin-bottom: 10px; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; transition: 0.3s; } details.faq-item:hover { border-color: var(--neon-blue); } summary.faq-q { padding: 15px; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; } summary.faq-q::-webkit-details-marker { display: none; } summary.faq-q::after { content: '+'; font-size: 18px; color: var(--neon-blue); transition: transform 0.2s; } details[open] summary.faq-q::after { transform: rotate(45deg); } .faq-a { padding: 15px; padding-top: 0; color: var(--text-soft); font-size: 14px; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); }
+        .kb-section { margin-top: 50px; border-top: 1px solid var(--border); padding-top: 30px; } .kb-header { font-size: 20px; color: white; margin-bottom: 20px; font-weight: 800; text-align: center; letter-spacing: -0.5px; } .kb-details { margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; background: rgba(0,0,0,0.2); } .kb-details[open] { border-color: var(--neon-blue); background: rgba(56, 189, 248, 0.02); } .kb-summary { padding: 18px; font-weight: 700; cursor: pointer; color: #e2e8f0; list-style: none; display: flex; align-items: center; justify-content: space-between; font-size: 15px; } .kb-summary::after { content: '⬇'; font-size: 12px; color: var(--text-soft); transition: 0.3s; } .kb-details[open] .kb-summary::after { transform: rotate(180deg); color: var(--neon-blue); } .kb-body { padding: 0 20px 20px 20px; color: #94a3b8; font-size: 14px; line-height: 1.8; text-align: left; } .kb-body strong { color: white; font-weight: 600; } .kb-body ul { margin: 15px 0; padding-left: 20px; } .kb-body li { margin-bottom: 8px; }
+        .ad-container { border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); display: flex; align-items: center; justify-content: center; flex-direction: column; }
     </style>
 </head>
 <body>
@@ -407,7 +130,7 @@
 
         <div class="ad-container" style="text-align:center; margin: 10px auto 20px; min-height: 90px; width: 100%; max-width: 728px; overflow: hidden;">
              <span style="font-size:10px; color:#334155; margin-bottom: 5px;">ADVERTISEMENT</span>
-             </div>
+        </div>
 
         <div class="compass-wrap">
             <svg id="compass-svg" viewBox="0 0 100 100">
@@ -427,7 +150,6 @@
                 <h2 data-i18n="address_title">📍 Current Address</h2>
                 <div id="full-address">...</div>
                 <div style="font-size:10px; color:rgba(255,255,255,0.5); margin-top:5px;">(Tap copy icon to save)</div>
-                
                 <button class="icon-btn copy-abs" id="copy-addr" title="Copy Address">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                 </button>
@@ -464,26 +186,10 @@
                 <div style="font-size:10px; color:var(--text-soft); margin-top:5px;">Always find shelter if conditions worsen.</div>
             </div>
             <div class="premium-dashboard">
-                <div class="p-card">
-                    <span class="p-icon">🛰️</span>
-                    <span class="p-label">Altitude</span>
-                    <span class="p-value" id="alt-p">—</span>
-                </div>
-                <div class="p-card">
-                    <span class="p-icon">🧭</span>
-                    <span class="p-label">Bearing</span>
-                    <span class="p-value" id="head-p">—</span>
-                </div>
-                <div class="p-card">
-                    <span class="p-icon">🛡️</span>
-                    <span class="p-label">Connection</span>
-                    <span class="p-value">Secure</span>
-                </div>
-                <div class="p-card">
-                    <span class="p-icon">🕒</span>
-                    <span class="p-label">Timestamp</span>
-                    <span class="p-value" id="time-p">00:00:00</span>
-                </div>
+                <div class="p-card"><span class="p-icon">🛰️</span><span class="p-label">Altitude</span><span class="p-value" id="alt-p">—</span></div>
+                <div class="p-card"><span class="p-icon">🧭</span><span class="p-label">Bearing</span><span class="p-value" id="head-p">—</span></div>
+                <div class="p-card"><span class="p-icon">🛡️</span><span class="p-label">Connection</span><span class="p-value">Secure</span></div>
+                <div class="p-card"><span class="p-icon">🕒</span><span class="p-label">Timestamp</span><span class="p-value" id="time-p">00:00:00</span></div>
             </div>
 
             <div class="data-grid">
@@ -545,20 +251,12 @@
                 </div>
                 
                 <div class="btn-row" style="margin-top:10px;">
-                    <button class="btn" onclick="toggleModule('driver-mod')" style="background:rgba(56, 189, 248, 0.15); color:#38bdf8; border:1px solid rgba(56, 189, 248, 0.3);">
-                        <span>🚗 Driver Mode</span>
-                    </button>
-                    <button class="btn" onclick="toggleModule('hiker-mod')" style="background:rgba(16, 185, 129, 0.15); color:#10b981; border:1px solid rgba(16, 185, 129, 0.3);">
-                        <span>🌲 Hiker Mode</span>
-                    </button>
+                    <button class="btn" onclick="toggleModule('driver-mod')" style="background:rgba(56, 189, 248, 0.15); color:#38bdf8; border:1px solid rgba(56, 189, 248, 0.3);"><span>🚗 Driver Mode</span></button>
+                    <button class="btn" onclick="toggleModule('hiker-mod')" style="background:rgba(16, 185, 129, 0.15); color:#10b981; border:1px solid rgba(16, 185, 129, 0.3);"><span>🌲 Hiker Mode</span></button>
                 </div>
                 <div class="btn-row" style="margin-top:0px;">
-                    <button class="btn" onclick="toggleModule('friend-mod')" style="background:rgba(255, 204, 0, 0.15); color:#fbbf24; border:1px solid rgba(255, 204, 0, 0.3);">
-                        <span>🤝 Meet Friend</span>
-                    </button>
-                    <button class="btn" onclick="toggleModule('share-mod')" style="background:rgba(255, 255, 255, 0.1); color:white; border:1px solid rgba(255, 255, 255, 0.3);">
-                        <span>🔗 Share Link</span>
-                    </button>
+                    <button class="btn" onclick="toggleModule('friend-mod')" style="background:rgba(255, 204, 0, 0.15); color:#fbbf24; border:1px solid rgba(255, 204, 0, 0.3);"><span>🤝 Meet Friend</span></button>
+                    <button class="btn" onclick="toggleModule('share-mod')" style="background:rgba(255, 255, 255, 0.1); color:white; border:1px solid rgba(255, 255, 255, 0.3);"><span>🔗 Share Link</span></button>
                 </div>
             </div>
 
@@ -568,16 +266,9 @@
             </div>
 
             <div id="new-modules-container">
-                
                 <div id="driver-mod" class="new-module-container">
-                    <div class="mod-header">
-                        <span class="mod-title">Driver Dashboard</span>
-                        <button class="mod-close" onclick="toggleModule('driver-mod')">✕</button>
-                    </div>
-                    <div class="driver-hud">
-                        <div class="hud-item"><span class="hud-val" id="drv-speed">0</span><span class="hud-lbl">MPH</span></div>
-                        <div class="hud-item"><span class="hud-val" id="drv-dir">--</span><span class="hud-lbl">Heading</span></div>
-                    </div>
+                    <div class="mod-header"><span class="mod-title">Driver Dashboard</span><button class="mod-close" onclick="toggleModule('driver-mod')">✕</button></div>
+                    <div class="driver-hud"><div class="hud-item"><span class="hud-val" id="drv-speed">0</span><span class="hud-lbl">MPH</span></div><div class="hud-item"><span class="hud-val" id="drv-dir">--</span><span class="hud-lbl">Heading</span></div></div>
                     <div class="mod-grid-buttons">
                         <button class="mod-btn" onclick="openMapSearch('gas_station')">⛽ Gas Stations</button>
                         <button class="mod-btn" onclick="openMapSearch('parking')">🅿️ Rest Stops</button>
@@ -585,12 +276,8 @@
                         <button class="mod-btn" onclick="shareLocationSimple()">📍 Share Location</button>
                     </div>
                 </div>
-
                 <div id="hiker-mod" class="new-module-container">
-                    <div class="mod-header">
-                        <span class="mod-title">Hiker Tools</span>
-                        <button class="mod-close" onclick="toggleModule('hiker-mod')">✕</button>
-                    </div>
+                    <div class="mod-header"><span class="mod-title">Hiker Tools</span><button class="mod-close" onclick="toggleModule('hiker-mod')">✕</button></div>
                     <div style="font-size:12px; color:#94a3b8; margin-bottom:10px;">Offline caching enabled. Pins saved locally.</div>
                     <div class="mod-grid-buttons">
                         <button class="mod-btn mod-btn-primary" onclick="dropPin()">📍 Drop Pin</button>
@@ -598,22 +285,14 @@
                     </div>
                     <div id="pin-list" class="pin-list"></div>
                 </div>
-
                 <div id="friend-mod" class="new-module-container">
-                    <div class="mod-header">
-                        <span class="mod-title">Meet a Friend</span>
-                        <button class="mod-close" onclick="toggleModule('friend-mod')">✕</button>
-                    </div>
+                    <div class="mod-header"><span class="mod-title">Meet a Friend</span><button class="mod-close" onclick="toggleModule('friend-mod')">✕</button></div>
                     <input type="text" id="friend-input" class="mod-input" placeholder="Paste friend's coords (lat,lng) or link...">
                     <button class="mod-btn mod-btn-primary" style="width:100%" onclick="calcFriendDist()">Calculate Distance & Midpoint</button>
                     <div id="friend-res" style="margin-top:10px; font-size:14px; color:white;"></div>
                 </div>
-
                 <div id="share-mod" class="new-module-container">
-                    <div class="mod-header">
-                        <span class="mod-title">Share Location</span>
-                        <button class="mod-close" onclick="toggleModule('share-mod')">✕</button>
-                    </div>
+                    <div class="mod-header"><span class="mod-title">Share Location</span><button class="mod-close" onclick="toggleModule('share-mod')">✕</button></div>
                     <input type="text" id="share-url-input" class="mod-input" readonly>
                     <div class="mod-grid-buttons">
                         <button class="mod-btn mod-btn-primary" onclick="copyShareLink()">📋 Copy Link</button>
@@ -629,7 +308,7 @@
 
             <div class="ad-container" style="text-align:center; margin: 30px 0; min-height: 250px; width: 100%; overflow: hidden;">
                  <span style="font-size:10px; color:#334155; margin-bottom: 5px;">ADVERTISEMENT</span>
-                 </div>
+            </div>
 
             <section class="why-section">
                 <h2>Why This Interface Matters</h2>
@@ -681,40 +360,9 @@
 
             <div class="kb-section">
                 <div class="kb-header">Technical Knowledge Base</div>
-                
-                <details class="kb-details">
-                    <summary class="kb-summary">The Science of Precision: GPS Trilateration Explained</summary>
-                    <div class="kb-body">
-                        <p>At the core of TellMyLocation.com is a process known as <strong>Trilateration</strong>. Unlike triangulation, which uses angles, trilateration uses distances to determine a precise location. Your device calculates these distances based on the "Time of Flight" (ToF) of radio signals traveling from satellites to your receiver at the speed of light.</p>
-                        <p>To pinpoint your location in 3D space (Latitude, Longitude, and Altitude), your device must solve for four unknowns: X, Y, Z, and Time. This requires a simultaneous lock on at least <strong>four satellites</strong>:</p>
-                        <ul>
-                            <li><strong>3 Satellites:</strong> Determine your 2D position (Lat/Long) but assume you are at sea level.</li>
-                            <li><strong>4th Satellite:</strong> Corrects the internal clock error of your device's receiver against the atomic clocks on board the GPS satellites, allowing for accurate altitude calculation.</li>
-                        </ul>
-                        <p><strong>GDOP (Geometric Dilution of Precision):</strong> The accuracy of your fix depends heavily on the geometry of the satellites currently visible. If all visible satellites are clustered in one part of the sky, the overlap of their signal spheres is large, resulting in a high margin of error (High GDOP). TellMyLocation filters these low-quality fixes to ensure the coordinates we display are actionable.</p>
-                    </div>
-                </details>
-
-                <details class="kb-details">
-                    <summary class="kb-summary">Privacy Architecture: Zero-Knowledge Engineering</summary>
-                    <div class="kb-body">
-                        <p>We believe that location data is the most sensitive metadata a user can generate. As such, we have engineered this tool using a <strong>Zero-Knowledge Architecture</strong>. This means the server has no technical capability to view or store your data.</p>
-                        <ul>
-                            <li><strong>Client-Side Execution:</strong> All geolocation logic occurs within your browser's sandbox using the HTML5 Geolocation API (`navigator.geolocation`). The coordinates are rendered directly to the DOM (Document Object Model) via JavaScript without ever being POSTed to our backend.</li>
-                            <li><strong>Ephemeral Sessions:</strong> There is no user database. No login system. No tracking cookies for location history. Once you close the tab, the RAM allocated to your session is cleared by the browser's garbage collector, and the data ceases to exist.</li>
-                            <li><strong>HTTPS Encryption:</strong> While we do not transmit your location, the connection between your browser and our static file server is secured via TLS 1.3. This prevents "Man-in-the-Middle" attacks where a malicious Wi-Fi hotspot could inject code to siphon your data.</li>
-                        </ul>
-                    </div>
-                </details>
-
-                <details class="kb-details">
-                    <summary class="kb-summary">Safety Protocols & Emergency Utility</summary>
-                    <div class="kb-body">
-                        <p>In emergency scenarios, standard map applications often fail due to feature bloat or heavy data requirements. This tool is optimized for <strong>High-Stress, Low-Bandwidth</strong> environments.</p>
-                        <p><strong>Cold Start vs. Warm Start:</strong> A "Cold Start" occurs when your GPS receiver has no valid almanac or ephemeris data (e.g., after a long flight or battery drain). This can take up to 12 minutes to acquire a lock. We utilize <strong>A-GPS (Assisted GPS)</strong> triggers via the browser API to force a "Warm Start," utilizing cellular tower triangulation to approximate your location instantly while the satellite lock refines the precision in the background.</p>
-                        <p><strong>Battery Optimization:</strong> Continuous GPS usage is power-intensive. Our logic utilizes an "On-Demand" polling strategy. We maintain a high-accuracy watch (`enableHighAccuracy: true`) only while the tab is visible. When the browser is minimized, we degrade the polling frequency to preserve your battery life—crucial in survival situations.</p>
-                    </div>
-                </details>
+                <details class="kb-details"><summary class="kb-summary">The Science of Precision: GPS Trilateration Explained</summary><div class="kb-body"><p>At the core of TellMyLocation.com is a process known as <strong>Trilateration</strong>. Unlike triangulation, which uses angles, trilateration uses distances to determine a precise location. Your device calculates these distances based on the "Time of Flight" (ToF) of radio signals traveling from satellites to your receiver at the speed of light.</p><p>To pinpoint your location in 3D space (Latitude, Longitude, and Altitude), your device must solve for four unknowns: X, Y, Z, and Time. This requires a simultaneous lock on at least <strong>four satellites</strong>:</p><ul><li><strong>3 Satellites:</strong> Determine your 2D position (Lat/Long) but assume you are at sea level.</li><li><strong>4th Satellite:</strong> Corrects the internal clock error of your device's receiver against the atomic clocks on board the GPS satellites, allowing for accurate altitude calculation.</li></ul><p><strong>GDOP (Geometric Dilution of Precision):</strong> The accuracy of your fix depends heavily on the geometry of the satellites currently visible. If all visible satellites are clustered in one part of the sky, the overlap of their signal spheres is large, resulting in a high margin of error (High GDOP). TellMyLocation filters these low-quality fixes to ensure the coordinates we display are actionable.</p></div></details>
+                <details class="kb-details"><summary class="kb-summary">Privacy Architecture: Zero-Knowledge Engineering</summary><div class="kb-body"><p>We believe that location data is the most sensitive metadata a user can generate. As such, we have engineered this tool using a <strong>Zero-Knowledge Architecture</strong>. This means the server has no technical capability to view or store your data.</p><ul><li><strong>Client-Side Execution:</strong> All geolocation logic occurs within your browser's sandbox using the HTML5 Geolocation API (`navigator.geolocation`). The coordinates are rendered directly to the DOM (Document Object Model) via JavaScript without ever being POSTed to our backend.</li><li><strong>Ephemeral Sessions:</strong> There is no user database. No login system. No tracking cookies for location history. Once you close the tab, the RAM allocated to your session is cleared by the browser's garbage collector, and the data ceases to exist.</li><li><strong>HTTPS Encryption:</strong> While we do not transmit your location, the connection between your browser and our static file server is secured via TLS 1.3. This prevents "Man-in-the-Middle" attacks where a malicious Wi-Fi hotspot could inject code to siphon your data.</li></ul></div></details>
+                <details class="kb-details"><summary class="kb-summary">Safety Protocols & Emergency Utility</summary><div class="kb-body"><p>In emergency scenarios, standard map applications often fail due to feature bloat or heavy data requirements. This tool is optimized for <strong>High-Stress, Low-Bandwidth</strong> environments.</p><p><strong>Cold Start vs. Warm Start:</strong> A "Cold Start" occurs when your GPS receiver has no valid almanac or ephemeris data (e.g., after a long flight or battery drain). This can take up to 12 minutes to acquire a lock. We utilize <strong>A-GPS (Assisted GPS)</strong> triggers via the browser API to force a "Warm Start," utilizing cellular tower triangulation to approximate your location instantly while the satellite lock refines the precision in the background.</p><p><strong>Battery Optimization:</strong> Continuous GPS usage is power-intensive. Our logic utilizes an "On-Demand" polling strategy. We maintain a high-accuracy watch (`enableHighAccuracy: true`) only while the tab is visible. When the browser is minimized, we degrade the polling frequency to preserve your battery life—crucial in survival situations.</p></div></details>
             </div>
 
             <p class="trust-badge">
@@ -744,8 +392,7 @@
         </div>
         © 2026 TellMyLocation.com
     </footer>
-
-    </div>
+</div>
 
 <div id="cookie-banner">
     <div class="cookie-content">
@@ -757,6 +404,52 @@
     </div>
 </div>
 
+<script>
+    /* ... EXISTING JS LOGIC (GPS, WEATHER, MODULES, CONSENT) ... */
+    
+    // --- CONSENT LOGIC ---
+    function checkConsent() {
+        const consent = localStorage.getItem('cookiesAccepted');
+        if (!consent) {
+            document.getElementById('cookie-banner').style.display = 'block';
+        } else if (consent === 'granted') {
+            gtag('consent', 'update', {
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted',
+                'analytics_storage': 'granted'
+            });
+        }
+    }
+    function acceptCookies() {
+        localStorage.setItem('cookiesAccepted', 'granted');
+        document.getElementById('cookie-banner').style.display = 'none';
+        gtag('consent', 'update', {
+            'ad_storage': 'granted',
+            'ad_user_data': 'granted',
+            'ad_personalization': 'granted',
+            'analytics_storage': 'granted'
+        });
+    }
+    function rejectCookies() {
+        localStorage.setItem('cookiesAccepted', 'denied');
+        document.getElementById('cookie-banner').style.display = 'none';
+        gtag('consent', 'update', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied'
+        });
+    }
+    function showCookieBanner() {
+        document.getElementById('cookie-banner').style.display = 'block';
+    }
+    checkConsent();
+
+    // ... (Keep existing debounce, QR, GPS, and Weather functions from previous version) ...
+    // Note: I'm not re-pasting the 500 lines of JS logic to save space, but ensure you keep the script block from the previous full index.html provided in Turn 12.
+    // The key update here was the HEAD metadata and schema.
+</script>
 <script>
     /* DEBOUNCE UTILITY (The "Brakes") */
     let debounceTimer;
