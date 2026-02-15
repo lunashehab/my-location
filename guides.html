@@ -4,37 +4,44 @@
     <meta charset="UTF-8" />
     <title>Geolocation Knowledge Hub | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="canonical" href="https://tellmylocation.com/learn.html" />
+    
+    <link rel="canonical" href="https://tellmylocation.com/guides.html" />
     <meta name="author" content="Don Odibat">
     <meta name="publisher" content="Don System Holdings">
     <meta name="description" content="Expert technical guides on GPS formats, digital privacy, and location safety protocols.">
+    
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
-        /* (Same CSS as previous steps - kept consistent) */
         :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #38bdf8; --text: #ffffff; --text-soft: #94a3b8; --border: rgba(255, 255, 255, 0.1); }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.6; }
         .shell { max-width: 900px; margin: 0 auto; }
         nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; background: rgba(15, 23, 42, 0.6); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); width: fit-content; margin-left: auto; margin-right: auto; backdrop-filter: blur(5px); }
         nav a { color: var(--text-soft); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
         nav a:hover, nav a.active { color: var(--accent); }
+        
         .header-section { text-align: center; margin-bottom: 50px; padding: 40px 20px; border-bottom: 1px solid var(--border); }
         .header-section h1 { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 15px; color: white; }
         .header-section p { color: var(--text-soft); max-width: 600px; margin: 0 auto; font-size: 16px; }
+
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .article-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 30px; transition: transform 0.2s, border-color 0.2s; cursor: pointer; display: flex; flex-direction: column; }
+        .article-card { 
+            background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 30px; 
+            transition: transform 0.2s, border-color 0.2s; cursor: pointer; display: flex; flex-direction: column;
+        }
         .article-card:hover { transform: translateY(-5px); border-color: var(--accent); }
         .tag { display: inline-block; padding: 4px 10px; background: rgba(56, 189, 248, 0.1); color: var(--accent); border-radius: 50px; font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; width: fit-content; }
         .title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: white; }
         .excerpt { font-size: 14px; color: var(--text-soft); margin-bottom: 20px; flex-grow: 1; line-height: 1.6; }
         .read-more { font-size: 13px; font-weight: 600; color: white; text-decoration: none; display: flex; align-items: center; gap: 5px; }
+        
         footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
     </style>
 </head>
 <body>
     <div class="shell">
         <nav>
-            <a href="index.html">Home</a>
-            <a href="learn.html" class="active">Guides</a>
+            <a href="/">Home</a>
+            <a href="guides.html" class="active">Guides</a>
             <a href="about.html">About</a>
             <a href="privacy.html">Privacy</a>
             <a href="contact.html">Contact</a>
@@ -42,27 +49,46 @@
 
         <div class="header-section">
             <h1>Knowledge Hub</h1>
-            <p>Expert guides on geolocation technology, privacy, and digital safety.</p>
+            <p>Welcome to our educational resource center. Here you will find deep dives into GPS technology, coordinate standards, and digital privacy protocols designed for both professionals and everyday users.</p>
         </div>
 
         <div class="grid">
             <div class="article-card" onclick="window.location.href='guide-safety.html'">
-                <span class="tag">Safety</span><div class="title">Emergency GPS Protocol</div>
-                <div class="excerpt">How to communicate with First Responders when data signals fail.</div><a href="guide-safety.html" class="read-more">Read Guide →</a>
+                <span class="tag">Safety Protocol</span>
+                <div class="title">Emergency GPS Guide</div>
+                <div class="excerpt">Critical protocols for using location data to communicate with First Responders in low-bandwidth scenarios.</div>
+                <a href="guide-safety.html" class="read-more">Read Guide →</a>
             </div>
+
             <div class="article-card" onclick="window.location.href='guide-accuracy.html'">
-                <span class="tag">Tech Support</span><div class="title">Fixing Location Accuracy</div>
-                <div class="excerpt">Why your blue dot drifts and how to improve GPS precision.</div><a href="guide-accuracy.html" class="read-more">Read Guide →</a>
+                <span class="tag">Troubleshooting</span>
+                <div class="title">Fixing Location Accuracy</div>
+                <div class="excerpt">Why your blue dot drifts, the difference between IP and GPS geolocation, and how to improve precision.</div>
+                <a href="guide-accuracy.html" class="read-more">Read Guide →</a>
             </div>
+
             <div class="article-card" onclick="window.location.href='guide-formats.html'">
-                <span class="tag">Technical</span><div class="title">Coordinate Formats 101</div>
-                <div class="excerpt">Decimal Degrees (DD) vs. DMS. Which format should you use?</div><a href="guide-formats.html" class="read-more">Read Guide →</a>
+                <span class="tag">Technical Reference</span>
+                <div class="title">Coordinate Formats 101</div>
+                <div class="excerpt">A breakdown of Decimal Degrees (DD), DMS, and MGRS formats. When to use which standard.</div>
+                <a href="guide-formats.html" class="read-more">Read Guide →</a>
             </div>
+
             <div class="article-card" onclick="window.location.href='guide-ip-geo.html'">
-                <span class="tag">Deep Dive</span><div class="title">How IP Geolocation Works</div>
-                <div class="excerpt">The science behind mapping an IP address to a physical street.</div><a href="guide-ip-geo.html" class="read-more">Read Guide →</a>
+                <span class="tag">Education</span>
+                <div class="title">How IP Geolocation Works</div>
+                <div class="excerpt">The backend science of mapping an Internet Protocol address to a physical street address.</div>
+                <a href="guide-ip-geo.html" class="read-more">Read Guide →</a>
             </div>
-            <div class="article-card" onclick="window.location.href='guide-offline.html'">
+
+            <div class="article-card" onclick="window.location.href='guide-permissions.html'">
+                <span class="tag">Privacy Audit</span>
+                <div class="title">Managing Browser Permissions</div>
+                <div class="excerpt">How to audit, revoke, and manage location access on Chrome, Safari, and Firefox.</div>
+                <a href="guide-permissions.html" class="read-more">Read Guide →</a>
+            </div>
+            
+             <div class="article-card" onclick="window.location.href='guide-offline.html'">
                 <span class="tag">Utility</span><div class="title">Using GPS Offline</div>
                 <div class="excerpt">How to navigate without a SIM card or data plan.</div><a href="guide-offline.html" class="read-more">Read Guide →</a>
             </div>
@@ -74,13 +100,11 @@
                 <span class="tag">Education</span><div class="title">Latitude & Longitude</div>
                 <div class="excerpt">A beginner's guide to the global grid system.</div><a href="guide-lat-long.html" class="read-more">Read Guide →</a>
             </div>
-            <div class="article-card" onclick="window.location.href='guide-permissions.html'">
-                <span class="tag">Audit</span><div class="title">Browser Permissions</div>
-                <div class="excerpt">How to revoke location access on Chrome and Safari.</div><a href="guide-permissions.html" class="read-more">Read Guide →</a>
-            </div>
         </div>
 
-        <footer>© 2026 Don System Holdings.</footer>
+        <footer>
+            © 2026 Don System Holdings. Tupelo, MS 38801. All Rights Reserved.
+        </footer>
     </div>
 </body>
 </html>
