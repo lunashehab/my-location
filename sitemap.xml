@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url><loc>https://tellmylocation.com/</loc><lastmod>2026-02-16</lastmod><priority>1.0</priority></url>
-   <url><loc>https://tellmylocation.com/guides</loc><lastmod>2026-02-16</lastmod><priority>0.9</priority></url>
-   <url><loc>https://tellmylocation.com/about</loc><lastmod>2026-02-16</lastmod><priority>0.8</priority></url>
-   <url><loc>https://tellmylocation.com/contact</loc><lastmod>2026-02-16</lastmod><priority>0.8</priority></url>
    
-   <url><loc>https://tellmylocation.com/privacy</loc><lastmod>2026-02-16</lastmod><priority>0.6</priority></url>
-   <url><loc>https://tellmylocation.com/terms</loc><lastmod>2026-02-16</lastmod><priority>0.6</priority></url>
-   <url><loc>https://tellmylocation.com/disclaimer</loc><lastmod>2026-02-16</lastmod><priority>0.5</priority></url>
-   <url><loc>https://tellmylocation.com/cookie-policy</loc><lastmod>2026-02-16</lastmod><priority>0.5</priority></url>
+   <url><loc>https://tellmylocation.com/guides.html</loc><lastmod>2026-02-16</lastmod><priority>0.9</priority></url>
+   <url><loc>https://tellmylocation.com/about.html</loc><lastmod>2026-02-16</lastmod><priority>0.8</priority></url>
+   <url><loc>https://tellmylocation.com/contact.html</loc><lastmod>2026-02-16</lastmod><priority>0.8</priority></url>
+   <url><loc>https://tellmylocation.com/privacy.html</loc><lastmod>2026-02-16</lastmod><priority>0.6</priority></url>
+   <url><loc>https://tellmylocation.com/terms.html</loc><lastmod>2026-02-16</lastmod><priority>0.6</priority></url>
+   <url><loc>https://tellmylocation.com/disclaimer.html</loc><lastmod>2026-02-16</lastmod><priority>0.5</priority></url>
+   <url><loc>https://tellmylocation.com/cookie-policy.html</loc><lastmod>2026-02-16</lastmod><priority>0.5</priority></url>
 
-   <url><loc>https://tellmylocation.com/guide-safety</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
-   <url><loc>https://tellmylocation.com/guide-accuracy</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
-   <url><loc>https://tellmylocation.com/guide-gps-explained</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
-   <url><loc>https://tellmylocation.com/guide-privacy</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
-   <url><loc>https://tellmylocation.com/guide-offline</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
-   <url><loc>https://tellmylocation.com/guide-exif</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
-   <url><loc>https://tellmylocation.com/guide-formats</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
-   <url><loc>https://tellmylocation.com/guide-coord-conversion</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
-   <url><loc>https://tellmylocation.com/guide-device-accuracy</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
-   <url><loc>https://tellmylocation.com/guide-satellite-types</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
+   <url><loc>https://tellmylocation.com/guide-safety.html</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
+   <url><loc>https://tellmylocation.com/guide-accuracy.html</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
+   <url><loc>https://tellmylocation.com/guide-gps-explained.html</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
+   <url><loc>https://tellmylocation.com/guide-privacy.html</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
+   <url><loc>https://tellmylocation.com/guide-offline.html</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
+   <url><loc>https://tellmylocation.com/guide-exif.html</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
+   <url><loc>https://tellmylocation.com/guide-formats.html</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
+   <url><loc>https://tellmylocation.com/guide-coord-conversion.html</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
+   <url><loc>https://tellmylocation.com/guide-device-accuracy.html</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
+   <url><loc>https://tellmylocation.com/guide-satellite-types.html</loc><lastmod>2026-02-16</lastmod><priority>0.7</priority></url>
 </urlset>
