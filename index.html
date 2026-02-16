@@ -3,16 +3,24 @@
 <head>
     <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE_HERE" />
 
-    <script>
-        // GITHUB PAGES URL SANITIZATION
-        if (window.location.pathname.endsWith('/index.html')) {
-            window.history.replaceState(null, '', '/');
-        }
-        if (window.location.pathname.endsWith('.html') && window.location.pathname !== '/index.html') {
-            var cleanPath = window.location.pathname.replace('.html', '');
-            window.history.replaceState(null, '', cleanPath);
-        }
-    </script>
+   <script>
+    // URL NORMALIZER
+    // 1. Enforce HTTPS
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+        location.replace(`https:${location.href.substring(location.protocol.length)}`);
+    }
+    // 2. Remove .html extension (Visual "301" via History API)
+    if (location.pathname.endsWith('.html')) {
+        var cleanPath = location.pathname.replace(/\.html$/, '');
+        // Special case: /index becomes /
+        if (cleanPath === '/index') cleanPath = '/';
+        window.history.replaceState(null, '', cleanPath);
+    }
+    // 3. Enforce Trailing Slash consistency (Optional, but good for SEO: remove it)
+    if (location.pathname.endsWith('/') && location.pathname !== '/') {
+        window.history.replaceState(null, '', location.pathname.slice(0, -1));
+    }
+</script>
 
     <script>
         window.dataLayer = window.dataLayer || [];
