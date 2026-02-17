@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+            location.replace(`https:${location.href.substring(location.protocol.length)}`);
+        }
+        if (window.location.pathname.endsWith('.html')) {
+            var cleanPath = window.location.pathname.replace('.html', '');
+            window.history.replaceState(null, '', cleanPath);
+        }
+    </script>
+
+    <meta charset="UTF-8" />
+    <title>Celestial Navigation Guide & Sky Dashboard | Tell My Location</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Learn how to find your GPS coordinates using the stars, sun, and moon. Includes live solar data and moon phase for your current location.">
+    
+    <link rel="canonical" href="https://tellmylocation.com/guide-celestial.html" />
+    
+    <meta name="author" content="Don Odibat">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "The Lost Art of Celestial Navigation",
+      "author": { "@type": "Person", "name": "Don Odibat" },
+      "publisher": { "@type": "Organization", "name": "Don System Holdings" },
+      "datePublished": "2026-02-16",
+      "articleBody": "Before satellites, humanity looked up. This guide explains how to use the sky to find your location on Earth."
+    }
+    </script>
+
+    <style>
+        :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #8b5cf6; --neon: #a78bfa; --text: #ffffff; --text-soft: #94a3b8; --border: rgba(255, 255, 255, 0.1); }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.8; }
+        .shell { max-width: 900px; margin: 0 auto; }
+        
+        /* NAV */
+        nav { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; background: rgba(15, 23, 42, 0.6); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); backdrop-filter: blur(5px); }
+        nav a { color: var(--text-soft); text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+        nav a:hover { color: var(--accent); }
+        
+        /* LAYOUT */
+        .card { background: var(--card); padding: 40px; border-radius: 24px; border: 1px solid var(--border); margin-bottom: 30px; }
+        h1 { font-size: 36px; margin-bottom: 10px; font-weight: 800; letter-spacing: -1px; background: -webkit-linear-gradient(0deg, #fff, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        h2 { color: var(--neon); font-size: 24px; margin-top: 50px; margin-bottom: 20px; border-left: 4px solid var(--accent); padding-left: 15px; }
+        h3 { color: white; font-size: 18px; margin-top: 30px; margin-bottom: 10px; font-weight: 700; }
+        p, li { color: #cbd5e1; font-size: 17px; margin-bottom: 20px; }
+        ul { list-style-type: none; padding: 0; }
+        li::before { content: "✦"; color: var(--accent); margin-right: 10px; }
+        
+        /* DASHBOARD WIDGET */
+        .sky-dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 30px 0; padding: 20px; background: rgba(139, 92, 246, 0.05); border-radius: 16px; border: 1px solid rgba(139, 92, 246, 0.3); }
+        .sky-item { text-align: center; }
+        .sky-label { font-size: 11px; text-transform: uppercase; color: var(--text-soft); letter-spacing: 1px; margin-bottom: 5px; }
+        .sky-val { font-size: 20px; font-weight: 800; color: white; }
+        .loading-text { font-size: 14px; color: var(--text-soft); text-align: center; width: 100%; font-style: italic; }
+
+        /* DIAGRAM BOXES */
+        .diagram-box { background: rgba(0,0,0,0.3); padding: 25px; border-radius: 12px; border: 1px dashed var(--border); margin: 30px 0; font-family: monospace; font-size: 14px; color: #e2e8f0; line-height: 1.6; }
+        
+        /* FOOTER */
+        footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px; }
+        footer a { color: var(--text-soft); text-decoration: none; margin: 0 5px; }
+        footer a:hover { color: white; }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <nav>
+            <a href="/">Home</a>
+            <a href="guides.html">Guides</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+
+        <article class="card">
+            <h1>Celestial Navigation</h1>
+            <p><strong>The original GPS was the sky.</strong> Before satellites orbited the earth, explorers used the sun, the moon, and the stars to calculate their position within a few miles. This guide teaches you the fundamental principles of surviving without digital tools.</p>
+
+            <div id="sky-dash-container">
+                <h3 style="margin-top:0; text-align:center; font-size:14px; color:var(--text-soft);">YOUR LOCAL SKY DATA (LIVE)</h3>
+                <div class="sky-dashboard" id="sky-dashboard">
+                    <div class="loading-text">Acquiring position for astronomy data...</div>
+                </div>
+                <div style="text-align:center; font-size:11px; color:#64748b; margin-top:-10px; margin-bottom:20px;">
+                    Data calculated for your specific coordinates via Open-Meteo Astronomy API.
+                </div>
+            </div>
+
+            <h2>1. Latitude: The North Star (Polaris)</h2>
+            <p>Finding your Latitude (how far North or South you are) is surprisingly simple if you are in the Northern Hemisphere. You only need one star: <strong>Polaris</strong>.</p>
+            <p>Polaris sits almost exactly above the Earth's rotational axis. Because of this unique position, it never moves. All other stars rotate around it. The angle of Polaris above the horizon is equal to your Latitude.</p>
+            
+            <div class="diagram-box">
+                THE POLARIS RULE:<br>
+                --------------------------------<br>
+                1. Find the Big Dipper.<br>
+                2. Use the two outer stars of the "ladle" as pointers.<br>
+                3. They point directly to Polaris (the end of the Little Dipper handle).<br>
+                4. Measure the angle from the horizon to Polaris.<br>
+                <br>
+                IF ANGLE = 30° -> Your Latitude is 30°N.<br>
+                IF ANGLE = 90° (Overhead) -> You are at the North Pole.
+            </div>
+            
+            <h3>How to Measure Angles with Your Hand</h3>
+            <p>If you don't have a sextant, you have your hands. Extend your arm fully in front of you:</p>
+            <ul>
+                <li><strong>Pinky Finger width:</strong> Approx 1°</li>
+                <li><strong>Three Fingers (Index to Ring):</strong> Approx 5°</li>
+                <li><strong>Fist (Knuckles):</strong> Approx 10°</li>
+                <li><strong>Pinky to Thumb (Shaka sign):</strong> Approx 25°</li>
+            </ul>
+
+            <h2>2. Longitude: The Problem of Time</h2>
+            <p>Latitude is easy; Longitude is hard. Finding how far East or West you are requires knowing the exact time. This is why reliable chronometers (clocks) were the most valuable item on 18th-century ships.</p>
+            <p>The Earth rotates 360 degrees in 24 hours. That means it rotates <strong>15 degrees per hour</strong>.</p>
+            <p><strong>The Calculation:</strong></p>
+            <ol>
+                <li>Determine <strong>Solar Noon</strong> (the moment the sun is highest in the sky) at your current location.</li>
+                <li>Compare this to the time at <strong>Greenwich Mean Time (GMT)</strong>.</li>
+                <li>If your Solar Noon happens 1 hour <em>after</em> GMT noon, you are 15 degrees West.</li>
+            </ol>
+
+            <h2>3. Finding True North (The Shadow Stick Method)</h2>
+            <p>If your digital compass fails, you can find True North using the sun and a stick. This is more accurate than a magnetic compass because it is not affected by local iron deposits.</p>
+            <div class="diagram-box">
+                PROTOCOL:<br>
+                1. Place a straight stick (1 meter tall) in the ground.<br>
+                2. Mark the tip of the shadow with a stone (Mark A).<br>
+                3. Wait 15-20 minutes. The shadow will move.<br>
+                4. Mark the new tip of the shadow (Mark B).<br>
+                5. Draw a line from Mark A to Mark B.<br>
+                <br>
+                RESULT:<br>
+                - The line A-B runs West to East.<br>
+                - A perpendicular line drawn from the stick gives you North-South.
+            </div>
+
+            <h2>4. The Southern Hemisphere</h2>
+            <p>South of the equator, you cannot see Polaris. Instead, you must use the <strong>Southern Cross (Crux)</strong>.</p>
+            <p>The Southern Cross is not directly on the celestial pole. To find South:</p>
+            <ul>
+                <li>Draw an imaginary line from the top star to the bottom star of the cross.</li>
+                <li>Extend that line 4.5 times its length.</li>
+                <li>That imaginary point is Celestial South. Drop a line to the horizon to find South.</li>
+            </ul>
+
+            <h2>5. The Moon and Tides</h2>
+            <p>For coastal survival, the celestial body that matters most is the Moon. The Moon's gravity pulls the ocean, creating tides.</p>
+            <p><strong>General Rule of Thumb:</strong></p>
+            <ul>
+                <li><strong>New Moon & Full Moon:</strong> "Spring Tides." The sun and moon align, creating the highest highs and the lowest lows. Be careful exploring sea caves or traversing tidal flats during these phases.</li>
+                <li><strong>Quarter Moons:</strong> "Neap Tides." The sun and moon cancel each other out. Tides are moderate.</li>
+            </ul>
+            <p>Knowing the moon phase (displayed in the dashboard above) helps you predict water levels if you are stranded on a coastline.</p>
+
+            <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 14px; color: #94a3b8;">
+                <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
+                    <div style="width: 40px; height: 40px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">DO</div>
+                    <div>
+                        <div style="color: white; font-weight: 700;">Author: Don Odibat</div>
+                        <div style="font-size: 12px;">Chief Systems Architect • <a href="author-don.html" style="color:#38bdf8;">View Profile</a></div>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <strong>📅 Last Updated:</strong><br>
+                        February 16, 2026
+                    </div>
+                    <div>
+                        <strong>📚 References:</strong><br>
+                        <ul style="padding-left: 15px; margin: 5px 0; list-style-type: disc;">
+                            <li>US Naval Observatory</li>
+                            <li>The American Practical Navigator (Bowditch)</li>
+                            <li>Open-Meteo Astronomy API</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; font-size: 12px; font-style: italic;">
+                    <strong>Disclaimer:</strong> Celestial navigation is a skill that requires practice. Do not rely on unpracticed techniques in life-threatening situations. Always carry a modern GPS backup.
+                </div>
+            </div>
+        </article>
+
+        <footer>
+            <div style="margin-bottom: 12px;">
+                <a href="privacy.html">Privacy</a> • 
+                <a href="terms.html">Terms</a> • 
+                <a href="disclaimer.html">Disclaimer</a> • 
+                <a href="editorial-policy.html">Editorial Policy</a>
+            </div>
+            © 2026 Don System Holdings.
+        </footer>
+    </div>
+
+    <script>
+        function initAstro() {
+            const dash = document.getElementById('sky-dashboard');
+            
+            if (!navigator.geolocation) { 
+                dash.innerHTML = '<div style="color:red">Geolocation not supported.</div>'; 
+                return; 
+            }
+
+            navigator.geolocation.getCurrentPosition(async (pos) => {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                
+                try {
+                    // Fetch Data from Open-Meteo Astronomy Endpoint
+                    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=sunrise,sunset,daylight_duration,moon_phase&timezone=auto&forecast_days=1`;
+                    const res = await fetch(url);
+                    const data = await res.json();
+                    const day = data.daily;
+
+                    // Helper to format time
+                    const fmt = (isoStr) => {
+                        const date = new Date(isoStr);
+                        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    };
+
+                    // Moon Phase Logic (0-1 scale)
+                    const mp = day.moon_phase[0];
+                    let moonText = "Waxing";
+                    let moonIcon = "🌓";
+                    if(mp === 0 || mp === 1) { moonText = "New Moon"; moonIcon = "🌑"; }
+                    else if(mp === 0.5) { moonText = "Full Moon"; moonIcon = "🌕"; }
+                    else if(mp < 0.5) { moonText = "Waxing"; moonIcon = "🌓"; }
+                    else { moonText = "Waning"; moonIcon = "🌗"; }
+
+                    // Daylight calc
+                    const hours = Math.floor(day.daylight_duration[0] / 3600);
+                    const mins = Math.floor((day.daylight_duration[0] % 3600) / 60);
+
+                    dash.innerHTML = `
+                        <div class="sky-item">
+                            <div class="sky-label">🌅 Sunrise</div>
+                            <div class="sky-val" style="color:#fbbf24">${fmt(day.sunrise[0])}</div>
+                        </div>
+                        <div class="sky-item">
+                            <div class="sky-label">🌇 Sunset</div>
+                            <div class="sky-val" style="color:#f87171">${fmt(day.sunset[0])}</div>
+                        </div>
+                        <div class="sky-item">
+                            <div class="sky-label">☀️ Day Length</div>
+                            <div class="sky-val">${hours}h ${mins}m</div>
+                        </div>
+                        <div class="sky-item">
+                            <div class="sky-label">${moonIcon} Moon Phase</div>
+                            <div class="sky-val" style="font-size:16px; margin-top:4px;">${moonText}</div>
+                        </div>
+                    `;
+
+                } catch (e) {
+                    console.error(e);
+                    dash.innerHTML = '<div style="color:white; font-size:12px;">Unable to load sky data. Please check connection.</div>';
+                }
+
+            }, (err) => {
+                dash.innerHTML = '<div style="color:white; font-size:12px;">Location access required for local sky data.</div>';
+            });
+        }
+
+        // Run on load
+        initAstro();
+    </script>
+</body>
+</html>
