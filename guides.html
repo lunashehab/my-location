@@ -1,10 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+            location.replace(`https:${location.href.substring(location.protocol.length)}`);
+        }
+        if (window.location.pathname.endsWith('.html')) {
+            var cleanPath = window.location.pathname.replace('.html', '');
+            window.history.replaceState(null, '', cleanPath);
+        }
+    </script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied',
+            'wait_for_update': 500
+        });
+    </script>
+
     <meta charset="UTF-8" />
     <title>Geolocation Knowledge Hub | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
     <link rel="canonical" href="https://tellmylocation.com/guides.html" />
+    
     <meta name="author" content="Don Odibat">
     <meta name="publisher" content="Don System Holdings">
     <meta name="description" content="Expert technical guides on GPS formats, digital privacy, and location safety protocols.">
@@ -36,6 +60,8 @@
         .read-more { font-size: 13px; font-weight: 600; color: white; text-decoration: none; display: flex; align-items: center; gap: 5px; }
         
         footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        footer a { color: var(--text-soft); text-decoration: none; margin: 0 5px; transition: color 0.2s; }
+        footer a:hover { color: white; }
     </style>
 </head>
 <body>
@@ -56,6 +82,13 @@
 
         <span class="section-label">Featured Education (Deep Dives)</span>
         <div class="grid">
+            <div class="article-card" onclick="window.location.href='guide-celestial.html'" style="border-color: #8b5cf6;">
+                <span class="tag" style="color:#a78bfa; background:rgba(139,92,246,0.1);">Astronomy</span>
+                <div class="title">Celestial Navigation & Sky Data</div>
+                <div class="excerpt">How to find True North using the sun, stars, and moon phases. Includes live sky dashboard.</div>
+                <a href="guide-celestial.html" class="read-more">View Live Tool →</a>
+            </div>
+
             <div class="article-card" onclick="window.location.href='guide-gps-explained.html'" style="border-color: var(--accent);">
                 <span class="tag">Physics & History</span>
                 <div class="title">What is GPS? (The Deep Dive)</div>
@@ -119,6 +152,12 @@
         </div>
 
         <footer>
+            <div style="margin-bottom: 12px;">
+                <a href="privacy.html">Privacy</a> • 
+                <a href="terms.html">Terms</a> • 
+                <a href="disclaimer.html">Disclaimer</a> • 
+                <a href="editorial-policy.html">Editorial Policy</a>
+            </div>
             © 2026 Don System Holdings. Tupelo, MS 38801. All Rights Reserved.
         </footer>
     </div>
