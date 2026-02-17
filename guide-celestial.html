@@ -214,47 +214,59 @@
                 return; 
             }
 
+            // Local Moon Phase Calculator (Replaces broken API param)
+            function getMoonPhase() {
+                const now = new Date();
+                const synodic = 29.53058867; // Lunar cycle length
+                const knownNewMoon = new Date('2000-01-06T18:14:00Z'); // Reference date
+                const days = (now - knownNewMoon) / 86400000;
+                const cycle = days / synodic;
+                const phase = cycle - Math.floor(cycle); // 0.0 to 1.0
+                
+                // Return Object
+                if(phase < 0.03 || phase > 0.97) return { t: "New Moon", i: "🌑" };
+                if(phase < 0.22) return { t: "Waxing Crescent", i: "🌒" };
+                if(phase < 0.28) return { t: "First Quarter", i: "🌓" };
+                if(phase < 0.47) return { t: "Waxing Gibbous", i: "🌔" };
+                if(phase < 0.53) return { t: "Full Moon", i: "🌕" };
+                if(phase < 0.72) return { t: "Waning Gibbous", i: "🌖" };
+                if(phase < 0.78) return { t: "Last Quarter", i: "🌗" };
+                return { t: "Waning Crescent", i: "🌘" };
+            }
+
             navigator.geolocation.getCurrentPosition(async (pos) => {
                 const lat = pos.coords.latitude;
                 const lng = pos.coords.longitude;
                 
                 try {
-                    // Fetch Data from Open-Meteo Astronomy Endpoint
-                    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=sunrise,sunset,daylight_duration,moon_phase&timezone=auto&forecast_days=1`;
+                    // FIXED: Removed 'moon_phase' from API call to prevent 400 Error
+                    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=sunrise,sunset,daylight_duration&timezone=auto&forecast_days=1`;
                     
-                    console.log("Fetching Astro Data from:", url); // Debug Log
+                    console.log("Fetching:", url); // Debug
                     
                     const res = await fetch(url);
                     
-                    // CHECK 1: Did the server respond okay?
                     if (!res.ok) {
-                        throw new Error(`API Error: ${res.status} ${res.statusText}`);
+                        throw new Error(`API Error: ${res.status} (Bad Request)`);
                     }
 
                     const data = await res.json();
                     
-                    // CHECK 2: Do we have the data we need?
                     if (!data.daily || !data.daily.sunrise) {
-                        throw new Error("Incomplete data received from weather provider.");
+                        throw new Error("Incomplete data received.");
                     }
 
                     const day = data.daily;
 
-                    // Helper to format time safely
+                    // Helper to format time
                     const fmt = (isoStr) => {
                         if (!isoStr) return "--:--";
                         const date = new Date(isoStr);
                         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                     };
 
-                    // Moon Phase Logic (0-1 scale)
-                    const mp = day.moon_phase ? day.moon_phase[0] : 0.5;
-                    let moonText = "Waxing";
-                    let moonIcon = "🌓";
-                    if(mp === 0 || mp === 1) { moonText = "New Moon"; moonIcon = "🌑"; }
-                    else if(mp === 0.5) { moonText = "Full Moon"; moonIcon = "🌕"; }
-                    else if(mp < 0.5) { moonText = "Waxing"; moonIcon = "🌓"; }
-                    else { moonText = "Waning"; moonIcon = "🌗"; }
+                    // Calculate Local Moon Data
+                    const moon = getMoonPhase();
 
                     // Daylight calc (Safe Math)
                     const duration = day.daylight_duration ? day.daylight_duration[0] : 0;
@@ -276,8 +288,8 @@
                             <div class="sky-val">${hours}h ${mins}m</div>
                         </div>
                         <div class="sky-item">
-                            <div class="sky-label">${moonIcon} Moon Phase</div>
-                            <div class="sky-val" style="font-size:16px; margin-top:4px;">${moonText}</div>
+                            <div class="sky-label">${moon.i} Moon Phase</div>
+                            <div class="sky-val" style="font-size:16px; margin-top:4px;">${moon.t}</div>
                         </div>
                     `;
 
@@ -296,11 +308,9 @@
                 }
 
             }, (err) => {
-                console.error("Geo Error:", err);
                 let msg = "Location Access Denied";
                 if(err.code === 2) msg = "Position Unavailable (Check GPS)";
                 if(err.code === 3) msg = "Location Request Timed Out";
-                
                 dash.innerHTML = `<div style="color:#f87171; text-align:center;">${msg}</div>`;
             }, { timeout: 10000, enableHighAccuracy: false });
         }
