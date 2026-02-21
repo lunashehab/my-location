@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        // 1. Enforce HTTPS (Skip if localhost)
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+            location.replace(`https:${location.href.substring(location.protocol.length)}`);
+        }
+        // 2. Remove .html extension from URL bar
+        if (window.location.pathname.endsWith('.html')) {
+            var cleanPath = window.location.pathname.replace('.html', '');
+            window.history.replaceState(null, '', cleanPath);
+        }
+    </script>
     <meta charset="UTF-8" />
     <title>GNSS Guide: GPS vs GLONASS vs Galileo | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <meta name="description" content="Your phone uses more than just GPS. Learn about GLONASS, Galileo, and BeiDou satellite constellations and how they improve location accuracy.">
     
-    <link rel="canonical" href="https://tellmylocation.com/guide-satellite-types.html" />
+    <link rel="canonical" href="https://tellmylocation.com/guide-satellite-types" />
     <meta name="author" content="Don Odibat">
     <meta name="publisher" content="Don System Holdings">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -26,7 +37,7 @@
 </head>
 <body>
     <div class="shell">
-        <nav><a href="/">Home</a><a href="guides.html">Guides</a><a href="contact.html">Contact</a></nav>
+        <nav><a href="/">Home</a><a href="/guides">Guides</a><a href="/contact">Contact</a></nav>
 
         <article class="article-card">
             <h1>Beyond GPS: Understanding Your Phone's Satellite Connection</h1>
@@ -69,7 +80,7 @@
             <p>New phones listen to <strong>L5</strong> (a newer, stronger frequency) in addition to L1. The L5 signal passes through clouds and trees better and is easier for the phone to distinguish from a reflection. This allows TellMyLocation.com to achieve 3-meter accuracy even in "Urban Canyons" like New York City or Tokyo.</p>
 
             <div style="margin-top: 30px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px;">
-                <strong>Author:</strong> <a href="author-don.html" style="color:#38bdf8;">Don Odibat</a>
+                <strong>Author:</strong> <a href="/author-don" style="color:#38bdf8;">Don Odibat</a>
             </div>
         </article>
 
@@ -79,17 +90,17 @@
 </div>
        <footer>
     <div style="margin-bottom: 15px; font-size: 11px;">
-        <a href="guide-safety.html" style="color:var(--neon-blue);">Emergency Guide</a> • 
-        <a href="guide-accuracy.html" style="color:var(--neon-blue);">GPS Accuracy Fix</a> •
+        <a href="/guide-safety" style="color:var(--neon-blue);">Emergency Guide</a> • 
+        <a href="/guide-accuracy" style="color:var(--neon-blue);">GPS Accuracy Fix</a> •
         <a href="https://waterinmyspeaker.com" target="_blank" style="color:#94a3b8;">Speaker Cleaner</a>
     </div>
     
     <div style="margin-bottom: 12px; color:var(--text-soft);">
-        <a href="privacy.html">Privacy</a> • 
-        <a href="terms.html">Terms</a> • 
-        <a href="disclaimer.html">Disclaimer</a> • 
-        <a href="cookie-policy.html">Cookie Policy</a> • 
-        <a href="contact.html">Contact</a>
+        <a href="/privacy">Privacy</a> • 
+        <a href="/terms">Terms</a> • 
+        <a href="/disclaimer">Disclaimer</a> • 
+        <a href="/cookie-policy">Cookie Policy</a> • 
+        <a href="/contact">Contact</a>
     </div>
 
     <div style="margin-bottom: 15px; font-size: 10px; opacity: 0.7;">
@@ -100,7 +111,7 @@
         <div style="width: 40px; height: 40px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">DO</div>
         <div>
             <div style="color: white; font-weight: 700;">Author: Don Odibat</div>
-            <div style="font-size: 12px;">Chief Systems Architect • <a href="author-don.html" style="color:#38bdf8;">View Profile</a></div>
+            <div style="font-size: 12px;">Chief Systems Architect • <a href="/author-don" style="color:#38bdf8;">View Profile</a></div>
         </div>
     </div>
     
