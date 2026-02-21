@@ -2,21 +2,22 @@
 <html lang="en">
 <head>
     <script>
+        // 1. Enforce HTTPS (Skip if localhost)
         if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
             location.replace(`https:${location.href.substring(location.protocol.length)}`);
         }
+        // 2. Remove .html extension from URL bar
         if (window.location.pathname.endsWith('.html')) {
             var cleanPath = window.location.pathname.replace('.html', '');
             window.history.replaceState(null, '', cleanPath);
         }
     </script>
-
     <meta charset="UTF-8" />
     <title>Safety Disclaimer & Liability Limitations | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Important safety warnings regarding the use of digital GPS tools in emergency situations.">
     
-    <link rel="canonical" href="https://tellmylocation.com/disclaimer.html" />
+    <link rel="canonical" href="https://tellmylocation.com/disclaimer" />
     
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     
@@ -35,15 +36,17 @@
         .alert-box { border-left: 4px solid #ef4444; background: rgba(239, 68, 68, 0.1); padding: 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
         footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px; }
         footer a { color: var(--text-soft); text-decoration: none; margin: 0 5px; }
+        footer a:hover { color: white; }
     </style>
 </head>
 <body>
     <div class="shell">
         <nav>
             <a href="/">Home</a>
-            <a href="about.html">About</a>
-            <a href="privacy.html">Privacy</a>
-            <a href="contact.html">Contact</a>
+            <a href="/guides">Guides</a>
+            <a href="/about">About</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/contact">Contact</a>
         </nav>
 
         <article class="card">
@@ -88,14 +91,27 @@
         </article>
 
         <footer>
-            <div style="margin-bottom: 12px;">
-                <a href="privacy.html">Privacy</a> • 
-                <a href="terms.html">Terms</a> • 
-                <a href="disclaimer.html">Disclaimer</a> • 
-                <a href="cookie-policy.html">Cookie Policy</a>
-            </div>
-            © 2026 Don System Holdings.
-        </footer>
+    <div style="margin-bottom: 15px; font-size: 11px;">
+        <a href="/guide-safety" style="color:var(--neon-blue);">Emergency Guide</a> • 
+        <a href="/guide-accuracy" style="color:var(--neon-blue);">GPS Accuracy Fix</a> •
+        <a href="https://waterinmyspeaker.com" target="_blank" style="color:#94a3b8;">Speaker Cleaner</a>
+    </div>
+    
+    <div style="margin-bottom: 12px; color:var(--text-soft);">
+        <a href="/privacy">Privacy</a> • 
+        <a href="/terms">Terms</a> • 
+        <a href="/disclaimer">Disclaimer</a> • 
+        <a href="/cookie-policy">Cookie Policy</a> • 
+        <a href="/editorial-policy">Editorial Policy</a> • 
+        <a href="/contact">Contact</a>
+    </div>
+
+    <div style="margin-bottom: 15px; font-size: 10px; opacity: 0.7;">
+        <a href="#" onclick="showCookieBanner(); return false;">Manage Consent</a>
+    </div>
+
+    © 2026 Don System Holdings. Tupelo, MS 38801.
+</footer>
     </div>
 </body>
 </html>
