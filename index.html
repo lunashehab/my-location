@@ -114,13 +114,12 @@
         .sos-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(30, 0, 0, 0.95); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; } .sos-msg { font-size: 24px; font-weight: 900; color: white; margin-bottom: 30px; text-align: center; padding: 20px; }
         .driver-hud { display: flex; justify-content: space-around; margin: 15px 0; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 12px; } .hud-item { text-align: center; } .hud-val { font-size: 24px; font-weight: 800; color: white; display: block; } .hud-lbl { font-size: 10px; text-transform: uppercase; color: var(--text-soft); }
         .pin-list { margin-top: 10px; max-height: 150px; overflow-y: auto; } .pin-item { padding: 8px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; font-size: 12px; } .offline-badge { display: inline-block; padding: 4px 8px; background: #64748b; color: white; font-size: 10px; border-radius: 4px; margin-left: 10px; vertical-align: middle; display: none; }
-        .ad-container { border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); display: flex; align-items: center; justify-content: center; flex-direction: column; }
         
         /* SAFE AD CONTAINER (Mobile Ad Density Fix) */
         .ad-container { 
-            margin: 35px 0;           /* Increased vertical buffer */
-            padding: 15px 0;          /* Internal breathing room */
-            background: rgba(0, 0, 0, 0.2); /* Visual fencing */
+            margin: 40px 0; /* Ensures distance from click targets */
+            padding: 15px 0; 
+            background: rgba(0, 0, 0, 0.2); 
             border-radius: 16px; 
             border: 1px dashed rgba(255, 255, 255, 0.1); 
             display: flex; 
@@ -128,6 +127,7 @@
             justify-content: center; 
             flex-direction: column; 
             overflow: hidden;
+            width: 100%;
         }
         .ad-label {
             font-size: 9px;
@@ -136,6 +136,12 @@
             text-transform: uppercase;
             margin-bottom: 8px;
             font-weight: 700;
+        }
+        /* Mobile Specific Ad Rules */
+        @media(max-width: 600px) {
+            .ad-top-slot {
+                max-height: 100px; /* Forces banner ad above the fold on mobile */
+            }
         }
 
         /* FEATURE GRID CSS */
@@ -245,6 +251,20 @@
                 <div id="wx-alert-msg" style="color:#cbd5e1; font-size:13px;">Clear — No warnings active.</div>
                 <div style="font-size:10px; color:var(--text-soft); margin-top:5px;">Always find shelter if conditions worsen.</div>
             </div>
+
+            <div class="ad-container ad-top-slot">
+                 <span class="ad-label">Advertisement</span>
+                 <ins class="adsbygoogle"
+                      style="display:block"
+                      data-ad-client="ca-pub-5129097020907805"
+                      data-ad-slot="1234567890"  
+                      data-ad-format="horizontal"
+                      data-full-width-responsive="true"></ins>
+                 <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                 </script>
+            </div>
+
             <div class="premium-dashboard">
                 <div class="p-card"><span class="p-icon">🛰️</span><span class="p-label">Altitude</span><span class="p-value" id="alt-p">—</span></div>
                 <div class="p-card"><span class="p-icon">🧭</span><span class="p-label">Bearing</span><span class="p-value" id="head-p">—</span></div>
@@ -274,20 +294,6 @@
                     <div class="value" id="ip-val" style="font-size:14px">—</div>
                     <div class="sub-value" id="isp-val">ISP: —</div>
                 </div>
-            </div>
-
-            <div class="ad-container" style="min-height: 120px;">
-                 <span class="ad-label">Advertisement</span>
-                 
-                 <ins class="adsbygoogle"
-                      style="display:block"
-                      data-ad-client="ca-pub-5129097020907805"
-                      data-ad-slot="1234567890"  
-                      data-ad-format="auto"
-                      data-full-width-responsive="true"></ins>
-                 <script>
-                     (adsbygoogle = window.adsbygoogle || []).push({});
-                 </script>
             </div>
 
             <div class="nearby-header">
@@ -380,11 +386,10 @@
                 </div>
             </div>
 
-            <div class="ad-container" style="min-height: 280px;">
+            <div class="ad-container">
                  <span class="ad-label">Sponsored</span>
-                 
                  <ins class="adsbygoogle"
-                      style="display:block"
+                      style="display:block; min-height: 250px;"
                       data-ad-client="ca-pub-5129097020907805"
                       data-ad-slot="0987654321"
                       data-ad-format="auto"
