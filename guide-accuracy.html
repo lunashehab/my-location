@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        // 1. Enforce HTTPS (Skip if localhost)
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+            location.replace(`https:${location.href.substring(location.protocol.length)}`);
+        }
+        // 2. Remove .html extension from URL bar
+        if (window.location.pathname.endsWith('.html')) {
+            var cleanPath = window.location.pathname.replace('.html', '');
+            window.history.replaceState(null, '', cleanPath);
+        }
+    </script>
     <meta charset="UTF-8" />
     <title>Troubleshooting GPS Accuracy | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Why is my location wrong? Understanding GPS drift, IP geolocation errors, and how to improve accuracy.">
     
-    <link rel="canonical" href="https://tellmylocation.com/guide-accuracy.html" />
+    <link rel="canonical" href="https://tellmylocation.com/guide-accuracy" />
     <meta name="author" content="Don Odibat">
     <meta name="publisher" content="Don System Holdings">
     <meta name="date" content="2026-02-15">
@@ -62,9 +73,9 @@
     <div class="shell">
         <nav>
             <a href="/">Home</a>
-            <a href="guides.html">Guides</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
+            <a href="/guides">Guides</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
         </nav>
 
         <article class="article-card">
@@ -113,62 +124,63 @@
                 <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #38bdf8, #2563eb); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 20px; flex-shrink: 0;">DO</div>
                 <div>
                     <div style="font-size: 11px; color: #38bdf8; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 5px;">About the Author</div>
-                    <a href="author-don.html" style="font-weight: 700; color: white; text-decoration: underline;">Don Odibat</a>
+                    <a href="/author-don" style="font-weight: 700; color: white; text-decoration: underline;">Don Odibat</a>
                     <div style="font-size: 13px; color: #cbd5e1; line-height: 1.5; margin-top: 5px;">Founder & Chief Architect of TellMyLocation. Expert in geospatial privacy, serverless web architecture, and emergency digital protocols.</div>
                 </div>
             </div>
 
         </article>
 
+        <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 14px; color: #94a3b8;">
+            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
+                <div style="width: 40px; height: 40px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">DO</div>
+                <div>
+                    <div style="color: white; font-weight: 700;">Author: Don Odibat</div>
+                    <div style="font-size: 12px;">Chief Systems Architect • <a href="/author-don" style="color:#38bdf8;">View Profile</a></div>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <strong>📅 Last Updated:</strong><br>
+                    February 16, 2026
+                </div>
+                <div>
+                    <strong>📚 Technical References:</strong><br>
+                    <ul style="padding-left: 15px; margin: 5px 0;">
+                        <li>W3C Geolocation API Spec</li>
+                        <li>US Space Force (GPS.gov)</li>
+                        <li>OpenStreetMap Wiki</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; font-size: 12px; font-style: italic;">
+                <strong>Disclaimer:</strong> This guide is for educational purposes. In a life-threatening emergency, always dial 911 or your local emergency services immediately.
+            </div>
+        </div>
+
         <footer>
-    <div style="margin-bottom: 15px; font-size: 11px;">
-        <a href="guide-safety.html" style="color:var(--neon-blue);">Emergency Guide</a> • 
-        <a href="guide-accuracy.html" style="color:var(--neon-blue);">GPS Accuracy Fix</a> •
-        <a href="https://waterinmyspeaker.com" target="_blank" style="color:#94a3b8;">Speaker Cleaner</a>
-    </div>
-    
-    <div style="margin-bottom: 12px; color:var(--text-soft);">
-        <a href="privacy.html">Privacy</a> • 
-        <a href="terms.html">Terms</a> • 
-        <a href="disclaimer.html">Disclaimer</a> • 
-        <a href="cookie-policy.html">Cookie Policy</a> • 
-        <a href="contact.html">Contact</a>
-    </div>
+            <div style="margin-bottom: 15px; font-size: 11px;">
+                <a href="/guide-safety" style="color:var(--neon-blue);">Emergency Guide</a> • 
+                <a href="/guide-accuracy" style="color:var(--neon-blue);">GPS Accuracy Fix</a> •
+                <a href="https://waterinmyspeaker.com" target="_blank" style="color:#94a3b8;">Speaker Cleaner</a>
+            </div>
+            
+            <div style="margin-bottom: 12px; color:var(--text-soft);">
+                <a href="/privacy">Privacy</a> • 
+                <a href="/terms">Terms</a> • 
+                <a href="/disclaimer">Disclaimer</a> • 
+                <a href="/cookie-policy">Cookie Policy</a> • 
+                <a href="/contact">Contact</a>
+            </div>
 
-    <div style="margin-bottom: 15px; font-size: 10px; opacity: 0.7;">
-        <a href="#" onclick="showCookieBanner(); return false;">Manage Consent</a>
-    </div>
+            <div style="margin-bottom: 15px; font-size: 10px; opacity: 0.7;">
+                <a href="#" onclick="showCookieBanner(); return false;">Manage Consent</a>
+            </div>
 
-    © 2026 Don System Holdings. Tupelo, MS 38801.
-</footer>
+            © 2026 Don System Holdings. Tupelo, MS 38801.
+        </footer>
     </div>
-    <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 14px; color: #94a3b8;">
-    <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
-        <div style="width: 40px; height: 40px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">DO</div>
-        <div>
-            <div style="color: white; font-weight: 700;">Author: Don Odibat</div>
-            <div style="font-size: 12px;">Chief Systems Architect • <a href="author-don.html" style="color:#38bdf8;">View Profile</a></div>
-        </div>
-    </div>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <div>
-            <strong>📅 Last Updated:</strong><br>
-            February 16, 2026
-        </div>
-        <div>
-            <strong>📚 Technical References:</strong><br>
-            <ul style="padding-left: 15px; margin: 5px 0;">
-                <li>W3C Geolocation API Spec</li>
-                <li>US Space Force (GPS.gov)</li>
-                <li>OpenStreetMap Wiki</li>
-            </ul>
-        </div>
-    </div>
-    
-    <div style="margin-top: 20px; font-size: 12px; font-style: italic;">
-        <strong>Disclaimer:</strong> This guide is for educational purposes. In a life-threatening emergency, always dial 911 or your local emergency services immediately.
-    </div>
-</div>
 </body>
 </html>
