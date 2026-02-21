@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        // 1. Enforce HTTPS (Skip if localhost)
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+            location.replace(`https:${location.href.substring(location.protocol.length)}`);
+        }
+        // 2. Remove .html extension from URL bar
+        if (window.location.pathname.endsWith('.html')) {
+            var cleanPath = window.location.pathname.replace('.html', '');
+            window.history.replaceState(null, '', cleanPath);
+        }
+    </script>
     <meta charset="UTF-8" />
     <title>Emergency GPS Workflows: Protocols for Low-Signal Environments | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="canonical" href="https://tellmylocation.com/guide-emergency-workflows.html" />
+    <link rel="canonical" href="https://tellmylocation.com/guide-emergency-workflows" />
     <meta name="description" content="A technical guide to transmitting GPS coordinates during emergencies when data signals are weak or failing. SMS vs. Data protocols.">
     <meta name="author" content="Don Odibat">
     <meta name="publisher" content="Don System Holdings">
@@ -16,7 +27,7 @@
       "@context": "https://schema.org",
       "@type": "Article",
       "headline": "Emergency GPS Workflows: Protocols for Low-Signal Environments",
-      "author": { "@type": "Person", "name": "Don Odibat", "url": "https://tellmylocation.com/author-don.html" },
+      "author": { "@type": "Person", "name": "Don Odibat", "url": "https://tellmylocation.com/author-don" },
       "publisher": { "@type": "Organization", "name": "Don System Holdings" },
       "datePublished": "2026-02-15",
       "citation": ["FCC Wireless Emergency Protocols", "NENA NG9-1-1 Standards"]
@@ -43,7 +54,7 @@
 </head>
 <body>
     <div class="shell">
-        <nav><a href="/">Home</a><a href="guides.html">Guides</a><a href="contact.html">Contact</a></nav>
+        <nav><a href="/">Home</a><a href="/guides">Guides</a><a href="/contact">Contact</a></nav>
 
         <article class="article-card">
             <h1>Emergency GPS Workflows: Protocols for Low-Signal Environments</h1>
@@ -85,23 +96,23 @@
             </div>
 
             <div style="margin-top: 30px;">
-                <strong>Technical Review by:</strong> <a href="author-don.html" style="color:#38bdf8;">Don Odibat</a> (Chief Architect)
+                <strong>Technical Review by:</strong> <a href="/author-don" style="color:#38bdf8;">Don Odibat</a> (Chief Architect)
             </div>
         </article>
 
        <footer>
     <div style="margin-bottom: 15px; font-size: 11px;">
-        <a href="guide-safety.html" style="color:var(--neon-blue);">Emergency Guide</a> • 
-        <a href="guide-accuracy.html" style="color:var(--neon-blue);">GPS Accuracy Fix</a> •
+        <a href="/guide-safety" style="color:var(--neon-blue);">Emergency Guide</a> • 
+        <a href="/guide-accuracy" style="color:var(--neon-blue);">GPS Accuracy Fix</a> •
         <a href="https://waterinmyspeaker.com" target="_blank" style="color:#94a3b8;">Speaker Cleaner</a>
     </div>
     
     <div style="margin-bottom: 12px; color:var(--text-soft);">
-        <a href="privacy.html">Privacy</a> • 
-        <a href="terms.html">Terms</a> • 
-        <a href="disclaimer.html">Disclaimer</a> • 
-        <a href="cookie-policy.html">Cookie Policy</a> • 
-        <a href="contact.html">Contact</a>
+        <a href="/privacy">Privacy</a> • 
+        <a href="/terms">Terms</a> • 
+        <a href="/disclaimer">Disclaimer</a> • 
+        <a href="/cookie-policy">Cookie Policy</a> • 
+        <a href="/contact">Contact</a>
     </div>
 
     <div style="margin-bottom: 15px; font-size: 10px; opacity: 0.7;">
@@ -116,7 +127,7 @@
         <div style="width: 40px; height: 40px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">DO</div>
         <div>
             <div style="color: white; font-weight: 700;">Author: Don Odibat</div>
-            <div style="font-size: 12px;">Chief Systems Architect • <a href="author-don.html" style="color:#38bdf8;">View Profile</a></div>
+            <div style="font-size: 12px;">Chief Systems Architect • <a href="/author-don" style="color:#38bdf8;">View Profile</a></div>
         </div>
     </div>
     
