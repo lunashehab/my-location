@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
     <script>
+        // 1. Enforce HTTPS (Skip if localhost)
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+            location.replace(`https:${location.href.substring(location.protocol.length)}`);
+        }
+        // 2. Remove .html extension from URL bar
         if (window.location.pathname.endsWith('.html')) {
             var cleanPath = window.location.pathname.replace('.html', '');
             window.history.replaceState(null, '', cleanPath);
@@ -11,7 +16,7 @@
     <title>Emergency GPS Protocol: How to Use Location Data to Save Lives | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="A comprehensive field guide on using GPS coordinates in emergencies. Protocols for Hiking, Urban, and Marine SOS situations.">
-    <link rel="canonical" href="https://tellmylocation.com/guide-safety.html" />
+    <link rel="canonical" href="https://tellmylocation.com/guide-safety" />
     <meta name="author" content="Don Odibat">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <style>
@@ -38,11 +43,11 @@
     <div class="shell">
         <nav>
             <a href="/">Home</a>
-            <a href="guides.html">Guides</a>
-            <a href="about.html">About</a>
-            <a href="privacy.html">Privacy</a>
-            <a href="terms.html">Terms</a>
-            <a href="contact.html">Contact</a>
+            <a href="/guides">Guides</a>
+            <a href="/about">About</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="/contact">Contact</a>
         </nav>
 
         <article class="article-card">
@@ -101,7 +106,7 @@
             </ol>
 
             <div style="margin-top: 30px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px;">
-                <strong>Technical Review:</strong> <a href="author-don.html" style="color:#38bdf8;">Don Odibat</a> (Chief Architect)<br>
+                <strong>Technical Review:</strong> <a href="/author-don" style="color:#38bdf8;">Don Odibat</a> (Chief Architect)<br>
                 <strong>Last Updated:</strong> February 2026
             </div>
         </article>
@@ -110,7 +115,7 @@
         <div style="width: 40px; height: 40px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">DO</div>
         <div>
             <div style="color: white; font-weight: 700;">Author: Don Odibat</div>
-            <div style="font-size: 12px;">Chief Systems Architect • <a href="author-don.html" style="color:#38bdf8;">View Profile</a></div>
+            <div style="font-size: 12px;">Chief Systems Architect • <a href="/author-don" style="color:#38bdf8;">View Profile</a></div>
         </div>
     </div>
     
