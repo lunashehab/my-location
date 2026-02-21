@@ -18,7 +18,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Learn how to find your GPS coordinates using the stars, sun, and moon. Includes live solar data and moon phase for your current location.">
     
-    <link rel="canonical" href="https://tellmylocation.com/guide-celestial.html" />
+    <link rel="canonical" href="https://tellmylocation.com/guide-celestial" />
     
     <meta name="author" content="Don Odibat">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -28,7 +28,7 @@
       "@context": "https://schema.org",
       "@type": "Article",
       "headline": "The Lost Art of Celestial Navigation",
-      "author": { "@type": "Person", "name": "Don Odibat" },
+      "author": { "@type": "Person", "name": "Don Odibat", "url": "https://tellmylocation.com/author-don" },
       "publisher": { "@type": "Organization", "name": "Don System Holdings" },
       "datePublished": "2026-02-17",
       "articleBody": "Before satellites, humanity looked up. This guide explains how to use the sky to find your location on Earth."
@@ -66,7 +66,7 @@
         
         /* FOOTER */
         footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px; }
-        footer a { color: var(--text-soft); text-decoration: none; margin: 0 5px; }
+        footer a { color: var(--text-soft); text-decoration: none; margin: 0 5px; transition: color 0.2s; }
         footer a:hover { color: white; }
     </style>
 </head>
@@ -74,9 +74,9 @@
     <div class="shell">
         <nav>
             <a href="/">Home</a>
-            <a href="guides.html">Guides</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
+            <a href="/guides">Guides</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
         </nav>
 
         <article class="card">
@@ -97,6 +97,8 @@
             <p>Finding your Latitude (how far North or South you are) is surprisingly simple if you are in the Northern Hemisphere. You only need one star: <strong>Polaris</strong>.</p>
             <p>Polaris sits almost exactly above the Earth's rotational axis. Because of this unique position, it never moves. All other stars rotate around it. The angle of Polaris above the horizon is equal to your Latitude.</p>
             
+            
+
             <div class="diagram-box">
                 THE POLARIS RULE:<br>
                 --------------------------------<br>
@@ -117,6 +119,8 @@
                 <li><strong>Fist (Knuckles):</strong> Approx 10°</li>
                 <li><strong>Pinky to Thumb (Shaka sign):</strong> Approx 25°</li>
             </ul>
+            
+            
 
             <h2>2. Longitude: The Problem of Time</h2>
             <p>Latitude is easy; Longitude is hard. Finding how far East or West you are requires knowing the exact time. This is why reliable chronometers (clocks) were the most valuable item on 18th-century ships.</p>
@@ -142,6 +146,8 @@
                 - The line A-B runs West to East.<br>
                 - A perpendicular line drawn from the stick gives you North-South.
             </div>
+            
+            
 
             <h2>4. The Southern Hemisphere</h2>
             <p>South of the equator, you cannot see Polaris. Instead, you must use the <strong>Southern Cross (Crux)</strong>.</p>
@@ -151,6 +157,8 @@
                 <li>Extend that line 4.5 times its length.</li>
                 <li>That imaginary point is Celestial South. Drop a line to the horizon to find South.</li>
             </ul>
+            
+            
 
             <h2>5. The Moon and Tides</h2>
             <p>For coastal survival, the celestial body that matters most is the Moon. The Moon's gravity pulls the ocean, creating tides.</p>
@@ -160,45 +168,58 @@
                 <li><strong>Quarter Moons:</strong> "Neap Tides." The sun and moon cancel each other out. Tides are moderate.</li>
             </ul>
             <p>Knowing the moon phase (displayed in the dashboard above) helps you predict water levels if you are stranded on a coastline.</p>
-
-            <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 14px; color: #94a3b8;">
-                <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
-                    <div style="width: 40px; height: 40px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">DO</div>
-                    <div>
-                        <div style="color: white; font-weight: 700;">Author: Don Odibat</div>
-                        <div style="font-size: 12px;">Chief Systems Architect • <a href="author-don.html" style="color:#38bdf8;">View Profile</a></div>
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div>
-                        <strong>📅 Last Updated:</strong><br>
-                        February 16, 2026
-                    </div>
-                    <div>
-                        <strong>📚 References:</strong><br>
-                        <ul style="padding-left: 15px; margin: 5px 0; list-style-type: disc;">
-                            <li>US Naval Observatory</li>
-                            <li>The American Practical Navigator (Bowditch)</li>
-                            <li>Open-Meteo Astronomy API</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 20px; font-size: 12px; font-style: italic;">
-                    <strong>Disclaimer:</strong> Celestial navigation is a skill that requires practice. Do not rely on unpracticed techniques in life-threatening situations. Always carry a modern GPS backup.
-                </div>
-            </div>
         </article>
 
-        <footer>
-            <div style="margin-bottom: 12px;">
-                <a href="privacy.html">Privacy</a> • 
-                <a href="terms.html">Terms</a> • 
-                <a href="disclaimer.html">Disclaimer</a> • 
-                <a href="editorial-policy.html">Editorial Policy</a>
+        <div style="margin-top: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 14px; color: #94a3b8;">
+            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px;">
+                <div style="width: 40px; height: 40px; background: #38bdf8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">DO</div>
+                <div>
+                    <div style="color: white; font-weight: 700;">Author: Don Odibat</div>
+                    <div style="font-size: 12px;">Chief Systems Architect • <a href="/author-don" style="color:#38bdf8;">View Profile</a></div>
+                </div>
             </div>
-            © 2026 Don System Holdings.
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <strong>📅 Last Updated:</strong><br>
+                    February 16, 2026
+                </div>
+                <div>
+                    <strong>📚 References:</strong><br>
+                    <ul style="padding-left: 15px; margin: 5px 0; list-style-type: disc;">
+                        <li>US Naval Observatory</li>
+                        <li>The American Practical Navigator (Bowditch)</li>
+                        <li>Open-Meteo Astronomy API</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; font-size: 12px; font-style: italic;">
+                <strong>Disclaimer:</strong> Celestial navigation is a skill that requires practice. Do not rely on unpracticed techniques in life-threatening situations. Always carry a modern GPS backup.
+            </div>
+        </div>
+
+        <footer>
+            <div style="margin-bottom: 15px; font-size: 11px;">
+                <a href="/guide-safety" style="color:var(--neon-blue);">Emergency Guide</a> • 
+                <a href="/guide-accuracy" style="color:var(--neon-blue);">GPS Accuracy Fix</a> •
+                <a href="https://waterinmyspeaker.com" target="_blank" style="color:#94a3b8;">Speaker Cleaner</a>
+            </div>
+            
+            <div style="margin-bottom: 12px; color:var(--text-soft);">
+                <a href="/privacy">Privacy</a> • 
+                <a href="/terms">Terms</a> • 
+                <a href="/disclaimer">Disclaimer</a> • 
+                <a href="/cookie-policy">Cookie Policy</a> • 
+                <a href="/editorial-policy">Editorial Policy</a> • 
+                <a href="/contact">Contact</a>
+            </div>
+
+            <div style="margin-bottom: 15px; font-size: 10px; opacity: 0.7;">
+                <a href="#" onclick="showCookieBanner(); return false;">Manage Consent</a>
+            </div>
+
+            © 2026 Don System Holdings. Tupelo, MS 38801.
         </footer>
     </div>
 
