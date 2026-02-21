@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <script>
-        // Enforce HTTPS
+        // 1. Enforce HTTPS (Skip if localhost)
         if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
             location.replace(`https:${location.href.substring(location.protocol.length)}`);
         }
-        // Hide .html extension
+        // 2. Remove .html extension from URL bar
         if (window.location.pathname.endsWith('.html')) {
             var cleanPath = window.location.pathname.replace('.html', '');
             window.history.replaceState(null, '', cleanPath);
@@ -18,7 +18,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Learn about the engineering behind TellMyLocation.com. Privacy-first architecture, zero-logging policy, and the Don System Holdings mission.">
     
-    <link rel="canonical" href="https://tellmylocation.com/about.html" />
+    <link rel="canonical" href="https://tellmylocation.com/about" />
     
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     
@@ -59,11 +59,11 @@
     <div class="shell">
         <nav>
             <a href="/">Home</a>
-            <a href="guides.html">Guides</a>
-            <a href="about.html" class="active">About</a>
-            <a href="privacy.html">Privacy</a>
-            <a href="terms.html">Terms</a>
-            <a href="contact.html">Contact</a>
+            <a href="/guides">Guides</a>
+            <a href="/about" class="active">About</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="/contact">Contact</a>
         </nav>
 
         <div class="card">
@@ -107,7 +107,7 @@
                 <div>
                     <h3 style="margin:0; font-size:18px; color:white;">Don Odibat</h3>
                     <div style="font-size: 12px; color: var(--accent); margin-bottom: 5px;">Founder & Chief Architect</div>
-                    <p style="font-size: 13px; margin: 0; color: #cbd5e1;">Lead strategist responsible for the platform's zero-knowledge privacy architecture and serverless infrastructure.</p>
+                    <p style="font-size: 13px; margin: 0; color: #cbd5e1;">Lead strategist responsible for the platform's zero-knowledge privacy architecture and serverless infrastructure. <a href="/author-don" style="color:var(--accent); text-decoration:underline;">View Profile</a>.</p>
                 </div>
             </div>
 
@@ -169,17 +169,18 @@
 
         <footer>
             <div style="margin-bottom: 15px; font-size: 11px;">
-                <a href="guide-safety.html" style="color:var(--neon-blue);">Emergency Guide</a> • 
-                <a href="guide-accuracy.html" style="color:var(--neon-blue);">GPS Accuracy Fix</a> •
+                <a href="/guide-safety" style="color:var(--neon-blue);">Emergency Guide</a> • 
+                <a href="/guide-accuracy" style="color:var(--neon-blue);">GPS Accuracy Fix</a> •
                 <a href="https://waterinmyspeaker.com" target="_blank" style="color:#94a3b8;">Speaker Cleaner</a>
             </div>
             
             <div style="margin-bottom: 12px; color:var(--text-soft);">
-                <a href="privacy.html">Privacy</a> • 
-                <a href="terms.html">Terms</a> • 
-                <a href="disclaimer.html">Disclaimer</a> • 
-                <a href="cookie-policy.html">Cookie Policy</a> • 
-                <a href="contact.html">Contact</a>
+                <a href="/privacy">Privacy</a> • 
+                <a href="/terms">Terms</a> • 
+                <a href="/disclaimer">Disclaimer</a> • 
+                <a href="/cookie-policy">Cookie Policy</a> • 
+                <a href="/editorial-policy">Editorial Policy</a> • 
+                <a href="/contact">Contact</a>
             </div>
 
             <div style="margin-bottom: 15px; font-size: 10px; opacity: 0.7;">
