@@ -15,7 +15,7 @@
     <meta charset="UTF-8" />
     <title>Troubleshooting GPS Accuracy | Tell My Location</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Why is my location wrong? Understanding GPS drift, IP geolocation errors, and how to improve accuracy.">
+    <meta name="description" content="Why is my location wrong? Understanding GPS drift, IP geolocation errors, and how to improve accuracy. Includes a live diagnostic tool.">
     
     <link rel="canonical" href="https://tellmylocation.com/guide-accuracy" />
     <meta name="author" content="Don Odibat">
@@ -24,32 +24,7 @@
 
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Why Is My Location Wrong? A Troubleshooting Guide",
-      "author": {
-        "@type": "Person",
-        "name": "Don Odibat",
-        "jobTitle": "Founder & Chief Architect"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Don System Holdings",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://tellmylocation.com/icon.png"
-        }
-      },
-      "datePublished": "2026-02-15",
-      "dateModified": "2026-02-15",
-      "description": "Technical guide explaining GPS drift, IP geolocation inaccuracy, and browser permission issues."
-    }
-    </script>
-
     <style>
-        /* EXACT SAME CSS AS GUIDE-SAFETY.HTML */
         :root { --bg: #0f172a; --card: rgba(30, 41, 59, 0.8); --accent: #38bdf8; --text: #ffffff; --text-soft: #94a3b8; --border: rgba(255, 255, 255, 0.1); }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.8; }
         .shell { max-width: 800px; margin: 0 auto; }
@@ -67,6 +42,16 @@
         .meta { font-size: 12px; color: var(--text-soft); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; }
         footer { text-align: center; margin-top: 50px; font-size: 12px; color: var(--text-soft); border-top: 1px solid var(--border); padding-top: 20px; }
         a { color: var(--accent); text-decoration: none; }
+
+        /* INTERACTIVE TOOL CSS */
+        .diag-tool { background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 16px; padding: 30px; text-align: center; margin: 40px 0; position: relative; overflow: hidden; }
+        .diag-title { font-size: 14px; text-transform: uppercase; color: white; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; }
+        .diag-status { font-size: 48px; font-weight: 900; margin: 20px 0; transition: color 0.3s; color: var(--text-soft); line-height: 1; }
+        .diag-meter-container { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+        .diag-meter-fill { height: 100%; width: 0%; background: var(--text-soft); transition: width 0.5s ease, background 0.5s ease; }
+        .diag-msg { font-size: 14px; color: #cbd5e1; min-height: 40px; }
+        .btn-run { background: var(--accent); color: #0f172a; border: none; padding: 12px 24px; border-radius: 50px; font-weight: 800; cursor: pointer; font-size: 14px; transition: transform 0.2s; }
+        .btn-run:hover { transform: scale(1.05); background: white; }
     </style>
 </head>
 <body>
@@ -109,6 +94,20 @@
             <p>On our dashboard, you will see a value labeled <strong>Accuracy</strong> (e.g., ±15m). This is the "Circle of Uncertainty."</p>
             <p>If the map shows a blue dot, but the circle around it is huge, it means your device is unsure. We effectively say: <em>"We are 95% sure you are somewhere inside this circle."</em> If you are outside, wait a moment. GPS requires a "warm-up" period to lock onto additional satellites.</p>
 
+            <div class="diag-tool" id="diag-tool">
+                <div class="diag-title">Live Hardware Diagnostic</div>
+                <p style="font-size: 12px; margin-bottom: 10px; color: var(--text-soft);">Test your device's current satellite lock strength.</p>
+                
+                <div class="diag-status" id="diag-score">--</div>
+                
+                <div class="diag-meter-container">
+                    <div class="diag-meter-fill" id="diag-meter"></div>
+                </div>
+                
+                <div class="diag-msg" id="diag-msg">Click below to ping your device's GNSS chip.</div>
+                
+                <button class="btn-run" id="btn-diag" onclick="runDiagnostic()">Run Diagnostic Test</button>
+            </div>
             <h2>3. Common Fixes for "Location Unavailable"</h2>
             <p>If the tool simply spins or says "Permission Denied," try these steps:</p>
             <ul>
@@ -154,10 +153,6 @@
                     </ul>
                 </div>
             </div>
-            
-            <div style="margin-top: 20px; font-size: 12px; font-style: italic;">
-                <strong>Disclaimer:</strong> This guide is for educational purposes. In a life-threatening emergency, always dial 911 or your local emergency services immediately.
-            </div>
         </div>
 
         <footer>
@@ -182,5 +177,58 @@
             © 2026 Don System Holdings. Tupelo, MS 38801.
         </footer>
     </div>
+
+    <script>
+        let watchId = null;
+
+        function runDiagnostic() {
+            const btn = document.getElementById('btn-diag');
+            const score = document.getElementById('diag-score');
+            const meter = document.getElementById('diag-meter');
+            const msg = document.getElementById('diag-msg');
+
+            btn.style.display = 'none';
+            score.innerText = "Scanning...";
+            msg.innerText = "Requesting hardware access...";
+
+            if (!navigator.geolocation) {
+                score.innerText = "ERROR";
+                msg.innerText = "Geolocation is not supported by your browser.";
+                return;
+            }
+
+            watchId = navigator.geolocation.watchPosition(
+                (pos) => {
+                    const acc = Math.round(pos.coords.accuracy);
+                    score.innerText = `±${acc}m`;
+
+                    // Calculate bar percentage (cap at 100m for visual scale)
+                    let pct = 100 - Math.min((acc / 100) * 100, 100);
+                    if(pct < 5) pct = 5; // Minimum visible bar
+                    meter.style.width = pct + '%';
+
+                    if (acc <= 10) {
+                        score.style.color = "#10b981"; // Green
+                        meter.style.background = "#10b981";
+                        msg.innerHTML = "<strong>Excellent.</strong> You have a direct line of sight to multiple GPS satellites. Your location is highly accurate.";
+                    } else if (acc <= 50) {
+                        score.style.color = "#f59e0b"; // Yellow
+                        meter.style.background = "#f59e0b";
+                        msg.innerHTML = "<strong>Fair.</strong> You likely have interference from buildings or trees. Try walking outside for a better lock.";
+                    } else {
+                        score.style.color = "#ef4444"; // Red
+                        meter.style.background = "#ef4444";
+                        msg.innerHTML = "<strong>Poor.</strong> Your device is likely relying on Wi-Fi/Cell towers instead of GPS. Step away from tall structures.";
+                    }
+                },
+                (err) => {
+                    score.innerText = "DENIED";
+                    score.style.color = "#ef4444";
+                    msg.innerText = "Permission was denied. Please check your browser settings.";
+                },
+                { enableHighAccuracy: true, maximumAge: 0 }
+            );
+        }
+    </script>
 </body>
 </html>
